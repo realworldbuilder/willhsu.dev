@@ -340,6 +340,10 @@
     .wave i:nth-child(3n+1) { height: 55%; }
     .wave i:nth-child(4n) { height: 70%; }
 
+    .art-stream { background: url(assets/game-darnassus.jpg) 50% 40% / cover; }
+    .art-stream .avatar { position: absolute; inset: 0; object-fit: cover; object-position: 50% 12%; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6)); }
+    .card:hover .art-stream .avatar:not(.swap), .card:focus-within .art-stream .avatar:not(.swap) { opacity: 0; }
+
     .art .swap { position: absolute; inset: 0; opacity: 0; transition: opacity 0.12s ease; }
     .card:hover .art .swap, .card:focus-within .art .swap { opacity: 1; }
 
@@ -554,9 +558,9 @@
 
         <article class="card rare" data-cats="streaming macos">
           <span class="rarity">Rare</span>
-          <div class="art">
-            <img src="assets/obs-silent.jpg" alt="Avatar with mouth closed; hover to see it speak" loading="lazy" width="640" height="640">
-            <img class="swap" src="assets/obs-speaking.jpg" alt="" loading="lazy" width="640" height="640">
+          <div class="art art-stream">
+            <img class="avatar" src="assets/obs-silent.webp" alt="Avatar with mouth closed over a game screenshot; hover to see it speak" loading="lazy" width="640" height="640">
+            <img class="avatar swap" src="assets/obs-speaking.webp" alt="" loading="lazy" width="640" height="640">
           </div>
           <div class="body">
             <h3>OBS Image Reaction</h3>
