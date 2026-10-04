@@ -195,7 +195,7 @@
     .card.legendary { --rarity: var(--legendary); grid-column: span 6; }
     .card.epic { --rarity: var(--epic); grid-column: span 3; }
     .card.rare { --rarity: var(--rare); }
-    .card.uncommon { --rarity: var(--uncommon); grid-column: span 3; }
+    .card.uncommon { --rarity: var(--uncommon); }
 
     .card::after {
       content: "";
@@ -340,21 +340,6 @@
     .wave i:nth-child(3n+1) { height: 55%; }
     .wave i:nth-child(4n) { height: 70%; }
 
-    .art-finder {
-      display: grid;
-      place-content: center;
-      text-align: center;
-      background:
-        linear-gradient(#8dff7a, #8dff7a) 16px 16px / 26px 2px no-repeat, linear-gradient(#8dff7a, #8dff7a) 16px 16px / 2px 26px no-repeat,
-        linear-gradient(#8dff7a, #8dff7a) calc(100% - 16px) 16px / 26px 2px no-repeat, linear-gradient(#8dff7a, #8dff7a) calc(100% - 16px) 16px / 2px 26px no-repeat,
-        linear-gradient(#8dff7a, #8dff7a) 16px calc(100% - 16px) / 26px 2px no-repeat, linear-gradient(#8dff7a, #8dff7a) 16px calc(100% - 16px) / 2px 26px no-repeat,
-        linear-gradient(#8dff7a, #8dff7a) calc(100% - 16px) calc(100% - 16px) / 26px 2px no-repeat, linear-gradient(#8dff7a, #8dff7a) calc(100% - 16px) calc(100% - 16px) / 2px 26px no-repeat,
-        linear-gradient(160deg, #12220f, #0a0f0a);
-    }
-    .art-finder span { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 34px; letter-spacing: 3px; text-transform: uppercase; color: #8dff7a; line-height: 1; }
-    .art-finder small { font-family: var(--mono); font-size: 11px; color: rgba(141, 255, 122, 0.6); margin-top: 8px; }
-    .uncommon .art { aspect-ratio: 16 / 6; }
-
     .art .swap { position: absolute; inset: 0; opacity: 0; transition: opacity 0.12s ease; }
     .card:hover .art .swap, .card:focus-within .art .swap { opacity: 1; }
 
@@ -418,7 +403,7 @@
     footer a { color: var(--muted); }
 
     @media (max-width: 900px) {
-      .card, .card.epic, .card.uncommon { grid-column: span 3; }
+      .card, .card.epic { grid-column: span 3; }
       .card.legendary { grid-column: span 6; }
       .legendary { flex-direction: column; }
       .legendary .art { border-left: 0; border-bottom: 2px solid var(--rarity); }
@@ -431,7 +416,7 @@
       .hero { padding: 40px 0 28px; }
       .sheet { grid-template-columns: 1fr; gap: 18px; }
       .crest { width: 80px; height: 80px; font-size: 32px; }
-      .card, .card.epic, .card.uncommon, .card.legendary { grid-column: span 6; }
+      .card, .card.epic, .card.legendary { grid-column: span 6; }
       .legendary h3 { font-size: 26px; }
     }
 
@@ -541,24 +526,29 @@
           </div>
         </article>
 
-        <article class="card epic" data-cats="wow ai macos">
+        <article class="card epic" data-cats="capture ai">
           <span class="rarity">Epic</span>
-          <div class="art"><img src="assets/wow-claude.jpg" alt="The WoW Claude chat window open in Goldshire" loading="lazy" width="1000" height="625"></div>
+          <div class="art art-wrist">
+            <img src="assets/wristassist-logo.png" alt="WristAssist logo: a green snake curled into a speech bubble" loading="lazy" width="320" height="320">
+            <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="art-note">Watch → iPhone · on-device</span>
+          </div>
           <div class="body">
-            <h3>wow-claude-mac</h3>
-            <p class="desc">Chat with Claude Code from inside World of Warcraft. Send a task, go back to questing, get pinged in game when the answer lands. macOS port of chelinho139/wow-claude.</p>
-            <div class="chips"><span class="chip">Lua</span><span class="chip">Claude Code</span><span class="chip">macOS</span></div>
+            <h3>WristAssist</h3>
+            <p class="desc">Voice notes from your wrist. Record on Apple Watch or iPhone and get a transcription made entirely on-device with WhisperKit. No cloud, no account.</p>
+            <div class="chips"><span class="chip">Swift</span><span class="chip">watchOS</span><span class="chip">iOS</span><span class="chip">WhisperKit</span></div>
             <div class="links">
-              <a href="https://github.com/realworldbuilder/wow-claude-mac/blob/main/docs/INSTALL-MACOS.md">Install guide</a>
-              <a href="https://github.com/realworldbuilder/wow-claude-mac">Repo</a>
+              <a href="https://apps.apple.com/us/app/wristassist/id6758561450">App Store</a>
+              <a href="https://realworldbuilder.github.io/wristassist/">Site</a>
+              <a href="https://github.com/realworldbuilder/wristassist">Repo</a>
             </div>
           </div>
           <div class="tip">
-            <div class="tip-name">wow-claude-mac</div>
-            <div class="tip-type"><span>AddOn + bridge</span><span>Epic</span></div>
-            <dl><dt>Platform</dt><dd>WoW: Forever, macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>September 2026</dd></dl>
-            <div class="tip-use">Use: Whisper a task to Claude without alt-tabbing.</div>
-            <div class="tip-flavor">"Documented addon APIs only."</div>
+            <div class="tip-name">WristAssist</div>
+            <div class="tip-type"><span>Watch + phone app</span><span>Epic</span></div>
+            <dl><dt>Platform</dt><dd>iOS 17+, watchOS 10+</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>February 2026</dd></dl>
+            <div class="tip-use">Use: Tap your wrist, talk, read it back.</div>
+            <div class="tip-flavor">"Never leaves your phone."</div>
           </div>
         </article>
 
@@ -607,32 +597,6 @@
           </div>
         </article>
 
-        <article class="card rare" data-cats="capture ai">
-          <span class="rarity">Rare</span>
-          <div class="art art-wrist">
-            <img src="assets/wristassist-logo.png" alt="WristAssist logo: a green snake curled into a speech bubble" loading="lazy" width="320" height="320">
-            <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <span class="art-note">Watch → iPhone · on-device</span>
-          </div>
-          <div class="body">
-            <h3>WristAssist</h3>
-            <p class="desc">Voice notes from your wrist. Record on Apple Watch or iPhone and get a transcription made entirely on-device with WhisperKit. No cloud, no account.</p>
-            <div class="chips"><span class="chip">Swift</span><span class="chip">watchOS</span><span class="chip">iOS</span><span class="chip">WhisperKit</span></div>
-            <div class="links">
-              <a href="https://apps.apple.com/us/app/wristassist/id6758561450">App Store</a>
-              <a href="https://realworldbuilder.github.io/wristassist/">Site</a>
-              <a href="https://github.com/realworldbuilder/wristassist">Repo</a>
-            </div>
-          </div>
-          <div class="tip">
-            <div class="tip-name">WristAssist</div>
-            <div class="tip-type"><span>Watch + phone app</span><span>Rare</span></div>
-            <dl><dt>Platform</dt><dd>iOS 17+, watchOS 10+</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>February 2026</dd></dl>
-            <div class="tip-use">Use: Tap your wrist, talk, read it back.</div>
-            <div class="tip-flavor">"Never leaves your phone."</div>
-          </div>
-        </article>
-
         <article class="card uncommon" data-cats="wow">
           <span class="rarity">Uncommon</span>
           <div class="art art-pages" aria-hidden="true"><span>Guide</span><small>Drafts in review</small></div>
@@ -649,25 +613,6 @@
             <div class="tip-name">WoW Forever Guide</div>
             <div class="tip-type"><span>Guide</span><span>Uncommon</span></div>
             <dl><dt>Status</dt><dd>Drafts in review</dd><dt>Updated</dt><dd>October 2026</dd></dl>
-          </div>
-        </article>
-
-        <article class="card uncommon" data-cats="capture">
-          <span class="rarity">Uncommon</span>
-          <div class="art art-finder" aria-hidden="true"><span>Scout</span><small>Photo · voice · notes</small></div>
-          <div class="body">
-            <h3>Scout Mode</h3>
-            <p class="desc">An iPhone MVP for camera-led construction field walks. It captures photos, voice notes and typed observations, then builds a structured QA/QC report (mocked for now).</p>
-            <div class="chips"><span class="chip">Swift</span><span class="chip">SwiftUI</span><span class="chip">iOS</span></div>
-            <div class="links">
-              <a href="https://github.com/realworldbuilder/scoutMode">Repo</a>
-            </div>
-          </div>
-          <div class="tip">
-            <div class="tip-name">Scout Mode</div>
-            <div class="tip-type"><span>iPhone app</span><span>Uncommon</span></div>
-            <dl><dt>Platform</dt><dd>iOS 17+</dd><dt>Status</dt><dd>MVP, mock reports</dd><dt>Updated</dt><dd>June 2026</dd></dl>
-            <div class="tip-use">Use: Walk the site, come back with a report.</div>
           </div>
         </article>
 
