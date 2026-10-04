@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>will hsu · open source tools for WoW, streaming and the Mac</title>
+  <meta name="description" content="Recent projects by Will Hsu: World of Warcraft addons and tools, OBS streaming plugins and macOS utilities. Open source, most with AI in the loop.">
+  <meta property="og:title" content="will hsu">
+  <meta property="og:description" content="Open source tools for World of Warcraft, streaming and the Mac.">
+  <meta property="og:url" content="https://willhsu.dev/">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff8000'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 500px at 15% -10%, rgba(163, 53, 238, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(43, 140, 255, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--epic); color: #fff; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 72px 0 40px; }
+
+    .sheet {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 44px;
+      letter-spacing: -1px;
+      color: var(--bg);
+      background: linear-gradient(135deg, #ffb347, var(--legendary));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--legendary);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 560px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+
+    .hero-links { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SHOP --- */
+    .shop-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+      padding-bottom: 72px;
+    }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 55%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card[hidden] { display: none; }
+    .card.legendary { --rarity: var(--legendary); grid-column: span 6; }
+    .card.epic { --rarity: var(--epic); grid-column: span 3; }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+
+    .art {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: #07080d;
+      border-bottom: 2px solid var(--rarity);
+    }
+    .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .legendary .art { aspect-ratio: auto; border-bottom: 0; border-left: 2px solid var(--rarity); }
+
+    .rarity {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--rarity);
+      color: #0b0d14;
+    }
+
+    .body { padding: 16px 18px 20px; display: flex; flex-direction: column; flex: 1; }
+
+    h3 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.15;
+      color: color-mix(in srgb, var(--rarity) 70%, #fff);
+    }
+
+    .desc { color: var(--muted); margin-top: 6px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      padding: 2px 7px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: auto; padding-top: 16px; }
+    .links a {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 2px solid var(--rarity);
+      padding-bottom: 1px;
+    }
+    .links a:hover { color: color-mix(in srgb, var(--rarity) 60%, #fff); }
+
+    /* legendary layout: text left, art right */
+    .legendary { flex-direction: row-reverse; }
+    .legendary .art { flex: 1 1 50%; }
+    .legendary .body { flex: 1 1 50%; padding: 48px 28px 28px; }
+    .legendary h3 { font-size: 34px; }
+    .legendary .desc { font-size: 16px; }
+
+    /* drawn card art */
+    .art-log {
+      height: 100%;
+      padding: 22px 24px;
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: #cfc6ae;
+      background: linear-gradient(160deg, #1d1710, #0d0b08);
+      white-space: pre;
+      overflow: hidden;
+    }
+    .art-log b { color: var(--legendary); font-weight: 600; }
+    .art-log i { color: #7d745f; font-style: normal; }
+
+    .art-checker {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      background: repeating-conic-gradient(#1b1e2b 0% 25%, #12141d 0% 50%) 50% / 28px 28px;
+    }
+    .art-checker svg { height: 82%; filter: drop-shadow(0 6px 18px rgba(163, 53, 238, 0.5)); }
+
+    .art-pages {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(160deg, #10210f, #0a0f0a);
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(30, 255, 0, 0.55);
+    }
+
+    .art .swap { position: absolute; inset: 0; opacity: 0; transition: opacity 0.12s ease; }
+    .card:hover .art .swap, .card:focus-within .art .swap { opacity: 1; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      background: rgba(8, 9, 16, 0.96);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 280px;
+    }
+    .tip-name { font-weight: 700; color: color-mix(in srgb, var(--rarity) 75%, #fff); }
+    .tip-type { color: var(--text); display: flex; justify-content: space-between; gap: 12px; }
+    .tip dl { display: grid; grid-template-columns: auto 1fr; gap: 0 10px; margin-top: 6px; }
+    .tip dt { color: var(--dim); }
+    .tip dd { color: var(--text); }
+    .tip-use { color: var(--uncommon); margin-top: 6px; }
+    .tip-flavor { color: #ffd100; font-style: italic; margin-top: 6px; }
+
+    .card > .tip { display: none; }
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .install {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .install:hover { color: var(--text); border-color: color-mix(in srgb, var(--rarity) 60%, transparent); }
+    .install::before { content: "$ "; color: var(--rarity); }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card, .card.epic { grid-column: span 3; }
+      .card.legendary { grid-column: span 6; }
+      .legendary { flex-direction: column; }
+      .legendary .art { border-left: 0; border-bottom: 2px solid var(--rarity); }
+      .legendary .body { padding: 16px 18px 20px; }
+      .legendary h3 { font-size: 26px; }
+      .art-log { padding-top: 44px; white-space: pre-wrap; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; font-size: 32px; }
+      .card, .card.epic, .card.legendary { grid-column: span 6; }
+      .art-log { font-size: 11px; padding: 44px 16px 16px; }
+      .legendary h3 { font-size: 26px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .art .swap { transition: none !important; }
+      .card:hover { transform: none; }
+      .card::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true">WH</div>
+        <div>
+          <p class="kicker">Builder · Open source</p>
+          <h1>Will Hsu</h1>
+          <p class="lede">I build open source tools for World of Warcraft, streaming and the Mac, most of them with AI in the loop.</p>
+          <div class="tags" aria-label="Topics">
+            <span class="tag">AI</span>
+            <span class="tag">World of Warcraft</span>
+            <span class="tag">Streaming tools</span>
+            <span class="tag">macOS</span>
+            <span class="tag">Open source</span>
+          </div>
+          <div class="hero-links">
+            <a class="btn" href="https://github.com/realworldbuilder">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="shop-head">
+        <h2>Recent projects</h2>
+        <div class="tabs" role="group" aria-label="Filter projects">
+          <button class="tab" data-filter="all" aria-pressed="true">All</button>
+          <button class="tab" data-filter="wow" aria-pressed="false">WoW</button>
+          <button class="tab" data-filter="streaming" aria-pressed="false">Streaming</button>
+          <button class="tab" data-filter="macos" aria-pressed="false">macOS</button>
+          <button class="tab" data-filter="ai" aria-pressed="false">AI</button>
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <article class="card legendary" data-cats="wow ai macos">
+          <span class="rarity">Legendary</span>
+          <div class="art" aria-hidden="true">
+<div class="art-log"><b>Rambleon Birdsong · September 21, 2026 · 1h 47m in Azeroth</b>
+
+<i> 9:47 PM</i>  Began the adventure
+<i> 9:47 PM</i>  Joined forces with Hazardelf (Rogue)
+<i> 9:55 PM</i>  Completed "Zenn's Bidding"
+<i>10:01 PM</i>  Entered Starbreeze Village (Teldrassil)
+<i>10:13 PM</i>  8/8 Timberling Seed
+<i>10:14 PM</i>  Note: "alone at the lake slayin timberlings"
+<i>10:24 PM</i>  <b>Reached Level 9</b>
+<i>11:01 PM</i>  Joined forces with Tiamaat (Druid)</div>
+          </div>
+          <div class="body">
+            <h3>Rambleon</h3>
+            <p class="desc">Your Azeroth adventure journal. A passive WoW AddOn and a Mac companion that turn a night of play into a timeline, a story page and an AI-written chapter.</p>
+            <div class="chips"><span class="chip">Lua</span><span class="chip">Python</span><span class="chip">Claude Code</span><span class="chip">macOS</span></div>
+            <button class="install" data-copy='uv tool install "git+https://github.com/realworldbuilder/rambleon#subdirectory=companion"' title="Copy install command">uv tool install "git+https://github.com/realworldbuilder/rambleon#subdirectory=companion"</button>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/rambleon/example/">Read a journal</a>
+              <a href="https://realworldbuilder.github.io/rambleon/">Site</a>
+              <a href="https://github.com/realworldbuilder/rambleon">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Rambleon</div>
+            <div class="tip-type"><span>AddOn + companion</span><span>Legendary</span></div>
+            <dl><dt>Platform</dt><dd>WoW: Forever beta, macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Log out, and the night writes itself up.</div>
+            <div class="tip-flavor">"A memory layer, not a meter."</div>
+          </div>
+        </article>
+
+        <article class="card epic" data-cats="wow">
+          <span class="rarity">Epic</span>
+          <div class="art" aria-hidden="true">
+            <div class="art-checker">
+              <svg viewBox="0 0 120 150" fill="#a335ee"><circle cx="60" cy="26" r="17"/><path d="M26 22l14-16 6 18zM94 22L80 6l-6 18z"/><path d="M30 60q30-20 60 0l10 44-14 4-6-24v58H40V84l-6 24-14-4z"/></svg>
+            </div>
+          </div>
+          <div class="body">
+            <h3>Mogshot</h3>
+            <p class="desc">Transparent PNG cutouts of your WoW characters, rendered in the browser from the game files already on your computer. No account, no server.</p>
+            <div class="chips"><span class="chip">TypeScript</span><span class="chip">Chrome</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/mogshot/">Open Mogshot</a>
+              <a href="https://github.com/realworldbuilder/mogshot">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Mogshot</div>
+            <div class="tip-type"><span>Web app</span><span>Epic</span></div>
+            <dl><dt>Platform</dt><dd>Chrome on a Mac</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Drop your WoW folder on the page, get a PNG.</div>
+            <div class="tip-flavor">"Your game files never leave your machine."</div>
+          </div>
+        </article>
+
+        <article class="card epic" data-cats="wow ai macos">
+          <span class="rarity">Epic</span>
+          <div class="art"><img src="assets/wow-claude.jpg" alt="The WoW Claude chat window open in Goldshire" loading="lazy" width="1000" height="625"></div>
+          <div class="body">
+            <h3>wow-claude-mac</h3>
+            <p class="desc">Chat with Claude Code from inside World of Warcraft. Send a task, go back to questing, get pinged in game when the answer lands. macOS port of chelinho139/wow-claude.</p>
+            <div class="chips"><span class="chip">Lua</span><span class="chip">Claude Code</span><span class="chip">macOS</span></div>
+            <div class="links">
+              <a href="https://github.com/realworldbuilder/wow-claude-mac/blob/main/docs/INSTALL-MACOS.md">Install guide</a>
+              <a href="https://github.com/realworldbuilder/wow-claude-mac">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">wow-claude-mac</div>
+            <div class="tip-type"><span>AddOn + bridge</span><span>Epic</span></div>
+            <dl><dt>Platform</dt><dd>WoW: Forever, macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>September 2026</dd></dl>
+            <div class="tip-use">Use: Whisper a task to Claude without alt-tabbing.</div>
+            <div class="tip-flavor">"Documented addon APIs only."</div>
+          </div>
+        </article>
+
+        <article class="card rare" data-cats="streaming macos">
+          <span class="rarity">Rare</span>
+          <div class="art">
+            <img src="assets/obs-silent.jpg" alt="Avatar with mouth closed; hover to see it speak" loading="lazy" width="640" height="640">
+            <img class="swap" src="assets/obs-speaking.jpg" alt="" loading="lazy" width="640" height="640">
+          </div>
+          <div class="body">
+            <h3>OBS Image Reaction</h3>
+            <p class="desc">An OBS source that shows one image while you are silent and another while you speak, with movement effects and blinking.</p>
+            <div class="chips"><span class="chip">C</span><span class="chip">OBS Studio</span><span class="chip">macOS</span></div>
+            <button class="install" data-copy="curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash" title="Copy install command">curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash</button>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/obs-image-reaction/">Site</a>
+              <a href="https://github.com/realworldbuilder/obs-image-reaction">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">OBS Image Reaction</div>
+            <div class="tip-type"><span>OBS plugin</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>OBS Studio, macOS</dd><dt>Licence</dt><dd>GPL-2.0</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Your avatar talks when you do.</div>
+          </div>
+        </article>
+
+        <article class="card rare" data-cats="macos streaming">
+          <span class="rarity">Rare</span>
+          <div class="art"><img src="assets/sis-demo.svg" alt="A capture frame switching between social media sizes" loading="lazy" width="960" height="600"></div>
+          <div class="body">
+            <h3>Slightly Improved Screenshot</h3>
+            <p class="desc">A macOS menu bar utility for screenshots and screen recordings at the exact pixel sizes social platforms expect.</p>
+            <div class="chips"><span class="chip">Swift</span><span class="chip">macOS</span></div>
+            <button class="install" data-copy="curl -fsSL https://realworldbuilder.github.io/slightly-improved-screenshot/install.sh | bash" title="Copy install command">curl -fsSL https://realworldbuilder.github.io/slightly-improved-screenshot/install.sh | bash</button>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/slightly-improved-screenshot/">Site</a>
+              <a href="https://github.com/realworldbuilder/slightly-improved-screenshot">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Slightly Improved Screenshot</div>
+            <div class="tip-type"><span>Menu bar app</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Press the hotkey, click, paste at the right size.</div>
+          </div>
+        </article>
+
+        <article class="card uncommon" data-cats="wow">
+          <span class="rarity">Uncommon</span>
+          <div class="art" aria-hidden="true"><div class="art-pages">In progress</div></div>
+          <div class="body">
+            <h3>WoW Forever Guide</h3>
+            <p class="desc">A guide to World of Warcraft: Forever, written in the open. Draft posts and a review page for now.</p>
+            <div class="chips"><span class="chip">HTML</span><span class="chip">Writing</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/wowforeverguide/">Drafts</a>
+              <a href="https://github.com/realworldbuilder/wowforeverguide">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">WoW Forever Guide</div>
+            <div class="tip-type"><span>Guide</span><span>Uncommon</span></div>
+            <dl><dt>Status</dt><dd>Drafts in review</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+          </div>
+        </article>
+
+      </div>
+    </main>
+
+    <footer>
+      <span>Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a></span>
+      <span>Not affiliated with Blizzard Entertainment. <a href="https://realworldbuilder.github.io/constructionAI/">Previous site</a></span>
+    </footer>
+  </div>
+
+  <div id="float-tip" class="tip" role="presentation"></div>
+
+  <script>
+    // category tabs
+    const tabs = document.querySelectorAll('.tab');
+    const cards = document.querySelectorAll('.card');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-pressed', t === tab));
+      const f = tab.dataset.filter;
+      cards.forEach(c => { c.hidden = f !== 'all' && !c.dataset.cats.split(' ').includes(f); });
+    }));
+
+    // item tooltip that follows the cursor (mouse only)
+    const tip = document.getElementById('float-tip');
+    if (matchMedia('(hover: hover)').matches) {
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          tip.innerHTML = card.querySelector('.tip').innerHTML;
+          tip.style.setProperty('--rarity', getComputedStyle(card).getPropertyValue('--rarity'));
+          tip.style.display = 'block';
+        });
+        card.addEventListener('mousemove', e => {
+          const pad = 16, w = tip.offsetWidth, h = tip.offsetHeight;
+          let x = e.clientX + pad, y = e.clientY + pad;
+          if (x + w > innerWidth - 8) x = e.clientX - w - pad;
+          if (y + h > innerHeight - 8) y = e.clientY - h - pad;
+          tip.style.left = Math.max(8, x) + 'px';
+          tip.style.top = Math.max(8, y) + 'px';
+        });
+        card.addEventListener('mouseleave', () => { tip.style.display = 'none'; });
+      });
+    }
+
+    // click an install command to copy it
+    document.querySelectorAll('.install').forEach(btn => btn.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(btn.dataset.copy); } catch { return; }
+      const text = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = text; }, 1200);
+    }));
+  </script>
+</body>
+</html>
