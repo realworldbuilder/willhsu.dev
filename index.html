@@ -332,6 +332,17 @@
     .art-pages span { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 34px; letter-spacing: 3px; text-transform: uppercase; color: #8dff7a; line-height: 1; }
     .art-pages small { font-family: var(--mono); font-size: 11px; color: rgba(141, 255, 122, 0.6); margin-top: 8px; }
 
+    .art-mini {
+      display: grid;
+      place-content: center;
+      text-align: center;
+      background:
+        repeating-linear-gradient(0deg, rgba(43, 140, 255, 0.05) 0 1px, transparent 1px 6px),
+        linear-gradient(160deg, #0f1a2e, #080b12);
+    }
+    .art-mini span { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 30px; letter-spacing: 2px; text-transform: uppercase; color: #8cc2ff; line-height: 1; }
+    .art-mini small { font-family: var(--mono); font-size: 11px; color: rgba(140, 194, 255, 0.6); margin-top: 8px; }
+
     .art-wrist { background: #2a2933; }
     .art-wrist img { object-fit: contain; object-position: 50% 50%; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
     .wave { position: absolute; left: 12px; bottom: 12px; display: flex; align-items: end; gap: 3px; height: 26px; }
@@ -580,6 +591,29 @@
           </div>
         </article>
 
+        <article class="card rare" data-cats="streaming capture">
+          <span class="rarity">Rare</span>
+          <div class="art">
+            <img src="assets/slipstream-prototype.jpg" alt="The Slipstream prototype: a webcam wrapped in clear film, clipped to the lid of a grey PVC junction box" loading="lazy" width="1000" height="1333">
+            <span class="art-note">rtsp://slipstream-01:8554/cam</span>
+          </div>
+          <div class="body">
+            <h3>Slipstream</h3>
+            <p class="desc">A camera node in a junction box. A Raspberry Pi 5 and a Logitech C270 serve a network camera feed that OBS picks up as a media source.</p>
+            <div class="chips"><span class="chip">Raspberry Pi</span><span class="chip">MediaMTX</span><span class="chip">ffmpeg</span><span class="chip">Python</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/slipstream/">Site</a>
+              <a href="https://github.com/realworldbuilder/slipstream">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Slipstream</div>
+            <div class="tip-type"><span>Camera node</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>Raspberry Pi 5, OBS Studio</dd><dt>Stream</dt><dd>720p30 H.264 over RTSP</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Plug it in, add the feed to OBS.</div>
+          </div>
+        </article>
+
         <article class="card rare" data-cats="macos streaming">
           <span class="rarity">Rare</span>
           <div class="art"><img src="assets/sis-demo.svg" alt="A capture frame switching between social media sizes" loading="lazy" width="960" height="600"></div>
@@ -598,6 +632,25 @@
             <div class="tip-type"><span>Menu bar app</span><span>Rare</span></div>
             <dl><dt>Platform</dt><dd>macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
             <div class="tip-use">Use: Press the hotkey, click, paste at the right size.</div>
+          </div>
+        </article>
+
+        <article class="card uncommon" data-cats="ai macos">
+          <span class="rarity">Uncommon</span>
+          <div class="art art-mini" aria-hidden="true"><span>Close the lid</span><small>tmux · claude remote-control</small></div>
+          <div class="body">
+            <h3>Close the Lid</h3>
+            <p class="desc">How I run Claude Code on a headless Mac mini: give it a job from my laptop or phone, shut the lid and walk away.</p>
+            <div class="chips"><span class="chip">Claude Code</span><span class="chip">launchd</span><span class="chip">tmux</span></div>
+            <div class="links">
+              <a href="mini/">Read the writeup</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Close the Lid</div>
+            <div class="tip-type"><span>Writeup</span><span>Uncommon</span></div>
+            <dl><dt>Platform</dt><dd>Mac mini, any device with Claude</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Say what you want, close the lid, walk away.</div>
           </div>
         </article>
 
