@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <title>Post cards · will hsu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Image cards for /posts/. Each <section> is one 1600x900 card.
+       card.html?c=<id> shows just that card; tools/render-cards.sh screenshots them. */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 28px;
+    }
+
+    body { background: #000; color: var(--text); font-family: var(--body); -webkit-font-smoothing: antialiased; }
+
+    .card {
+      --rarity: var(--rare);
+      position: relative;
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 80px 48px;
+      margin-bottom: 24px;
+      background:
+        radial-gradient(1200px 700px at 12% -10%, color-mix(in srgb, var(--rarity) 22%, transparent), transparent 60%),
+        radial-gradient(1000px 700px at 100% 0%, rgba(43, 140, 255, 0.12), transparent 60%),
+        var(--bg);
+    }
+    body.single .card { display: none; margin: 0; }
+    body.single .card.on { display: flex; }
+    .legendary { --rarity: var(--legendary); }
+    .epic { --rarity: var(--epic); }
+    .rare { --rarity: var(--rare); }
+    .uncommon { --rarity: var(--uncommon); }
+
+    .top { display: flex; align-items: center; gap: 20px; }
+    .crest {
+      width: 60px;
+      height: 60px;
+      display: grid;
+      place-items: center;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--bg);
+      background: linear-gradient(135deg, #ffb347, var(--legendary));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .kicker {
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--rarity) 80%, #fff);
+    }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 22px;
+      color: var(--dim);
+    }
+    .foot b { font-weight: 400; color: var(--muted); }
+
+    .main { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; margin: 36px 0 32px; }
+    .split { display: grid; grid-template-columns: 1fr 620px; gap: 64px; align-items: center; }
+    .split > div:first-child { min-width: 0; }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 104px;
+      line-height: 0.98;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+    }
+    h1.mid { font-size: 76px; letter-spacing: -1px; }
+    h1.big { font-size: 148px; }
+    h1.tint { color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+
+    .desc { margin-top: 24px; font-size: 34px; line-height: 1.4; color: #c9cddb; }
+    .use { margin-top: 28px; font-size: 32px; line-height: 1.35; color: var(--uncommon); }
+    .flavor { margin-top: 12px; font-size: 30px; font-style: italic; color: #ffd100; }
+    .quote { font-size: 44px; line-height: 1.35; color: #c9cddb; max-width: 1280px; margin-top: 28px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+    .chip {
+      font-family: var(--mono);
+      font-size: 22px;
+      color: var(--muted);
+      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    /* art panel, same cut corners as the site cards */
+    .art {
+      position: relative;
+      height: 620px;
+      overflow: hidden;
+      background: #07080d;
+      border: 2px solid color-mix(in srgb, var(--rarity) 60%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+    }
+    .art > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .note {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      font-family: var(--mono);
+      font-size: 20px;
+      color: var(--muted);
+      background: rgba(8, 9, 16, 0.85);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+    }
+
+    .art-journal { display: grid; place-items: center; }
+    .art-journal::before { content: ""; position: absolute; inset: 0; z-index: 1; background: rgba(11, 13, 20, 0.35); }
+    .page {
+      position: relative;
+      z-index: 2;
+      width: 500px;
+      padding: 26px 30px 12px;
+      background: #f3e8cf;
+      color: #3d2a14;
+      font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+      border: 1px solid #c9b48a;
+      box-shadow: 0 24px 56px rgba(0, 0, 0, 0.6);
+      transform: rotate(1.5deg);
+    }
+    .page-head { font-variant: small-caps; font-weight: 700; font-size: 32px; line-height: 1.2; }
+    .page-sub { font-size: 18px; color: #7a6238; padding-bottom: 12px; border-bottom: 1px solid #d9c79f; }
+    .page ol { list-style: none; }
+    .page li { padding: 14px 0; border-bottom: 1px solid #e2d3ae; line-height: 1.3; }
+    .page li:last-child { border-bottom: 0; }
+    .page span { display: block; font-size: 15px; letter-spacing: 2px; text-transform: uppercase; color: #9a7b3f; }
+    .page b { display: block; font-variant: small-caps; font-size: 25px; }
+    .page i { display: block; font-style: normal; font-size: 17px; color: #7a6238; }
+
+    .art-checker { background: repeating-conic-gradient(#1d2030 0% 25%, #141722 0% 50%) 50% / 48px 48px; }
+    .art-checker > img { object-fit: contain; padding: 12px 0; filter: drop-shadow(0 16px 36px rgba(163, 53, 238, 0.5)); }
+
+    .art-wrist { background: #2a2933; }
+    .art-wrist > img { object-fit: contain; padding: 110px; -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); mask-image: radial-gradient(closest-side, #000 72%, transparent 100%); }
+    .wave { position: absolute; left: 24px; bottom: 22px; display: flex; align-items: end; gap: 6px; height: 52px; }
+    .wave i { width: 6px; background: #6ee05a; border-radius: 3px; height: 30%; }
+    .wave i:nth-child(3n) { height: 90%; }
+    .wave i:nth-child(3n+1) { height: 55%; }
+    .wave i:nth-child(4n) { height: 70%; }
+
+    .art-stream { background: url(../assets/game-darnassus.jpg) 50% 40% / cover; display: grid; grid-template-rows: 1fr 1fr; }
+    .art-stream div { position: relative; overflow: hidden; }
+    .art-stream div + div { border-top: 2px solid color-mix(in srgb, var(--rarity) 60%, transparent); }
+    .art-stream img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.6)); }
+    .art-stream .note { right: auto; left: 16px; }
+
+    .art-photo > img { object-position: 50% 32%; }
+    .art-sis > img { object-position: 50% 50%; }
+
+    /* intro: item list */
+    .items { padding: 28px 32px; background: rgba(8, 9, 16, 0.8); border: 2px solid color-mix(in srgb, var(--legendary) 60%, #444); border-radius: 6px; }
+    .items li { list-style: none; display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .items li:last-child { border-bottom: 0; }
+    .items b { font-family: var(--display); font-size: 30px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .items span { font-family: var(--mono); font-size: 19px; color: var(--dim); white-space: nowrap; }
+
+    /* thread: flow diagram */
+    .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 24px; margin-top: 44px; }
+    .node {
+      padding: 32px 30px 30px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 20%, var(--panel)) 0%, var(--panel) 70%);
+      border: 2px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+    }
+    .node.you { --rarity: var(--uncommon); }
+    .node.cloud { --rarity: var(--epic); }
+    .node.mini { --rarity: var(--legendary); }
+    .node b { display: block; font-family: var(--display); font-size: 40px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .node span { display: block; font-size: 27px; color: var(--muted); line-height: 1.4; margin-top: 12px; }
+    .arrow { align-self: center; font-family: var(--mono); color: var(--dim); font-size: 44px; }
+
+    pre {
+      margin-top: 32px;
+      padding: 28px 32px;
+      font-family: var(--mono);
+      font-size: 27px;
+      line-height: 1.55;
+      color: var(--muted);
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--rarity);
+    }
+    pre b { color: var(--text); font-weight: 400; }
+    pre i { color: var(--dim); font-style: normal; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px 48px;
+      margin-top: 36px;
+      padding: 34px 40px;
+      font-size: 34px;
+      background: rgba(8, 9, 16, 0.75);
+      border: 2px solid color-mix(in srgb, var(--legendary) 60%, #444);
+      border-radius: 6px;
+    }
+    .stats dt { font-family: var(--mono); color: var(--legendary); }
+    .stats dd { color: var(--text); }
+
+    .list { list-style: none; margin-top: 32px; }
+    .list li { font-size: 34px; line-height: 1.35; color: #c9cddb; padding: 16px 0 16px 34px; border-left: 4px solid var(--rarity); margin-top: 16px; background: rgba(255, 255, 255, 0.03); }
+    .list b { color: var(--text); }
+
+    .uses { list-style: none; margin-top: 30px; }
+    .uses li { display: grid; grid-template-columns: 500px 1fr; gap: 24px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .uses li:last-child { border-bottom: 0; }
+    .uses b { font-family: var(--display); font-size: 30px; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .uses span { font-size: 30px; color: var(--uncommon); }
+
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 40px; }
+    .pair .node b { font-size: 44px; }
+    .pair .node em { display: block; margin-top: 14px; font-size: 30px; color: #ffd100; }
+  </style>
+</head>
+<body>
+
+  <section class="card legendary" id="intro" data-kicker="Builder · Open source">
+    <div class="split">
+      <div>
+        <h1>Will Hsu</h1>
+        <p class="desc">I build open source tools for World of Warcraft, streaming, reality capture and the Mac, most of them with AI in the loop.</p>
+        <div class="chips"><span class="chip">AI</span><span class="chip">World of Warcraft</span><span class="chip">Streaming tools</span><span class="chip">Reality capture</span><span class="chip">macOS</span></div>
+      </div>
+      <ul class="items">
+        <li class="legendary"><b>Rambleon</b><span>AddOn + companion</span></li>
+        <li class="epic"><b>Mogshot</b><span>Web app</span></li>
+        <li class="epic"><b>WristAssist</b><span>Watch + phone app</span></li>
+        <li class="rare"><b>OBS Image Reaction</b><span>OBS plugin</span></li>
+        <li class="rare"><b>Slipstream</b><span>Camera node</span></li>
+        <li class="rare"><b>Slightly Improved Screenshot</b><span>Menu bar app</span></li>
+        <li class="uncommon"><b>Close the Lid</b><span>Writeup</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card legendary" id="rambleon" data-kicker="Legendary · AddOn + companion">
+    <div class="split">
+      <div>
+        <h1 class="tint">Rambleon</h1>
+        <p class="desc">Your Azeroth adventure journal. A night of play becomes a timeline, a story page and an AI-written chapter.</p>
+        <p class="use">Use: Log out, and the night writes itself up.</p>
+        <p class="flavor">"A memory layer, not a meter."</p>
+      </div>
+      <div class="art art-journal">
+        <img src="../assets/rambleon-darkshore.jpg" alt="">
+        <div class="page">
+          <p class="page-head">Adventure Journal</p>
+          <p class="page-sub">Rambleon Birdsong · Night Elf Hunter · Level 21</p>
+          <ol>
+            <li><span>Chapter 12</span><b>Bathran's Haunt, Again</b><i>5h 31m · 2 quests · 71 kills · 3 companions</i></li>
+            <li><span>Chapter 11</span><b>Into the Deadmines</b><i>5h 35m · 6 quests · 277 kills · 6 companions</i></li>
+            <li><span>Chapter 10</span><b>The Vale That Kept Calling Him Back</b><i>3h 00m · 3 quests · 113 kills · 7 companions</i></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card epic" id="mogshot" data-kicker="Epic · Web app">
+    <div class="split">
+      <div>
+        <h1 class="tint">Mogshot</h1>
+        <p class="desc">Transparent PNG cutouts of your WoW characters, rendered in the browser from the game files already on your computer.</p>
+        <p class="use">Use: Drop your WoW folder on the page, get a PNG.</p>
+        <p class="flavor">"Your game files never leave your machine."</p>
+      </div>
+      <div class="art art-checker">
+        <img src="../assets/mogshot-night-elf.png" alt="">
+        <span class="note">PNG · 2160 × 2160 · transparent</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card epic" id="wristassist" data-kicker="Epic · Watch + phone app">
+    <div class="split">
+      <div>
+        <h1 class="tint">WristAssist</h1>
+        <p class="desc">Voice notes from your wrist, transcribed entirely on-device with WhisperKit. No cloud, no account.</p>
+        <p class="use">Use: Tap your wrist, talk, read it back.</p>
+        <p class="flavor">"Never leaves your phone."</p>
+      </div>
+      <div class="art art-wrist">
+        <img src="../assets/wristassist-logo.png" alt="">
+        <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <span class="note">Watch → iPhone · on-device</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card rare" id="obs" data-kicker="Rare · OBS plugin">
+    <div class="split">
+      <div>
+        <h1 class="mid tint">OBS Image Reaction</h1>
+        <p class="desc">An OBS source that shows one image while you are silent and another while you speak, with movement effects and blinking.</p>
+        <p class="use">Use: Your avatar talks when you do.</p>
+      </div>
+      <div class="art art-stream">
+        <div><img src="../assets/obs-silent.webp" alt=""><span class="note">silent</span></div>
+        <div><img src="../assets/obs-speaking.webp" alt=""><span class="note">speaking</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card rare" id="slipstream" data-kicker="Rare · Camera node">
+    <div class="split">
+      <div>
+        <h1 class="tint">Slipstream</h1>
+        <p class="desc">A camera node in a junction box. A Raspberry Pi 5 and a Logitech C270 serve a feed that OBS picks up as a media source.</p>
+        <p class="use">Use: Plug it in, add the feed to OBS.</p>
+      </div>
+      <div class="art art-photo">
+        <img src="../assets/slipstream-prototype.jpg" alt="">
+        <span class="note">RTSP · 720p30 · H.264</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="card rare" id="sis" data-kicker="Rare · Menu bar app">
+    <div class="split">
+      <div>
+        <h1 class="mid tint">Slightly Improved Screenshot</h1>
+        <p class="desc">Screenshots and screen recordings at the exact pixel sizes social platforms expect.</p>
+        <p class="use">Use: Press the hotkey, click, paste at the right size.</p>
+      </div>
+      <div class="art art-sis">
+        <img src="../assets/sis-demo.svg" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="card rare" id="lid-1" data-kicker="Close the lid · 1/5">
+    <h1 class="big">Close the lid</h1>
+    <p class="quote">Say what I want, shut the laptop and walk off while a Mac mini in the corner does the work.</p>
+  </section>
+
+  <section class="card rare" id="lid-2" data-kicker="Close the lid · 2/5">
+    <h1 class="mid">The laptop is just a remote</h1>
+    <div class="flow">
+      <div class="node you"><b>MacBook or phone</b><span>Where I type. Can close, sleep or lose signal.</span></div>
+      <div class="arrow">→</div>
+      <div class="node cloud"><b>claude.ai/code</b><span>Holds the session and the chat.</span></div>
+      <div class="arrow">→</div>
+      <div class="node mini"><b>Mac mini</b><span>Headless, always on. Reads, edits, builds and runs.</span></div>
+    </div>
+  </section>
+
+  <section class="card rare" id="lid-3" data-kicker="Close the lid · 3/5">
+    <h1 class="mid">The setup</h1>
+<pre><i>&lt;!-- LaunchAgent, runs at login --&gt;</i>
+&lt;string&gt;/opt/homebrew/bin/tmux&lt;/string&gt;
+&lt;string&gt;new-session&lt;/string&gt;&lt;string&gt;-d&lt;/string&gt;
+&lt;string&gt;-s&lt;/string&gt;&lt;string&gt;rc&lt;/string&gt;
+<b>&lt;string&gt;claude remote-control --name "Mac mini"&lt;/string&gt;</b>
+&lt;key&gt;RunAtLoad&lt;/key&gt;&lt;true/&gt;</pre>
+  </section>
+
+  <section class="card rare" id="lid-4" data-kicker="Close the lid · 4/5">
+    <h1 class="mid">Keeping it awake</h1>
+    <dl class="stats">
+      <dt>sleep 0</dt><dd>Never sleep on AC power</dd>
+      <dt>disksleep 0</dt><dd>Never spin down the disk</dd>
+      <dt>autorestart 1</dt><dd>Boot back up after a power cut</dd>
+      <dt>womp 1</dt><dd>Wake for network access</dd>
+      <dt>caffeinate</dt><dd>Claude Code holds its own lock while it works</dd>
+    </dl>
+  </section>
+
+  <section class="card rare" id="lid-5" data-kicker="Close the lid · 5/5">
+    <h1 class="mid">Rough edges</h1>
+    <ul class="list">
+      <li><b>Nothing restarts a crashed bridge.</b> The LaunchAgent runs once at login.</li>
+      <li><b>The mini needs its own credentials.</b> That's where the commands run.</li>
+      <li><b>Apps that need a screen</b> need Screen Sharing.</li>
+    </ul>
+    <p class="use">Use: Say what you want, close the lid, walk away.</p>
+  </section>
+
+  <section class="card epic" id="learn-local" data-kicker="What we're learning · Local first">
+    <h1>No account, no server</h1>
+    <div class="pair">
+      <div class="node" style="--rarity: var(--epic)"><b>Mogshot</b><span>Renders in the browser from the game files already on your computer.</span><em>"Your game files never leave your machine."</em></div>
+      <div class="node" style="--rarity: var(--epic)"><b>WristAssist</b><span>Transcribes entirely on-device with WhisperKit.</span><em>"Never leaves your phone."</em></div>
+    </div>
+  </section>
+
+  <section class="card legendary" id="learn-memory" data-kicker="What we're learning · Rambleon">
+    <h1 class="big" style="font-size: 124px">A memory layer, not a meter</h1>
+    <p class="quote">Chapter 11, Into the Deadmines: 5h 35m · 6 quests · 277 kills · 6 companions.</p>
+  </section>
+
+  <section class="card uncommon" id="learn-remote" data-kicker="What we're learning · Claude Code">
+    <h1 class="big" style="font-size: 124px">The laptop is just a remote</h1>
+    <p class="quote">The work and the files stay on the mini. The laptop can close, sleep or lose signal.</p>
+  </section>
+
+  <section class="card rare" id="learn-camera" data-kicker="What we're learning · Reality capture">
+    <div class="split">
+      <div>
+        <h1 class="mid">A camera node in a junction box</h1>
+        <p class="desc">A webcam wrapped in clear film, clipped to the lid of a grey PVC junction box.</p>
+        <div class="chips"><span class="chip">Raspberry Pi 5</span><span class="chip">Logitech C270</span><span class="chip">MediaMTX</span><span class="chip">ffmpeg</span></div>
+      </div>
+      <div class="art art-photo">
+        <img src="../assets/slipstream-prototype.jpg" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="card uncommon" id="learn-use" data-kicker="What we're learning · One line each">
+    <h1 class="mid">Use:</h1>
+    <ul class="uses">
+      <li class="legendary"><b>Rambleon</b><span>Log out, and the night writes itself up.</span></li>
+      <li class="epic"><b>Mogshot</b><span>Drop your WoW folder on the page, get a PNG.</span></li>
+      <li class="epic"><b>WristAssist</b><span>Tap your wrist, talk, read it back.</span></li>
+      <li class="rare"><b>OBS Image Reaction</b><span>Your avatar talks when you do.</span></li>
+      <li class="rare"><b>Slipstream</b><span>Plug it in, add the feed to OBS.</span></li>
+      <li class="rare"><b>Slightly Improved Screenshot</b><span>Press the hotkey, click, paste at the right size.</span></li>
+    </ul>
+  </section>
+
+  <script>
+    // wrap each card's content with the shared top and bottom bars
+    document.querySelectorAll('.card').forEach(card => {
+      const main = document.createElement('div');
+      main.className = 'main';
+      main.append(...card.childNodes);
+      card.innerHTML = '<div class="top"><div class="crest">WH</div><p class="kicker"></p></div>';
+      card.querySelector('.kicker').textContent = card.dataset.kicker;
+      card.append(main);
+      card.insertAdjacentHTML('beforeend', '<div class="foot"><b>willhsu.dev</b><span>github.com/realworldbuilder</span></div>');
+    });
+
+    // ?c=<id> shows a single card for the screenshot
+    const id = new URLSearchParams(location.search).get('c');
+    if (id) {
+      document.body.classList.add('single');
+      document.getElementById(id)?.classList.add('on');
+    }
+  </script>
+</body>
+</html>

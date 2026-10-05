@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Field posts · will hsu</title>
+  <meta name="description" content="Short posts and image cards about what I am building and learning: WoW tools, streaming, reality capture, the Mac and Claude Code.">
+  <meta property="og:title" content="Field posts">
+  <meta property="og:description" content="Short posts and image cards about what I am building and learning.">
+  <meta property="og:url" content="https://willhsu.dev/posts/">
+  <meta property="og:image" content="https://willhsu.dev/assets/posts/intro.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff8000'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 500px at 15% -10%, rgba(255, 128, 0, 0.10), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.12), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.65;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--epic); color: #fff; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+    .back {
+      display: inline-block;
+      margin-top: 28px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--muted);
+    }
+    .back:hover { color: var(--text); }
+
+    header { padding: 40px 0 8px; }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--legendary);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 9vw, 68px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 14px;
+    }
+
+    .lede { color: var(--muted); font-size: 18px; }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 26px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 48px 0 4px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .sub { color: var(--dim); font-size: 14px; }
+
+    /* one post: text, image, copy and download */
+    .post {
+      --rarity: var(--rare);
+      margin-top: 20px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 30%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+    }
+    .post.legendary { --rarity: var(--legendary); }
+    .post.epic { --rarity: var(--epic); }
+    .post.rare { --rarity: var(--rare); }
+    .post.uncommon { --rarity: var(--uncommon); }
+
+    .post-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px 0; }
+    .label {
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--rarity);
+      color: #0b0d14;
+    }
+    .count { font-family: var(--mono); font-size: 12px; color: var(--dim); }
+    .count.over { color: #ff5c5c; }
+
+    .post-text { padding: 12px 18px 16px; color: #dfe2ec; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+    .shot { display: block; border-top: 2px solid var(--rarity); background: #07080d; }
+    .shot img { display: block; width: 100%; height: auto; }
+
+    .post-actions { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; padding: 14px 18px 18px; }
+    .copy {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border: 0;
+      cursor: pointer;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    }
+    .copy:hover { filter: brightness(1.08); }
+    .dl {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 2px solid var(--rarity);
+      padding-bottom: 1px;
+    }
+    .dl:hover { color: color-mix(in srgb, var(--rarity) 60%, #fff); }
+
+    /* a thread: posts joined by a line down the side */
+    .thread { margin-top: 20px; padding-left: 18px; border-left: 2px solid color-mix(in srgb, var(--rare) 50%, transparent); }
+    .thread .post:first-child { margin-top: 0; }
+
+    footer {
+      margin-top: 56px;
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 640px) {
+      header { padding: 28px 0 0; }
+      .thread { padding-left: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/">← willhsu.dev</a>
+
+    <header>
+      <p class="kicker">Field posts · October 2026</p>
+      <h1>Posts</h1>
+      <p class="lede">Short posts about what I am building and what I am learning along the way. Each one has its text and an image card, sized for X.</p>
+    </header>
+
+    <main>
+      <h2>Pinned</h2>
+
+      <article class="post legendary" id="intro">
+        <div class="post-head"><span class="label">Intro</span><span class="count"></span></div>
+        <p class="post-text">I build open source tools for World of Warcraft, streaming, reality capture and the Mac, most of them with AI in the loop.
+
+Everything is on one page, laid out like an item shop: rarity colours, tooltips and all.
+
+willhsu.dev</p>
+        <a class="shot" href="../assets/posts/intro.png"><img src="../assets/posts/intro.png" alt="Card: Will Hsu, with a list of projects coloured by rarity" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <h2>Projects</h2>
+      <p class="sub">One post per project.</p>
+
+      <article class="post legendary" id="rambleon">
+        <div class="post-head"><span class="label">Rambleon</span><span class="count"></span></div>
+        <p class="post-text">Rambleon is an adventure journal for Azeroth.
+
+A passive WoW AddOn and a Mac companion turn a night of play into a timeline, a story page and an AI-written chapter.
+
+Log out, and the night writes itself up.
+
+A memory layer, not a meter.
+
+https://github.com/realworldbuilder/rambleon</p>
+        <a class="shot" href="../assets/posts/rambleon.png"><img src="../assets/posts/rambleon.png" alt="Card: Rambleon, with three chapters from an example journal" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post epic" id="mogshot">
+        <div class="post-head"><span class="label">Mogshot</span><span class="count"></span></div>
+        <p class="post-text">Mogshot makes transparent PNG cutouts of your WoW characters.
+
+It renders in the browser from the game files already on your computer. No account, no server. Your game files never leave your machine.
+
+Drop your WoW folder on the page, get a PNG.
+
+https://realworldbuilder.github.io/mogshot/</p>
+        <a class="shot" href="../assets/posts/mogshot.png"><img src="../assets/posts/mogshot.png" alt="Card: Mogshot, with a night elf hunter cutout on a transparency grid" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post epic" id="wristassist">
+        <div class="post-head"><span class="label">WristAssist</span><span class="count"></span></div>
+        <p class="post-text">WristAssist: voice notes from your wrist.
+
+Record on Apple Watch or iPhone and the transcription is made entirely on-device with WhisperKit. No cloud, no account.
+
+Tap your wrist, talk, read it back.
+
+Open source, and on the App Store.
+
+https://github.com/realworldbuilder/wristassist</p>
+        <a class="shot" href="../assets/posts/wristassist.png"><img src="../assets/posts/wristassist.png" alt="Card: WristAssist, with its green snake logo" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post rare" id="obs">
+        <div class="post-head"><span class="label">OBS Image Reaction</span><span class="count"></span></div>
+        <p class="post-text">OBS Image Reaction is an OBS source that shows one image while you are silent and another while you speak, with movement effects and blinking.
+
+Your avatar talks when you do.
+
+Written in C, for OBS Studio on macOS.
+
+https://github.com/realworldbuilder/obs-image-reaction</p>
+        <a class="shot" href="../assets/posts/obs.png"><img src="../assets/posts/obs.png" alt="Card: OBS Image Reaction, with the avatar silent and speaking" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post rare" id="slipstream">
+        <div class="post-head"><span class="label">Slipstream</span><span class="count"></span></div>
+        <p class="post-text">Slipstream is a camera node in a junction box.
+
+A Raspberry Pi 5 and a Logitech C270 serve a 720p30 H.264 feed over RTSP, and OBS picks it up as a media source.
+
+Plug it in, add the feed to OBS.
+
+https://github.com/realworldbuilder/slipstream</p>
+        <a class="shot" href="../assets/posts/slipstream.png"><img src="../assets/posts/slipstream.png" alt="Card: Slipstream, with a photo of the webcam on its junction box" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post rare" id="sis">
+        <div class="post-head"><span class="label">Slightly Improved Screenshot</span><span class="count"></span></div>
+        <p class="post-text">Slightly Improved Screenshot is a macOS menu bar utility for screenshots and screen recordings at the exact pixel sizes social platforms expect.
+
+Press the hotkey, click, paste at the right size.
+
+https://github.com/realworldbuilder/slightly-improved-screenshot</p>
+        <a class="shot" href="../assets/posts/sis.png"><img src="../assets/posts/sis.png" alt="Card: Slightly Improved Screenshot, with a capture frame over a chart" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <h2>Close the lid</h2>
+      <p class="sub">A five-post thread on running Claude Code on a headless Mac mini. The <a href="../mini/">full writeup</a> has the rest.</p>
+
+      <div class="thread">
+        <article class="post rare" id="lid-1">
+          <div class="post-head"><span class="label">1/5</span><span class="count"></span></div>
+          <p class="post-text">You've seen people walking around with their laptop half open so Claude keeps running.
+
+I wanted the opposite: say what I want, shut the laptop and walk off while a Mac mini in the corner does the work.
+
+Here is the setup. 1/5</p>
+          <a class="shot" href="../assets/posts/lid-1.png"><img src="../assets/posts/lid-1.png" alt="Card: Close the lid" loading="lazy" width="1600" height="900"></a>
+        </article>
+
+        <article class="post rare" id="lid-2">
+          <div class="post-head"><span class="label">2/5</span><span class="count"></span></div>
+          <p class="post-text">When Claude Code runs in a terminal on your laptop, the laptop is the computer doing the work. Close the lid and macOS sleeps, and the job stops halfway.
+
+The fix: move the work somewhere that never sleeps and keep only the conversation on the laptop. 2/5</p>
+          <a class="shot" href="../assets/posts/lid-2.png"><img src="../assets/posts/lid-2.png" alt="Card: MacBook or phone, through claude.ai/code, to the Mac mini" loading="lazy" width="1600" height="900"></a>
+        </article>
+
+        <article class="post rare" id="lid-3">
+          <div class="post-head"><span class="label">3/5</span><span class="count"></span></div>
+          <p class="post-text">The mini has no monitor. It runs one long-lived program, claude remote-control, which registers the machine as an environment I can pick from the Claude app.
+
+A LaunchAgent starts it inside a detached tmux session at login, so I can attach and look if something seems off. 3/5</p>
+          <a class="shot" href="../assets/posts/lid-3.png"><img src="../assets/posts/lid-3.png" alt="Card: the LaunchAgent that starts claude remote-control inside tmux" loading="lazy" width="1600" height="900"></a>
+        </article>
+
+        <article class="post rare" id="lid-4">
+          <div class="post-head"><span class="label">4/5</span><span class="count"></span></div>
+          <p class="post-text">None of it works if the mini sleeps. So:
+
+sleep 0
+disksleep 0
+autorestart 1 (boot back up after a power cut)
+womp 1 (wake for network access)
+
+Claude Code also holds its own caffeinate lock while it's working. 4/5</p>
+          <a class="shot" href="../assets/posts/lid-4.png"><img src="../assets/posts/lid-4.png" alt="Card: the power settings that keep the mini awake" loading="lazy" width="1600" height="900"></a>
+        </article>
+
+        <article class="post rare" id="lid-5">
+          <div class="post-head"><span class="label">5/5</span><span class="count"></span></div>
+          <p class="post-text">Rough edges:
+
+Nothing restarts a crashed bridge.
+The mini needs its own credentials, because that's where the commands run.
+Apps that need a screen need Screen Sharing.
+
+Close the lid. Go outside.
+
+Full writeup: https://willhsu.dev/mini/ 5/5</p>
+          <a class="shot" href="../assets/posts/lid-5.png"><img src="../assets/posts/lid-5.png" alt="Card: three rough edges of the setup" loading="lazy" width="1600" height="900"></a>
+        </article>
+      </div>
+
+      <h2>What we're learning</h2>
+      <p class="sub">Standalone posts. Each one comes out of a project above.</p>
+
+      <article class="post epic" id="learn-local">
+        <div class="post-head"><span class="label">Local first</span><span class="count"></span></div>
+        <p class="post-text">A pattern I keep landing on: the tool should run where your data already is.
+
+Mogshot reads the WoW files on your computer, in the browser. WristAssist transcribes on the phone with WhisperKit.
+
+No account, no server, no cloud.</p>
+        <a class="shot" href="../assets/posts/learn-local.png"><img src="../assets/posts/learn-local.png" alt="Card: No account, no server, with Mogshot and WristAssist" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post legendary" id="learn-memory">
+        <div class="post-head"><span class="label">Memory, not metrics</span><span class="count"></span></div>
+        <p class="post-text">Rambleon doesn't score how well you played. It remembers what happened.
+
+Chapter 11, Into the Deadmines: 5h 35m, 6 quests, 277 kills, 6 companions, written up as a chapter you can read later.
+
+A memory layer, not a meter.</p>
+        <a class="shot" href="../assets/posts/learn-memory.png"><img src="../assets/posts/learn-memory.png" alt="Card: A memory layer, not a meter" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post uncommon" id="learn-remote">
+        <div class="post-head"><span class="label">Just a remote</span><span class="count"></span></div>
+        <p class="post-text">The laptop is just a remote.
+
+That is the whole idea behind how I run Claude Code now. The work and the files stay on a Mac mini that never sleeps. The laptop and the phone only hold the conversation, so either one can close, sleep or lose signal.</p>
+        <a class="shot" href="../assets/posts/learn-remote.png"><img src="../assets/posts/learn-remote.png" alt="Card: The laptop is just a remote" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post rare" id="learn-camera">
+        <div class="post-head"><span class="label">Junction box</span><span class="count"></span></div>
+        <p class="post-text">A network camera doesn't have to be a product.
+
+Mine is a Raspberry Pi 5 and a Logitech C270 on a PVC junction box, running MediaMTX and ffmpeg. The webcam is wrapped in clear film. OBS adds the feed as a media source like any other.</p>
+        <a class="shot" href="../assets/posts/learn-camera.png"><img src="../assets/posts/learn-camera.png" alt="Card: A camera node in a junction box, with a photo of the prototype" loading="lazy" width="1600" height="900"></a>
+      </article>
+
+      <article class="post uncommon" id="learn-use">
+        <div class="post-head"><span class="label">One line each</span><span class="count"></span></div>
+        <p class="post-text">Every project on my site gets a one-line "Use:", like a WoW item tooltip.
+
+Use: Log out, and the night writes itself up.
+Use: Drop your WoW folder on the page, get a PNG.
+Use: Tap your wrist, talk, read it back.
+
+Writing that line keeps the tool small.</p>
+        <a class="shot" href="../assets/posts/learn-use.png"><img src="../assets/posts/learn-use.png" alt="Card: the Use line for each of six projects" loading="lazy" width="1600" height="900"></a>
+      </article>
+    </main>
+
+    <footer>
+      Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a> · <a href="/">More projects</a>
+    </footer>
+  </div>
+
+  <script>
+    // X counts any link as 23 characters
+    const xLength = text => [...text.replace(/https?:\/\/\S+|\bwillhsu\.dev\S*/g, 'x'.repeat(23))].length;
+
+    document.querySelectorAll('.post').forEach(post => {
+      const text = post.querySelector('.post-text').textContent;
+      const img = post.querySelector('.shot').getAttribute('href');
+
+      const n = xLength(text);
+      const count = post.querySelector('.count');
+      count.textContent = n + ' / 280';
+      count.classList.toggle('over', n > 280);
+
+      post.insertAdjacentHTML('beforeend',
+        '<div class="post-actions"><button class="copy">Copy text</button><a class="dl" download>Download PNG</a></div>');
+      post.querySelector('.dl').href = img;
+
+      // click to copy the post text
+      const btn = post.querySelector('.copy');
+      btn.addEventListener('click', async () => {
+        try { await navigator.clipboard.writeText(text); } catch { return; }
+        btn.textContent = 'Copied';
+        setTimeout(() => { btn.textContent = 'Copy text'; }, 1200);
+      });
+    });
+  </script>
+</body>
+</html>
