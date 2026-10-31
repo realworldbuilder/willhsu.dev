@@ -36,12 +36,16 @@
 
     html { scroll-behavior: smooth; }
 
-    body {
+    html {
       background:
         radial-gradient(900px 500px at 15% -10%, rgba(163, 53, 238, 0.16), transparent 60%),
         radial-gradient(800px 500px at 95% 0%, rgba(43, 140, 255, 0.14), transparent 60%),
         var(--bg);
       background-repeat: no-repeat;
+    }
+
+    body {
+      background: transparent;
       color: var(--text);
       font-family: var(--body);
       font-size: 15px;
@@ -57,7 +61,23 @@
     .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
 
     /* --- HERO / CHARACTER SHEET --- */
-    .hero { padding: 72px 0 40px; }
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: min(82vh, 820px);
+      display: grid;
+      align-content: center;
+      padding: 72px 0 56px;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: -60px -160px;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(ellipse 60% 70% at 32% 50%, rgba(11, 13, 20, 0.82), rgba(11, 13, 20, 0.4) 55%, transparent 100%);
+    }
+    .hero h1, .hero .lede { text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7); }
 
     .sheet {
       display: grid;
@@ -136,6 +156,7 @@
 
     /* --- SHOP --- */
     .shop-head {
+      scroll-margin-top: 24px;
       display: flex;
       align-items: end;
       justify-content: space-between;
@@ -428,7 +449,8 @@
     }
 
     @media (max-width: 640px) {
-      .hero { padding: 40px 0 28px; }
+      .hero { padding: 40px 0 28px; min-height: 0; }
+      .hero::before { display: none; }
       .sheet { grid-template-columns: 1fr; gap: 18px; }
       .crest { width: 80px; height: 80px; font-size: 32px; }
       .card, .card.epic, .card.legendary { grid-column: span 6; }
@@ -441,9 +463,57 @@
       .card:hover { transform: none; }
       .card::after { display: none; }
     }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    /* phones: the zone is set dressing, the text comes first */
+    @media (max-width: 700px) {
+      .wrap { background: color-mix(in srgb, var(--bg) 72%, transparent); }
+    }
+    /* desktop: the zone shows through the cards */
+    @media (min-width: 701px) {
+      .card { -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+      .card { background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, color-mix(in srgb, var(--panel) 78%, transparent)) 0%, color-mix(in srgb, var(--panel) 78%, transparent) 55%); }
+      .tab { background: color-mix(in srgb, var(--panel) 70%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+      .tab[aria-pressed="true"] { background: var(--text); }
+      .tag { background: color-mix(in srgb, var(--panel) 60%, transparent); }
+    }
+    .zone { font-family: var(--mono); font-size: 12px; color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+    .zone::before { content: "\25B8 "; color: var(--zone, var(--legendary)); }
+    .zone:hover { color: var(--text); }
+    .zone[hidden] { display: none; }
+    .kicker { color: var(--zone, var(--legendary)); transition: color 1.2s ease; }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
   </style>
 </head>
 <body>
+  <canvas class="backdrop" aria-hidden="true" data-src="./assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      addEventListener('scenechange', e => {
+        const { name, n, of, accent } = e.detail;
+        const label = document.querySelector('.zone');
+        if (label) { label.textContent = `zones/${name} (${n}/${of})`; label.hidden = false; }
+        document.documentElement.style.setProperty('--zone', accent);
+      });
+      addEventListener('click', e => { if (e.target.closest('.zone')) dispatchEvent(new Event('scenestep')); });
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
   <div class="wrap">
 
     <header class="hero">
@@ -469,7 +539,7 @@
     </header>
 
     <main>
-      <div class="shop-head">
+      <div class="shop-head" id="projects">
         <h2>Recent projects</h2>
         <div class="tabs" role="group" aria-label="Filter projects">
           <button class="tab" data-filter="all" aria-pressed="true">All</button>
@@ -716,7 +786,7 @@
     </main>
 
     <footer>
-      <span>Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a></span>
+      <span>Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a> · <button class="zone" hidden title="Next zone"></button></span>
       <span>Not affiliated with Blizzard Entertainment. <a href="https://realworldbuilder.github.io/constructionAI/">Previous site</a></span>
     </footer>
   </div>
