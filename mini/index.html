@@ -36,12 +36,16 @@
 
     html { scroll-behavior: smooth; }
 
-    body {
+    html {
       background:
         radial-gradient(900px 500px at 15% -10%, rgba(43, 140, 255, 0.16), transparent 60%),
         radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.12), transparent 60%),
         var(--bg);
       background-repeat: no-repeat;
+    }
+
+    body {
+      background: transparent;
       color: var(--text);
       font-family: var(--body);
       font-size: 16px;
@@ -227,9 +231,52 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
     }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    .zone { font-family: var(--mono); font-size: 12px; color: var(--muted); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+    .zone::before { content: "\25B8 "; color: var(--zone, var(--legendary)); }
+    .zone:hover { color: var(--text); }
+    .zone[hidden] { display: none; }
+    .kicker { color: var(--zone, var(--legendary)); transition: color 1.2s ease; }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
   </style>
 </head>
 <body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      addEventListener('scenechange', e => {
+        const { name, n, of, accent } = e.detail;
+        const label = document.querySelector('.zone');
+        if (label) { label.textContent = `zones/${name} (${n}/${of})`; label.hidden = false; }
+        document.documentElement.style.setProperty('--zone', accent);
+      });
+      addEventListener('click', e => { if (e.target.closest('.zone')) dispatchEvent(new Event('scenestep')); });
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
   <div class="wrap">
     <a class="back" href="/">← willhsu.dev</a>
 
@@ -307,7 +354,7 @@
     </article>
 
     <footer>
-      Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a> · <a href="/">More projects</a>
+      Will Hsu · <a href="https://github.com/realworldbuilder">github.com/realworldbuilder</a> · <a href="/">More projects</a> · <button class="zone" hidden title="Next zone"></button>
     </footer>
   </div>
 </body>
