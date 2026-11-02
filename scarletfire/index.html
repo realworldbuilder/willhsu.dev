@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scarletfire · Feral Druid</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff7c0a'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --druid: #ff7c0a;
+      --gold: #ffd100;
+      --builder: var(--rare);
+      --finisher: var(--legendary);
+      --cooldown: var(--epic);
+      --defensive: var(--uncommon);
+      --utility: #9d9d9d;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(255, 124, 10, 0.18), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--druid); color: #0b0d14; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 64px 0 36px; }
+
+    .sheet { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #ffb347, var(--druid));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .crest img {
+      width: 74px;
+      height: 74px;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--druid);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 600px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .tag.hot { color: var(--druid); border-color: color-mix(in srgb, var(--druid) 50%, transparent); }
+
+    .jump { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn.ghost { background: var(--panel-2); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SECTIONS --- */
+    section { padding-bottom: 56px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-note { color: var(--dim); font-size: 13px; }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab.mod[aria-pressed="true"] { background: var(--druid); border-color: var(--druid); }
+
+    /* --- KEYBOARD --- */
+    .board {
+      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      position: relative;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
+      border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 28px 16px 22px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .layer-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--druid);
+      color: #0b0d14;
+    }
+
+    .keys { display: grid; gap: 8px; justify-content: center; }
+    .row { display: flex; gap: 8px; }
+    .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
+    .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
+    .row:nth-child(4) { padding-left: calc(var(--key) * 0.9); }
+
+    .key {
+      --role: var(--utility);
+      position: relative;
+      width: var(--key);
+      height: var(--key);
+      flex: 0 0 auto;
+      display: block;
+      padding: 0;
+      background: #07080d;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text);
+      font: inherit;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.08s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .key.has { border-color: color-mix(in srgb, var(--role) 70%, transparent); border-bottom-color: color-mix(in srgb, var(--role) 55%, #000); cursor: help; }
+    .key.has:hover, .key.has:focus-visible, .key.lit {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--role), 0 0 22px color-mix(in srgb, var(--role) 55%, transparent);
+    }
+    .key.pressed { transform: translateY(1px); border-bottom-width: 1px; }
+    .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .key .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85)); }
+    .key .cap {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .key .label {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 3px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: left;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .key.move { background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 4px, transparent 4px 9px), #0d0f17; }
+    .key.move .label, .key.empty .label { color: var(--dim); text-shadow: none; }
+    .key.empty .cap, .key.move .cap { color: var(--dim); text-shadow: none; }
+    .key .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; color: color-mix(in srgb, var(--role) 70%, #fff); background: color-mix(in srgb, var(--role) 18%, #07080d); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; color: var(--muted); font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--c); display: inline-block; }
+
+    .hint { text-align: center; color: var(--dim); font-size: 12px; }
+    .hint.touch { display: none; }
+    @media (hover: none) {
+      .hint.keys-hint { display: none; }
+      .hint.touch { display: block; }
+    }
+    .hint kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+
+    /* --- ROTATION --- */
+    .combo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .combo-title { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--druid); width: 100%; }
+    .step { display: inline-flex; align-items: center; gap: 8px; }
+    .step + .step::before { content: "›"; font-family: var(--display); font-size: 22px; color: var(--dim); margin-right: 2px; }
+    .chipkey {
+      --role: var(--utility);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #07080d;
+      border: 1px solid color-mix(in srgb, var(--role) 60%, transparent);
+      border-radius: 4px;
+      cursor: help;
+      font: inherit;
+      color: var(--text);
+    }
+    .chipkey img, .chipkey .mini-mono { width: 28px; height: 28px; border-radius: 3px; display: block; }
+    .chipkey .mini-mono { display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: color-mix(in srgb, var(--role) 25%, #07080d); }
+    .chipkey b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+    .chipkey kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; }
+
+    .prio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prio {
+      --rarity: var(--legendary);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 50%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 18px;
+    }
+    .prio.aoe { --rarity: var(--epic); }
+    .prio h3 { font-family: var(--display); font-weight: 700; font-size: 22px; color: color-mix(in srgb, var(--rarity) 70%, #fff); margin-bottom: 10px; }
+    .prio ol { list-style: none; counter-reset: p; display: grid; gap: 8px; }
+    .prio li { counter-increment: p; display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: center; }
+    .prio li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--dim); text-align: right; }
+    .prio li .when { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+
+    .pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+    .pips i { width: 8px; height: 8px; border-radius: 50%; background: #3a2a14; border: 1px solid #6b4a1a; }
+    .pips i.on { background: #ffcc33; border-color: #ffe08a; box-shadow: 0 0 6px rgba(255, 204, 51, 0.7); }
+
+    /* --- TALENT CARDS (item shop) --- */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 65%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      cursor: help;
+      transition: transform 0.15s ease;
+    }
+    .card.legendary { --rarity: var(--legendary); }
+    .card.epic { --rarity: var(--epic); }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+    .card.common { --rarity: #9d9d9d; }
+    .card.locked { filter: saturate(0.35); opacity: 0.8; }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+    .card .icon { width: 52px; height: 52px; flex: 0 0 52px; border: 2px solid var(--rarity); border-radius: 4px; background: #07080d; overflow: hidden; }
+    .card .icon img { width: 100%; height: 100%; display: block; }
+    .card h3 { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .card .meta { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rarity); }
+    .card .desc { color: var(--muted); font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+
+    .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .habit { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--druid); padding: 16px 18px; }
+    .habit b { display: block; font-family: var(--display); font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .habit p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      --rarity: var(--utility);
+      background: rgba(8, 9, 16, 0.97);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 300px;
+    }
+    .tip-head { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+    .tip-head img, .tip-head .mini-mono { width: 34px; height: 34px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--rarity) 60%, #333); display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+    .tip-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+    .tip-rank { font-size: 12px; color: var(--muted); }
+    .tip-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
+    .tip-req { color: #ff2020; }
+    .tip-desc { color: var(--gold); margin-top: 6px; }
+    .tip-pro { color: var(--uncommon); margin-top: 6px; }
+    .tip-key { color: var(--dim); margin-top: 6px; font-family: var(--mono); font-size: 11px; }
+
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 3; }
+      .prio-grid { grid-template-columns: 1fr; }
+      .habits { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; }
+      .crest img { width: 52px; height: 52px; }
+      .card { grid-column: span 6; }
+      .habits { grid-template-columns: 1fr; }
+      .board { padding: 42px 8px 18px; }
+      .keys, .row { gap: 5px; }
+      .key .label { display: none; }
+      .step + .step::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .key { transition: none !important; }
+      .card:hover, .key.has:hover, .key.lit { transform: none; }
+      .card::after { display: none; }
+    }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
+  </style>
+</head>
+<body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
+  <div class="wrap">
+
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/ability_druid_catform.jpg" alt="" width="74" height="74"></div>
+        <div>
+          <p class="kicker">Secret page · Patch 12.1.5 Midnight</p>
+          <h1>Scarletfire</h1>
+          <p class="lede">Level 20 night elf Feral Druid. Keybinds, rotation and talents, tuned for leveling now and Druid of the Claw later. Hover anything for its tooltip.</p>
+          <div class="tags" aria-label="Character">
+            <span class="tag hot">Feral</span>
+            <span class="tag">Level 20</span>
+            <span class="tag">Starter Build +2</span>
+            <span class="tag">Hero: Druid of the Claw @ 71</span>
+          </div>
+          <div class="jump">
+            <a class="btn" href="#binds">Keybinds</a>
+            <a class="btn ghost" href="#rotation">Rotation</a>
+            <a class="btn ghost" href="#talents">Talents</a>
+            <a class="btn ghost" href="#habits">Habits</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+
+      <section id="binds">
+        <div class="section-head">
+          <div>
+            <h2>Keybinds</h2>
+            <p class="section-note">Your main bar swaps with your form. The Shift bar is the same in every form.</p>
+          </div>
+          <div class="tabs" role="group" aria-label="Bar">
+            <button class="tab" data-layer="cat" aria-pressed="true">Cat</button>
+            <button class="tab" data-layer="bear" aria-pressed="false">Bear</button>
+            <button class="tab" data-layer="caster" aria-pressed="false">Caster</button>
+            <button class="tab mod" data-layer="shift" aria-pressed="false">Shift</button>
+            <button class="tab mod" data-layer="ctrl" aria-pressed="false">Ctrl</button>
+          </div>
+        </div>
+
+        <div class="board">
+          <span class="layer-name" id="layer-name">Cat Form</span>
+          <div class="keys" id="keys"></div>
+          <div class="legend" aria-label="Key colours">
+            <span style="--c: var(--builder)"><i></i>Builder</span>
+            <span style="--c: var(--finisher)"><i></i>Finisher</span>
+            <span style="--c: var(--cooldown)"><i></i>Cooldown</span>
+            <span style="--c: var(--defensive)"><i></i>Defensive</span>
+            <span style="--c: var(--utility)"><i></i>Utility</span>
+          </div>
+          <p class="hint keys-hint">Try it: press your keys. Hold <kbd>Shift</kbd> or <kbd>Ctrl</kbd> to see those bars.</p>
+          <p class="hint touch">Tap a key for its tooltip.</p>
+        </div>
+      </section>
+
+      <section id="rotation">
+        <div class="section-head">
+          <div>
+            <h2>Rotation</h2>
+            <p class="section-note">Midnight removed Bloodtalons and Brutal Slash. It's cleaner now.</p>
+          </div>
+        </div>
+
+        <div class="combo">
+          <p class="combo-title">The opener, every pull</p>
+          <span class="step" data-ref="prowl"></span>
+          <span class="step" data-ref="rake"></span>
+          <span class="step" data-ref="tigersfury"></span>
+          <span class="step" data-ref="shred"></span>
+          <span class="step" data-ref="rip"></span>
+        </div>
+
+        <div class="prio-grid">
+          <div class="prio">
+            <h3>Single target</h3>
+            <ol>
+              <li><span data-ref="tigersfury"></span><span class="when">On cooldown. 50 energy back and +15% damage.</span></li>
+              <li><span data-ref="rip"></span><span class="when">At 5 <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span> if missing or under ~30% left. Never clip it.</span></li>
+              <li><span data-ref="bite"></span><span class="when">At 5 combo points with 50+ energy and Rip safe.</span></li>
+              <li><span data-ref="rake"></span><span class="when">If missing or about to fall off.</span></li>
+              <li><span data-ref="shred"></span><span class="when">Build combo points. Clearcasting makes it free.</span></li>
+            </ol>
+          </div>
+          <div class="prio aoe">
+            <h3>AoE (3+ mobs)</h3>
+            <ol>
+              <li><span data-ref="rake"></span><span class="when">Rake 2–3 targets first.</span></li>
+              <li><span data-ref="primalwrath"></span><span class="when">At 5 <span class="pips"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span> to Rip everything at once.</span></li>
+              <li><span data-ref="swipe"></span><span class="when">Build combo points. Spend Clearcasting here.</span></li>
+              <li><span data-ref="thrash"></span><span class="when">Optional filler. Guides disagree on its value in Cat.</span></li>
+              <li><span data-ref="tigersfury"></span><span class="when">Still on cooldown, AoE or not.</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="talents">
+        <div class="section-head">
+          <div>
+            <h2>Talents</h2>
+            <p class="section-note">Starter Build, plus the two points spent today. Locked cards are what's next.</p>
+          </div>
+        </div>
+        <div class="grid" id="talent-grid"></div>
+      </section>
+
+      <section id="habits">
+        <div class="section-head">
+          <div>
+            <h2>Expert habits</h2>
+            <p class="section-note">What separates a good Feral from a great one.</p>
+          </div>
+        </div>
+        <div class="habits">
+          <div class="habit"><b>Open from Prowl</b><p>Stealth Rake hits harder, and with Pouncing Strikes it stuns too. Prowl is back in about 6 seconds between pulls.</p></div>
+          <div class="habit"><b>Tiger's Fury on cooldown</b><p>It's free energy and damage. Later, line up Berserk and Convoke the Spirits with it.</p></div>
+          <div class="habit"><b>Finish at 5 points</b><p>Spending fewer combo points is a DPS loss. Watch the pips, not the energy bar.</p></div>
+          <div class="habit"><b>Don't clip Rip</b><p>Refresh it only in the last ~30% of its duration. Earlier wastes the leftover ticks.</p></div>
+          <div class="habit"><b>Bear is your panic button</b><p>Shift-2 into Bear, then Shift-T Frenzied Regeneration and Shift-4 Barkskin. Shift-1 back to Cat.</p></div>
+          <div class="habit"><b>Ditch WeakAuras</b><p>It's dead in Midnight. Use Blizzard's built-in Cooldown Manager in Edit Mode instead.</p></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <span>Unlisted · not linked from <a href="../">willhsu.dev</a></span>
+      <span>Icons from Wowhead. Not affiliated with Blizzard Entertainment.</span>
+    </footer>
+  </div>
+
+  <div id="float-tip" class="tip" role="tooltip"></div>
+
+  <script>
+    const ICON = 'https://wow.zamimg.com/images/wow/icons/large/';
+
+    // every ability on the bars; numbers come from Scarletfire's own tooltips at level 20
+    const SPELLS = {
+      shred: { name: 'Shred', icon: 'spell_shadow_vampiricaura', role: 'builder', rows: [['40 Energy', 'Melee Range'], ['Instant', '']], req: 'Requires Cat Form', desc: 'Shred the target, causing 428 Physical damage to the target. Awards 1 combo point.', pro: 'Your filler. Spend Clearcasting procs on it in single target.' },
+      rake: { name: 'Rake', icon: 'ability_druid_disembowel', role: 'builder', rows: [['35 Energy', 'Melee Range'], ['Instant', '']], req: 'Requires Cat Form', desc: 'Rake the target for 70 Bleed damage and an additional 435 Bleed damage over 15 sec. Awards 1 combo point.', pro: 'Cast it from Prowl. Stealth Rake keeps its bonus for the full duration.' },
+      rip: { name: 'Rip', icon: 'ability_ghoulfrenzy', role: 'finisher', rows: [['20 Energy', 'Melee Range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that causes Bleed damage over time. Lasts longer per combo point. 5 points: 1,059 over 24 sec.', pro: 'Your biggest damage source. Keep it up and refresh only in the last 30%.' },
+      bite: { name: 'Ferocious Bite', icon: 'ability_druid_ferociousbite', role: 'finisher', rows: [['25 Energy', 'Melee Range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that causes Physical damage per combo point. Consumes up to 25 additional Energy to increase damage by up to 100%.', pro: 'Use it at 5 points with 50+ energy so the bonus energy counts.' },
+      swipe: { name: 'Swipe', icon: 'inv_misc_monsterclaw_03', role: 'builder', rows: [['8 yd range', 'Instant']], req: 'Requires Cat Form, Bear Form', desc: 'Swipe nearby enemies, inflicting Physical damage. Damage varies by shapeshift form. Awards 1 combo point.', pro: 'Your AoE builder. Spend Clearcasting on it in packs.' },
+      primalwrath: { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', role: 'finisher', badge: 'New', rows: [['25 Energy', '8 yd range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that deals instant damage and applies Rip to all enemies within 10 yards. Lasts longer per combo point. 5 points: 202 plus Rip for 12 sec.', pro: 'Talented today. Three or more mobs? This replaces single-target Rip.' },
+      tigersfury: { name: "Tiger's Fury", icon: 'ability_mount_jungletiger', role: 'cooldown', rows: [['Instant', '30 sec cooldown']], desc: 'Instantly restores 50 Energy, and increases the damage of all your attacks by 15% for their full duration. Lasts 15 sec (20 sec with Predator).', pro: 'Press it on cooldown. Bleeds applied during it keep the bonus.' },
+      thrash: { name: 'Thrash', icon: 'spell_druid_thrash', role: 'builder', rows: [['8 yd range', 'Instant']], req: 'Requires Cat Form, Bear Form', desc: 'Strikes all nearby enemies, dealing damage and an additional Bleed over time. In Bear Form it generates 5 Rage.', pro: 'Optional in Cat. When you learn Skull Bash, it moves to Shift-F.' },
+      prowl: { name: 'Prowl', icon: 'ability_druid_prowl', role: 'utility', rows: [['Instant', '6 sec cooldown']], desc: 'Shift into Cat Form and enter stealth.', pro: 'Start every pull here. Moved to F because it matters.' },
+      regrowth: { name: 'Regrowth', icon: 'spell_nature_resistnature', role: 'defensive', rows: [['Mana', '40 yd range'], ['1.5 sec cast', '']], desc: 'Heals a friendly target, then heals a smaller amount over 6 sec.', pro: 'Hard-casting drops Cat Form. At level 30, Predatory Swiftness makes it instant after a finisher.' },
+      dash: { name: 'Dash', icon: 'ability_druid_dash', role: 'utility', rows: [['Instant', '']], desc: 'Shift into Cat Form and increase your movement speed for a short time.', pro: 'Swap it to Shift-G once Wild Charge takes T.' },
+      barkskin: { name: 'Barkskin', icon: 'spell_nature_stoneclawtotem', role: 'defensive', rows: [['Instant', '']], desc: 'Your skin becomes as tough as bark, reducing all damage you take. Usable in all forms and while stunned. Improved Barkskin adds 4 sec.', pro: 'Use it before a big hit lands, not after.' },
+      mangle: { name: 'Mangle', icon: 'ability_druid_mangle2', role: 'builder', rows: [['Melee Range', 'Instant']], req: 'Requires Bear Form', desc: 'Mangle the target for Physical damage. Generates Rage.', pro: 'Bear Form main hit, for when you need to tank something.' },
+      moonfire: { name: 'Moonfire', icon: 'spell_nature_starfall', role: 'utility', rows: [['40 yd range', 'Instant']], desc: 'A quick beam of lunar light burns the enemy for Arcane damage, then more damage over time.', pro: 'Pull from range or tag a fleeing mob. Casting it in Cat drops you out of form.' },
+      growl: { name: 'Growl', icon: 'ability_physical_taunt', role: 'utility', rows: [['30 yd range', 'Instant']], req: 'Requires Bear Form', desc: 'Taunts the target to attack you.', pro: 'Only for tanking. Never press it in a group unless you are the tank.' },
+      frenzied: { name: 'Frenzied Regeneration', icon: 'ability_bullrush', role: 'defensive', rows: [['10 Rage', 'Instant'], ['', '35 sec cooldown']], req: 'Requires Bear Form', desc: 'Heals you for 32% health over 3 sec.', pro: 'Shift-2 into Bear, then press this. It also heals more with Verdant Heart.' },
+      wrath: { name: 'Wrath', icon: 'spell_nature_wrathv2', role: 'utility', rows: [['40 yd range', '1.5 sec cast']], desc: 'Hurl a ball of energy at the target, dealing Nature damage.', pro: 'Caster-form filler. You shouldn’t be in caster form much.' },
+      roots: { name: 'Entangling Roots', icon: 'spell_nature_stranglevines', role: 'utility', rows: [['35 yd range', 'Cast']], desc: 'Roots the target in place. Damage may break the effect.', pro: 'Stop a runner or kite something nasty.' },
+      catform: { name: 'Cat Form', icon: 'ability_druid_catform', role: 'utility', rows: [['Instant', 'Shapeshift']], desc: 'Shapeshift into Cat Form. Uses Energy and combo points.', pro: 'Home base. Shift-1 from anywhere.' },
+      bearform: { name: 'Bear Form', icon: 'ability_racial_bearform', role: 'defensive', rows: [['Instant', 'Shapeshift']], desc: 'Shapeshift into Bear Form, increasing armor and stamina.', pro: 'Your panic button when a pull goes wrong.' },
+      travelform: { name: 'Travel Form', icon: 'ability_druid_travelform', role: 'utility', rows: [['Instant', 'Shapeshift']], desc: 'Shapeshift into travel form. Swims in water and flies when you can.', pro: 'Faster than a mount when you can’t mount, and instant.' },
+      motw: { name: 'Mark of the Wild', icon: 'spell_nature_regeneration', role: 'utility', rows: [['40 yd range', 'Instant']], desc: 'Infuses your party with the power of the wild, increasing Versatility for 1 hour.', pro: 'Keep it up. Re-cast after you die.' },
+      rebirth: { name: 'Rebirth', icon: 'spell_nature_reincarnation', role: 'cooldown', rows: [['40 yd range', 'Cast']], desc: 'Returns a dead ally to life in combat.', pro: 'Combat res. Usually the healer or tank first in a group.' },
+      revive: { name: 'Revive', icon: 'ability_druid_lunarguidance', role: 'utility', rows: [['40 yd range', 'Cast']], desc: 'Returns a dead ally to life. Out of combat only.', pro: 'Out-of-combat res.' },
+      shadowmeld: { name: 'Shadowmeld', icon: 'ability_ambush', role: 'utility', rows: [['Instant', '2 min cooldown']], desc: 'Night elf racial. Activate to slip into the shadows and drop combat.', pro: 'Counts as stealth, so it can set up a stealth Rake in a pinch.' },
+      recuperate: { name: 'Recuperate', icon: 'spell_nature_rejuvenation', role: 'defensive', rows: [['Instant', '']], desc: 'Take a breather, prepare some food and have a meal. Restores 50% of your maximum health over 10 sec.', pro: 'Free out-of-combat heal between pulls.' },
+      hearth: { name: 'Hearthstone', icon: 'inv_misc_rune_01', role: 'utility', rows: [['Item', '10 sec cast']], desc: 'Returns you to Trade District. Speak to an innkeeper to change your home location.', pro: '' },
+      prideclaw: { name: 'Cerulean Prideclaw', icon: 'ability_hunter_pet_cat', role: 'utility', rows: [['Ground mount', '1.5 sec cast']], desc: 'Summons and dismisses this mount.', pro: '' },
+      protodrake: { name: 'Renewed Proto-Drake', icon: 'ability_mount_drake_proto', role: 'utility', rows: [['Flying mount', '1.5 sec cast']], desc: 'Summons and dismisses a rideable Renewed Proto-Drake.', pro: 'Sitting on your caster Q.' }
+    };
+
+    // key → spell id per bar, exactly as set in game
+    const LAYERS = {
+      cat: { label: 'Cat Form', keys: { 1: 'shred', 2: 'rake', 3: 'rip', 4: 'bite', 5: 'swipe', Q: 'primalwrath', E: 'tigersfury', R: 'thrash', F: 'prowl', G: 'regrowth', T: 'dash', Z: 'barkskin' } },
+      bear: { label: 'Bear Form', keys: { 1: 'mangle', 2: 'thrash', 3: 'swipe', 4: 'moonfire', 5: 'growl', Q: 'frenzied', T: 'regrowth', Z: 'barkskin' } },
+      caster: { label: 'Caster Form', keys: { 1: 'wrath', 2: 'moonfire', 3: 'regrowth', 4: 'roots', 5: 'dash', Q: 'protodrake', G: 'shadowmeld', T: 'recuperate' } },
+      shift: { label: 'Shift bar · every form', mod: 'Shift-', keys: { 1: 'catform', 2: 'bearform', 3: 'travelform', 4: 'barkskin', 5: 'motw', Q: 'roots', E: 'moonfire', R: 'rebirth', T: 'frenzied', Z: 'revive' } },
+      ctrl: { label: 'Ctrl bar · out of combat', mod: 'Ctrl-', keys: { 1: 'recuperate', 2: 'prideclaw', 3: 'hearth', 4: 'shadowmeld' } }
+    };
+
+    const ROWS = [['1', '2', '3', '4', '5', '6'], ['Q', 'W', 'E', 'R', 'T'], ['A', 'S', 'D', 'F', 'G'], ['Z', 'X', 'C', 'V']];
+    const MOVE = { W: 'Forward', A: 'Strafe', S: 'Back', D: 'Strafe' };
+
+    const TALENTS = [
+      { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', rarity: 'legendary', meta: 'Feral · new today', desc: 'AoE finisher that Rips every enemy around you. The biggest leveling upgrade at 20.', spell: 'primalwrath' },
+      { name: 'Improved Barkskin', icon: 'spell_nature_stoneclawtotem', rarity: 'epic', meta: 'Class · new today', desc: "Barkskin lasts 4 sec longer. Blizzard's pick and the guides' pick." },
+      { name: "Tiger's Fury", icon: 'ability_mount_jungletiger', rarity: 'epic', meta: 'Feral', desc: '50 energy and +15% damage every 30 seconds.', spell: 'tigersfury' },
+      { name: 'Predator', icon: 'ability_druid_predatoryinstincts', rarity: 'rare', meta: 'Feral', desc: "Tiger's Fury lasts 5 sec longer. Combo builders hit harder with Haste." },
+      { name: 'Omen of Clarity', icon: 'spell_nature_crystalball', rarity: 'rare', meta: 'Feral', desc: 'Auto attacks can make your next Shred or Swipe cost no energy.' },
+      { name: 'Killer Instinct', icon: 'ability_druid_primalprecision', rarity: 'rare', meta: 'Class · 2/2', desc: 'Physical damage and armor increased by 6%.' },
+      { name: 'Grievous Wounds', icon: 'ability_druid_skinteeth', rarity: 'uncommon', meta: 'Class', desc: 'Rake, Rip and Thrash damage increased by 10%.' },
+      { name: 'Frenzied Regeneration', icon: 'ability_bullrush', rarity: 'uncommon', meta: 'Class', desc: 'Bear Form self-heal: 32% health over 3 sec.', spell: 'frenzied' },
+      { name: 'Skull Bash', icon: 'inv_bone_skull_04', rarity: 'common', locked: true, meta: 'Next · level 21–22', desc: 'Your interrupt. Goes on R; Thrash moves to Shift-F.' },
+      { name: 'Wild Charge', icon: 'spell_druid_wildcharge', rarity: 'common', locked: true, meta: 'Next · level 21–22', desc: 'Leap to your target. Goes on T; Dash moves to Shift-G.' },
+      { name: 'Pouncing Strikes', icon: 'ability_druid_rake', rarity: 'common', locked: true, meta: 'Next · Feral', desc: 'Stealth Rake stuns for 4 sec. Stealth Shred deals 60% more and adds a combo point.' },
+      { name: 'Survival Instincts', icon: 'ability_druid_tigersroar', rarity: 'common', locked: true, meta: 'Later · Feral', desc: 'Big defensive cooldown. Takes Shift-4; Barkskin stays on Z.' }
+    ];
+
+    const tip = document.getElementById('float-tip');
+    const hoverable = matchMedia('(hover: hover)').matches;
+
+    const iconImg = (id, name, size) => `<img src="${ICON}${id}.jpg" alt="" width="${size}" height="${size}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'mini-mono',textContent:'${name[0]}'}))">`;
+
+    function spellTip(id, keyText) {
+      const s = SPELLS[id];
+      const rows = (s.rows || []).map(([a, b]) => `<div class="tip-row"><span>${a}</span><span>${b}</span></div>`).join('');
+      return `
+        <div class="tip-head">${iconImg(s.icon, s.name, 34)}<div><div class="tip-name">${s.name}</div><div class="tip-rank">${s.badge ? s.badge + ' · ' : ''}${s.role[0].toUpperCase() + s.role.slice(1)}</div></div></div>
+        ${rows}
+        ${s.req ? `<div class="tip-req">${s.req}</div>` : ''}
+        <div class="tip-desc">${s.desc}</div>
+        ${s.pro ? `<div class="tip-pro">Pro tip: ${s.pro}</div>` : ''}
+        ${keyText ? `<div class="tip-key">Keybind: ${keyText}</div>` : ''}`;
+    }
+
+    function showTip(html, role, x, y) {
+      tip.innerHTML = html;
+      tip.style.setProperty('--rarity', `var(--${role})`);
+      tip.style.display = 'block';
+      placeTip(x, y);
+    }
+    function placeTip(x, y) {
+      const pad = 16, w = tip.offsetWidth, h = tip.offsetHeight;
+      let left = x + pad, top = y + pad;
+      if (left + w > innerWidth - 8) left = x - w - pad;
+      if (top + h > innerHeight - 8) top = y - h - pad;
+      tip.style.left = Math.max(8, left) + 'px';
+      tip.style.top = Math.max(8, top) + 'px';
+    }
+    function tipAtElement(el, html, role) {
+      const r = el.getBoundingClientRect();
+      showTip(html, role, r.right - 8, r.bottom - 8);
+    }
+    const hideTip = () => { tip.style.display = 'none'; };
+
+    // hover follows the cursor; focus and tap anchor to the element
+    function bindTip(el, getHtml, role) {
+      if (hoverable) {
+        el.addEventListener('mouseenter', e => showTip(getHtml(), role(), e.clientX, e.clientY));
+        el.addEventListener('mousemove', e => placeTip(e.clientX, e.clientY));
+        el.addEventListener('mouseleave', hideTip);
+      } else {
+        el.addEventListener('click', e => { e.stopPropagation(); tipAtElement(el, getHtml(), role()); });
+      }
+      el.addEventListener('focus', () => tipAtElement(el, getHtml(), role()));
+      el.addEventListener('blur', hideTip);
+    }
+    document.addEventListener('click', hideTip);
+    addEventListener('scroll', hideTip, { passive: true });
+
+    // --- keyboard ---
+    const keysEl = document.getElementById('keys');
+    const layerName = document.getElementById('layer-name');
+    const tabs = document.querySelectorAll('[data-layer]');
+    let base = 'cat';   // the tab you picked
+    let layer = 'cat';  // what's showing, which a held Shift/Ctrl can override
+    const keyEls = {};
+
+    ROWS.forEach(row => {
+      const r = document.createElement('div');
+      r.className = 'row';
+      row.forEach(k => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'key';
+        b.dataset.k = k;
+        bindTip(b, () => {
+          const id = LAYERS[layer].keys[k];
+          return id ? spellTip(id, (LAYERS[layer].mod || '') + k) : '';
+        }, () => SPELLS[LAYERS[layer].keys[k]]?.role || 'utility');
+        r.appendChild(b);
+        keyEls[k] = b;
+      });
+      keysEl.appendChild(r);
+    });
+
+    function render() {
+      const L = LAYERS[layer];
+      layerName.textContent = L.label;
+      tabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.layer === layer || (t.dataset.layer === base && !LAYERS[layer].mod)));
+      for (const k in keyEls) {
+        const b = keyEls[k];
+        const id = L.keys[k];
+        const s = SPELLS[id];
+        b.classList.toggle('has', !!s);
+        b.classList.toggle('move', !s && !L.mod && k in MOVE);
+        b.classList.toggle('empty', !s && !(k in MOVE && !L.mod));
+        b.style.setProperty('--role', s ? `var(--${s.role})` : 'var(--utility)');
+        b.tabIndex = s ? 0 : -1;
+        b.setAttribute('aria-label', s ? `${L.mod || ''}${k}: ${s.name}` : `${k}: ${MOVE[k] || 'unbound'}`);
+        b.innerHTML = s
+          ? `${iconImg(s.icon, s.name, 92)}<span class="shade"></span><span class="cap">${k}</span><span class="label">${s.name}</span>`
+          : `<span class="cap">${k}</span><span class="label">${!L.mod && MOVE[k] ? MOVE[k] : ''}</span>`;
+      }
+      if (tip.style.display === 'block') hideTip();
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      base = layer = t.dataset.layer;
+      render();
+    }));
+
+    // press your real keys: Shift/Ctrl swap bars, letters light up
+    function modLayer(e) { return e.shiftKey ? 'shift' : e.ctrlKey ? 'ctrl' : base; }
+    addEventListener('keydown', e => {
+      if (e.metaKey || e.altKey || e.target.closest('input, textarea')) return;
+      const want = modLayer(e);
+      if (want !== layer) { layer = want; render(); }
+      const k = (e.code.startsWith('Digit') ? e.code.slice(5) : e.code.startsWith('Key') ? e.code.slice(3) : '').toUpperCase();
+      const b = keyEls[k];
+      if (!b) return;
+      b.classList.add('pressed', 'lit');
+      const id = LAYERS[layer].keys[k];
+      if (id) tipAtElement(b, spellTip(id, (LAYERS[layer].mod || '') + k), SPELLS[id].role);
+    });
+    addEventListener('keyup', e => {
+      const want = modLayer(e);
+      if (want !== layer) { layer = want; render(); }
+      document.querySelectorAll('.key.pressed').forEach(b => b.classList.remove('pressed'));
+      setTimeout(() => document.querySelectorAll('.key.lit').forEach(b => b.classList.remove('lit')), 250);
+    });
+    addEventListener('blur', () => { if (layer !== base) { layer = base; render(); } });
+
+    render();
+
+    // --- rotation chips ---
+    function keyFor(id) {
+      for (const [k, v] of Object.entries(LAYERS.cat.keys)) if (v === id) return k;
+      for (const [k, v] of Object.entries(LAYERS.shift.keys)) if (v === id) return 'Shift-' + k;
+      return '';
+    }
+    document.querySelectorAll('[data-ref]').forEach(slot => {
+      const id = slot.dataset.ref;
+      const s = SPELLS[id];
+      const key = keyFor(id);
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chipkey';
+      chip.style.setProperty('--role', `var(--${s.role})`);
+      chip.innerHTML = `${iconImg(s.icon, s.name, 28)}<b>${s.name}</b>${key ? `<kbd>${key}</kbd>` : ''}`;
+      bindTip(chip, () => spellTip(id, key), () => s.role);
+      slot.appendChild(chip);
+    });
+
+    // --- talent cards ---
+    const grid = document.getElementById('talent-grid');
+    TALENTS.forEach(t => {
+      const c = document.createElement('article');
+      c.className = `card ${t.rarity}${t.locked ? ' locked' : ''}`;
+      c.tabIndex = 0;
+      c.innerHTML = `<div class="icon">${iconImg(t.icon, t.name, 52)}</div><div><p class="meta">${t.meta}</p><h3>${t.name}</h3><p class="desc">${t.desc}</p></div>`;
+      const role = { legendary: 'finisher', epic: 'cooldown', rare: 'builder', uncommon: 'defensive', common: 'utility' }[t.rarity];
+      bindTip(c, () => t.spell ? spellTip(t.spell, keyFor(t.spell)) : `
+        <div class="tip-head">${iconImg(t.icon, t.name, 34)}<div><div class="tip-name">${t.name}</div><div class="tip-rank">${t.locked ? 'Not learned yet' : 'Learned'}</div></div></div>
+        <div class="tip-desc">${t.desc}</div>
+        <div class="tip-key">${t.meta}</div>`, () => role);
+      grid.appendChild(c);
+    });
+  </script>
+</body>
+</html>
