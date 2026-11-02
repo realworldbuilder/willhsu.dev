@@ -490,11 +490,11 @@
         <div>
           <p class="kicker">Secret page · Patch 12.1.5 Midnight</p>
           <h1>Scarletfire</h1>
-          <p class="lede">Level 20 night elf Feral Druid. Keybinds, rotation and talents, tuned for leveling now and Druid of the Claw later. Hover anything for its tooltip.</p>
+          <p class="lede">Level 22 night elf Feral Druid. Keybinds, rotation and talents, tuned for leveling now and Druid of the Claw later. Hover anything for its tooltip.</p>
           <div class="tags" aria-label="Character">
             <span class="tag hot">Feral</span>
-            <span class="tag">Level 20</span>
-            <span class="tag">Starter Build +2</span>
+            <span class="tag">Level 22</span>
+            <span class="tag">Custom build</span>
             <span class="tag">Hero: Druid of the Claw @ 71</span>
           </div>
           <div class="jump">
@@ -584,7 +584,7 @@
         <div class="section-head">
           <div>
             <h2>Talents</h2>
-            <p class="section-note">Starter Build, plus the two points spent today. Locked cards are what's next.</p>
+            <p class="section-note">Custom build since level 22, so the game no longer highlights the next pick. Locked cards are what's next, in order.</p>
           </div>
         </div>
         <div class="grid" id="talent-grid"></div>
@@ -620,24 +620,24 @@
   <script>
     const ICON = 'https://wow.zamimg.com/images/wow/icons/large/';
 
-    // every ability on the bars; numbers come from Scarletfire's own tooltips at level 20
+    // every ability on the bars; numbers come from Scarletfire's own tooltips at level 20–22
     const SPELLS = {
       shred: { name: 'Shred', icon: 'spell_shadow_vampiricaura', role: 'builder', rows: [['40 Energy', 'Melee Range'], ['Instant', '']], req: 'Requires Cat Form', desc: 'Shred the target, causing 428 Physical damage to the target. Awards 1 combo point.', pro: 'Your filler. Spend Clearcasting procs on it in single target.' },
-      rake: { name: 'Rake', icon: 'ability_druid_disembowel', role: 'builder', rows: [['35 Energy', 'Melee Range'], ['Instant', '']], req: 'Requires Cat Form', desc: 'Rake the target for 70 Bleed damage and an additional 435 Bleed damage over 15 sec. Awards 1 combo point.', pro: 'Cast it from Prowl. Stealth Rake keeps its bonus for the full duration.' },
+      rake: { name: 'Rake', icon: 'ability_druid_disembowel', role: 'builder', rows: [['35 Energy', 'Melee Range'], ['Instant', '']], req: 'Requires Cat Form', desc: 'Rake the target for 70 Bleed damage and an additional 435 Bleed damage over 15 sec. Awards 1 combo point.', pro: 'Cast it from Prowl. With Pouncing Strikes, stealth Rake stuns for 4 sec and deals 60% more for its full duration.' },
       rip: { name: 'Rip', icon: 'ability_ghoulfrenzy', role: 'finisher', rows: [['20 Energy', 'Melee Range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that causes Bleed damage over time. Lasts longer per combo point. 5 points: 1,059 over 24 sec.', pro: 'Your biggest damage source. Keep it up and refresh only in the last 30%.' },
       bite: { name: 'Ferocious Bite', icon: 'ability_druid_ferociousbite', role: 'finisher', rows: [['25 Energy', 'Melee Range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that causes Physical damage per combo point. Consumes up to 25 additional Energy to increase damage by up to 100%.', pro: 'Use it at 5 points with 50+ energy so the bonus energy counts.' },
       swipe: { name: 'Swipe', icon: 'inv_misc_monsterclaw_03', role: 'builder', rows: [['8 yd range', 'Instant']], req: 'Requires Cat Form, Bear Form', desc: 'Swipe nearby enemies, inflicting Physical damage. Damage varies by shapeshift form. Awards 1 combo point.', pro: 'Your AoE builder. Spend Clearcasting on it in packs.' },
-      primalwrath: { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', role: 'finisher', badge: 'New', rows: [['25 Energy', '8 yd range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that deals instant damage and applies Rip to all enemies within 10 yards. Lasts longer per combo point. 5 points: 202 plus Rip for 12 sec.', pro: 'Talented today. Three or more mobs? This replaces single-target Rip.' },
+      primalwrath: { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', role: 'finisher', rows: [['25 Energy', '8 yd range'], ['1 to 5 Combo Points', 'Instant']], req: 'Requires Cat Form', desc: 'Finishing move that deals instant damage and applies Rip to all enemies within 10 yards. Lasts longer per combo point. 5 points: 202 plus Rip for 12 sec.', pro: 'Three or more mobs? This replaces single-target Rip.' },
       tigersfury: { name: "Tiger's Fury", icon: 'ability_mount_jungletiger', role: 'cooldown', rows: [['Instant', '30 sec cooldown']], desc: 'Instantly restores 50 Energy, and increases the damage of all your attacks by 15% for their full duration. Lasts 15 sec (20 sec with Predator).', pro: 'Press it on cooldown. Bleeds applied during it keep the bonus.' },
       thrash: { name: 'Thrash', icon: 'spell_druid_thrash', role: 'builder', rows: [['8 yd range', 'Instant']], req: 'Requires Cat Form, Bear Form', desc: 'Strikes all nearby enemies, dealing damage and an additional Bleed over time. In Bear Form it generates 5 Rage.', pro: 'Optional in Cat. When you learn Skull Bash, it moves to Shift-F.' },
-      prowl: { name: 'Prowl', icon: 'ability_druid_prowl', role: 'utility', rows: [['Instant', '6 sec cooldown']], desc: 'Shift into Cat Form and enter stealth.', pro: 'Start every pull here. Moved to F because it matters.' },
+      prowl: { name: 'Prowl', icon: 'ability_druid_prowl', role: 'utility', rows: [['Instant', '6 sec cooldown']], desc: 'Shift into Cat Form and enter stealth.', pro: 'Start every pull here. Pouncing Strikes turns the stealth Rake into a 4 sec stun.' },
       regrowth: { name: 'Regrowth', icon: 'spell_nature_resistnature', role: 'defensive', rows: [['Mana', '40 yd range'], ['1.5 sec cast', '']], desc: 'Heals a friendly target, then heals a smaller amount over 6 sec.', pro: 'Hard-casting drops Cat Form. At level 30, Predatory Swiftness makes it instant after a finisher.' },
       dash: { name: 'Dash', icon: 'ability_druid_dash', role: 'utility', rows: [['Instant', '']], desc: 'Shift into Cat Form and increase your movement speed for a short time.', pro: 'Swap it to Shift-G once Wild Charge takes T.' },
-      barkskin: { name: 'Barkskin', icon: 'spell_nature_stoneclawtotem', role: 'defensive', rows: [['Instant', '']], desc: 'Your skin becomes as tough as bark, reducing all damage you take. Usable in all forms and while stunned. Improved Barkskin adds 4 sec.', pro: 'Use it before a big hit lands, not after.' },
+      barkskin: { name: 'Barkskin', icon: 'spell_nature_stoneclawtotem', role: 'defensive', rows: [['Instant', '']], desc: 'Your skin becomes as tough as bark, reducing all damage you take. Usable in all forms and while stunned. Improved Barkskin adds 4 sec. Verdant Heart adds +20% healing received while it’s up.', pro: 'Use it before a big hit lands, not after.' },
       mangle: { name: 'Mangle', icon: 'ability_druid_mangle2', role: 'builder', rows: [['Melee Range', 'Instant']], req: 'Requires Bear Form', desc: 'Mangle the target for Physical damage. Generates Rage.', pro: 'Bear Form main hit, for when you need to tank something.' },
       moonfire: { name: 'Moonfire', icon: 'spell_nature_starfall', role: 'utility', rows: [['40 yd range', 'Instant']], desc: 'A quick beam of lunar light burns the enemy for Arcane damage, then more damage over time.', pro: 'Pull from range or tag a fleeing mob. Casting it in Cat drops you out of form.' },
       growl: { name: 'Growl', icon: 'ability_physical_taunt', role: 'utility', rows: [['30 yd range', 'Instant']], req: 'Requires Bear Form', desc: 'Taunts the target to attack you.', pro: 'Only for tanking. Never press it in a group unless you are the tank.' },
-      frenzied: { name: 'Frenzied Regeneration', icon: 'ability_bullrush', role: 'defensive', rows: [['10 Rage', 'Instant'], ['', '35 sec cooldown']], req: 'Requires Bear Form', desc: 'Heals you for 32% health over 3 sec.', pro: 'Shift-2 into Bear, then press this. It also heals more with Verdant Heart.' },
+      frenzied: { name: 'Frenzied Regeneration', icon: 'ability_bullrush', role: 'defensive', rows: [['10 Rage', 'Instant'], ['', '35 sec cooldown']], req: 'Requires Bear Form', desc: 'Heals you for 32% health over 3 sec. Verdant Heart adds +20% healing received while it’s active.', pro: 'Shift-2 into Bear, then press this. Pair it with Barkskin.' },
       wrath: { name: 'Wrath', icon: 'spell_nature_wrathv2', role: 'utility', rows: [['40 yd range', '1.5 sec cast']], desc: 'Hurl a ball of energy at the target, dealing Nature damage.', pro: 'Caster-form filler. You shouldn’t be in caster form much.' },
       roots: { name: 'Entangling Roots', icon: 'spell_nature_stranglevines', role: 'utility', rows: [['35 yd range', 'Cast']], desc: 'Roots the target in place. Damage may break the effect.', pro: 'Stop a runner or kite something nasty.' },
       catform: { name: 'Cat Form', icon: 'ability_druid_catform', role: 'utility', rows: [['Instant', 'Shapeshift']], desc: 'Shapeshift into Cat Form. Uses Energy and combo points.', pro: 'Home base. Shift-1 from anywhere.' },
@@ -650,6 +650,7 @@
       recuperate: { name: 'Recuperate', icon: 'spell_nature_rejuvenation', role: 'defensive', rows: [['Instant', '']], desc: 'Take a breather, prepare some food and have a meal. Restores 50% of your maximum health over 10 sec.', pro: 'Free out-of-combat heal between pulls.' },
       hearth: { name: 'Hearthstone', icon: 'inv_misc_rune_01', role: 'utility', rows: [['Item', '10 sec cast']], desc: 'Returns you to Trade District. Speak to an innkeeper to change your home location.', pro: '' },
       prideclaw: { name: 'Cerulean Prideclaw', icon: 'ability_hunter_pet_cat', role: 'utility', rows: [['Ground mount', '1.5 sec cast']], desc: 'Summons and dismisses this mount.', pro: '' },
+      gryphon: { name: 'Golden Gryphon', icon: 'ability_mount_goldengryphon', role: 'utility', badge: 'New', rows: [['Flying mount', '1.5 sec cast']], desc: 'Summons and dismisses a rideable Golden Gryphon.', pro: 'Learned from your bags at level 22.' },
       protodrake: { name: 'Renewed Proto-Drake', icon: 'ability_mount_drake_proto', role: 'utility', rows: [['Flying mount', '1.5 sec cast']], desc: 'Summons and dismisses a rideable Renewed Proto-Drake.', pro: 'Sitting on your caster Q.' }
     };
 
@@ -659,24 +660,27 @@
       bear: { label: 'Bear Form', keys: { 1: 'mangle', 2: 'thrash', 3: 'swipe', 4: 'moonfire', 5: 'growl', Q: 'frenzied', T: 'regrowth', Z: 'barkskin' } },
       caster: { label: 'Caster Form', keys: { 1: 'wrath', 2: 'moonfire', 3: 'regrowth', 4: 'roots', 5: 'dash', Q: 'protodrake', G: 'shadowmeld', T: 'recuperate' } },
       shift: { label: 'Shift bar · every form', mod: 'Shift-', keys: { 1: 'catform', 2: 'bearform', 3: 'travelform', 4: 'barkskin', 5: 'motw', Q: 'roots', E: 'moonfire', R: 'rebirth', T: 'frenzied', Z: 'revive' } },
-      ctrl: { label: 'Ctrl bar · out of combat', mod: 'Ctrl-', keys: { 1: 'recuperate', 2: 'prideclaw', 3: 'hearth', 4: 'shadowmeld' } }
+      ctrl: { label: 'Ctrl bar · out of combat', mod: 'Ctrl-', keys: { 1: 'recuperate', 2: 'prideclaw', 3: 'hearth', 4: 'shadowmeld', 5: 'gryphon' } }
     };
 
     const ROWS = [['1', '2', '3', '4', '5', '6'], ['Q', 'W', 'E', 'R', 'T'], ['A', 'S', 'D', 'F', 'G'], ['Z', 'X', 'C', 'V']];
     const MOVE = { W: 'Forward', A: 'Strafe', S: 'Back', D: 'Strafe' };
 
     const TALENTS = [
-      { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', rarity: 'legendary', meta: 'Feral · new today', desc: 'AoE finisher that Rips every enemy around you. The biggest leveling upgrade at 20.', spell: 'primalwrath' },
-      { name: 'Improved Barkskin', icon: 'spell_nature_stoneclawtotem', rarity: 'epic', meta: 'Class · new today', desc: "Barkskin lasts 4 sec longer. Blizzard's pick and the guides' pick." },
+      { name: 'Pouncing Strikes', icon: 'ability_druid_rake', rarity: 'legendary', meta: 'Feral · new at 22', desc: 'Stealth Rake stuns for 4 sec and deals 60% more. Stealth Shred deals 60% more, crits twice as often and adds a combo point.', spell: 'rake' },
+      { name: 'Primal Wrath', icon: 'artifactability_feraldruid_ashamanesbite', rarity: 'legendary', meta: 'Feral · level 20', desc: 'AoE finisher that Rips every enemy around you. The biggest leveling upgrade at 20.', spell: 'primalwrath' },
+      { name: 'Verdant Heart', icon: 'ability_druid_naturalperfection', rarity: 'epic', meta: 'Class · new at 22', desc: 'Barkskin and Frenzied Regeneration increase all healing you receive by 20%.', spell: 'barkskin' },
+      { name: 'Improved Barkskin', icon: 'spell_nature_stoneclawtotem', rarity: 'epic', meta: 'Class · level 20', desc: "Barkskin lasts 4 sec longer. Blizzard's pick and the guides' pick." },
       { name: "Tiger's Fury", icon: 'ability_mount_jungletiger', rarity: 'epic', meta: 'Feral', desc: '50 energy and +15% damage every 30 seconds.', spell: 'tigersfury' },
       { name: 'Predator', icon: 'ability_druid_predatoryinstincts', rarity: 'rare', meta: 'Feral', desc: "Tiger's Fury lasts 5 sec longer. Combo builders hit harder with Haste." },
       { name: 'Omen of Clarity', icon: 'spell_nature_crystalball', rarity: 'rare', meta: 'Feral', desc: 'Auto attacks can make your next Shred or Swipe cost no energy.' },
       { name: 'Killer Instinct', icon: 'ability_druid_primalprecision', rarity: 'rare', meta: 'Class · 2/2', desc: 'Physical damage and armor increased by 6%.' },
       { name: 'Grievous Wounds', icon: 'ability_druid_skinteeth', rarity: 'uncommon', meta: 'Class', desc: 'Rake, Rip and Thrash damage increased by 10%.' },
       { name: 'Frenzied Regeneration', icon: 'ability_bullrush', rarity: 'uncommon', meta: 'Class', desc: 'Bear Form self-heal: 32% health over 3 sec.', spell: 'frenzied' },
-      { name: 'Skull Bash', icon: 'inv_bone_skull_04', rarity: 'common', locked: true, meta: 'Next · level 21–22', desc: 'Your interrupt. Goes on R; Thrash moves to Shift-F.' },
-      { name: 'Wild Charge', icon: 'spell_druid_wildcharge', rarity: 'common', locked: true, meta: 'Next · level 21–22', desc: 'Leap to your target. Goes on T; Dash moves to Shift-G.' },
-      { name: 'Pouncing Strikes', icon: 'ability_druid_rake', rarity: 'common', locked: true, meta: 'Next · Feral', desc: 'Stealth Rake stuns for 4 sec. Stealth Shred deals 60% more and adds a combo point.' },
+      { name: 'Skull Bash', icon: 'inv_bone_skull_04', rarity: 'common', locked: true, meta: 'Next · class row 5', desc: 'Your interrupt. Unlocks after 2 more class points. Goes on R; Thrash moves to Shift-F.' },
+      { name: 'Wild Charge', icon: 'spell_druid_wildcharge', rarity: 'common', locked: true, meta: 'Next · class row 5', desc: 'Leap to your target. Goes on T; Dash moves to Shift-G.' },
+      { name: 'Tireless Energy', icon: 'ability_druid_catformattack', rarity: 'common', locked: true, meta: 'Next · Feral · 2 ranks', desc: 'Rank 1: +20 maximum Energy and 8% faster Energy regen. Take both ranks.' },
+      { name: 'Double-Clawed Rake', icon: 'ability_druid_disembowel', rarity: 'common', locked: true, meta: 'Next · Feral', desc: 'Rake also hits 1 extra nearby enemy. Great with Primal Wrath pulls.' },
       { name: 'Survival Instincts', icon: 'ability_druid_tigersroar', rarity: 'common', locked: true, meta: 'Later · Feral', desc: 'Big defensive cooldown. Takes Shift-4; Barkskin stays on Z.' }
     ];
 
