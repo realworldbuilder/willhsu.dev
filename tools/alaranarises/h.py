@@ -51,7 +51,7 @@ def prio(items, title=''):
     """Numbered priority list: items are (label, why)."""
     lis = ''.join(f'<li><b>{a}</b><span>{b}</span></li>' for a, b in items)
     t = f'<div class="combo-title">{title}</div>' if title else ''
-    return f'<div class="prio">{t}<ol class="prio-list">{lis}</ol></div>'
+    return f'<div class="priolist">{t}<ol class="prio-list">{lis}</ol></div>'
 
 def note(text, kind='note'):
     return f'<div class="callout c-{kind}">{text}</div>'

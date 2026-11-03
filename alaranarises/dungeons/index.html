@@ -487,7 +487,7 @@
     .sitenav a:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
     .sitenav a.on { color: #0b0d14; background: var(--druid); border-color: var(--druid); }
     .tblwrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); background: var(--panel); }
-    .tblwrap + .habits, .tblwrap + .tblwrap, .tblwrap + .prio, .callout + .habits, .prio + .habits { margin-top: 16px; }
+    .tblwrap + .habits, .tblwrap + .tblwrap, .tblwrap + .priolist, .callout + .habits, .priolist + .habits { margin-top: 16px; }
     table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
     table.tbl caption { text-align: left; padding: 10px 12px 6px; color: var(--muted); font-size: 12.5px; }
     table.tbl th { text-align: left; font-family: var(--display); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
@@ -501,8 +501,8 @@
     ol.prio-list { list-style: none; counter-reset: p; margin-top: 10px; display: grid; gap: 6px; }
     ol.prio-list li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 12px; background: var(--panel); border: 1px solid var(--border); align-items: start; }
     ol.prio-list li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 16px; line-height: 1.3; }
-    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; }
-    .prio + .prio { margin-top: 18px; }
+    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; grid-column: 2; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; grid-column: 2; display: block; }
+    .priolist + .priolist { margin-top: 18px; }
     .guidegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 14px; }
     .guidecard { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; color: var(--text); }
     .guidecard:hover { border-color: var(--druid); }
