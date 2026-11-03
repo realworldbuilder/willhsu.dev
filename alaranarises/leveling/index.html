@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leveling 80 to 90 · Alaranarises</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff7c0a'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --druid: #aad372;
+      --gold: #ffd100;
+      --builder: var(--rare);
+      --finisher: var(--legendary);
+      --cooldown: var(--epic);
+      --defensive: var(--uncommon);
+      --utility: #9d9d9d;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(170, 211, 114, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--druid); color: #0b0d14; }
+    .clickrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .code { font-family: var(--mono); font-size: 12px; word-break: break-all; background: var(--panel-2); border: 1px solid var(--border); padding: 8px 10px; margin: 8px 0; user-select: all; color: var(--text); }
+    span.code { display: inline; padding: 1px 4px; }
+    .todo { display: grid; gap: 8px; }
+    .todo label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .todo input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--druid); }
+    .todo b { display: block; font-family: var(--display); font-weight: 600; letter-spacing: .5px; }
+    .todo small { color: var(--muted); }
+    .todo label.done b { text-decoration: line-through; color: var(--dim); }
+    .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .check { background: var(--panel); border: 1px solid var(--border); padding: 14px 16px; }
+    .check h3 { font-family: var(--display); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--druid); margin-bottom: 8px; }
+    .check ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+    .todo-reset { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 1px solid var(--border); padding: 4px 10px; cursor: pointer; }
+
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 64px 0 36px; }
+
+    .sheet { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e6f5c8, var(--druid));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .crest img {
+      width: 74px;
+      height: 74px;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--druid);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 600px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .tag.hot { color: var(--druid); border-color: color-mix(in srgb, var(--druid) 50%, transparent); }
+
+    .jump { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn.ghost { background: var(--panel-2); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SECTIONS --- */
+    section { padding-bottom: 56px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-note { color: var(--dim); font-size: 13px; }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab.mod[aria-pressed="true"] { background: var(--druid); border-color: var(--druid); }
+
+    /* --- KEYBOARD --- */
+    .board {
+      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      position: relative;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
+      border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 28px 16px 22px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .layer-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--druid);
+      color: #0b0d14;
+    }
+
+    .keys { display: grid; gap: 8px; justify-content: center; }
+    .row { display: flex; gap: 8px; }
+    .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
+    .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
+    .row:nth-child(4) { padding-left: calc(var(--key) * 0.9); }
+
+    .key {
+      --role: var(--utility);
+      position: relative;
+      width: var(--key);
+      height: var(--key);
+      flex: 0 0 auto;
+      display: block;
+      padding: 0;
+      background: #07080d;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text);
+      font: inherit;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.08s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .key.has { border-color: color-mix(in srgb, var(--role) 70%, transparent); border-bottom-color: color-mix(in srgb, var(--role) 55%, #000); cursor: help; }
+    .key.has:hover, .key.has:focus-visible, .key.lit {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--role), 0 0 22px color-mix(in srgb, var(--role) 55%, transparent);
+    }
+    .key.pressed { transform: translateY(1px); border-bottom-width: 1px; }
+    .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .key .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85)); }
+    .key .cap {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .key .label {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 3px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: left;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .key.move { background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 4px, transparent 4px 9px), #0d0f17; }
+    .key.move .label, .key.empty .label { color: var(--dim); text-shadow: none; }
+    .key.empty .cap, .key.move .cap { color: var(--dim); text-shadow: none; }
+    .key .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; color: color-mix(in srgb, var(--role) 70%, #fff); background: color-mix(in srgb, var(--role) 18%, #07080d); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; color: var(--muted); font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--c); display: inline-block; }
+
+    .hint { text-align: center; color: var(--dim); font-size: 12px; }
+    .hint.touch { display: none; }
+    @media (hover: none) {
+      .hint.keys-hint { display: none; }
+      .hint.touch { display: block; }
+    }
+    .hint kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+
+    /* --- ROTATION --- */
+    .combo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .combo-title { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--druid); width: 100%; }
+    .step { display: inline-flex; align-items: center; gap: 8px; }
+    .step + .step::before { content: "›"; font-family: var(--display); font-size: 22px; color: var(--dim); margin-right: 2px; }
+    .chipkey {
+      --role: var(--utility);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #07080d;
+      border: 1px solid color-mix(in srgb, var(--role) 60%, transparent);
+      border-radius: 4px;
+      cursor: help;
+      font: inherit;
+      color: var(--text);
+    }
+    .chipkey img, .chipkey .mini-mono { width: 28px; height: 28px; border-radius: 3px; display: block; }
+    .chipkey .mini-mono { display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: color-mix(in srgb, var(--role) 25%, #07080d); }
+    .chipkey b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+    .chipkey kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; }
+
+    .prio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prio {
+      --rarity: var(--legendary);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 50%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 18px;
+    }
+    .prio.aoe { --rarity: var(--epic); }
+    .prio h3 { font-family: var(--display); font-weight: 700; font-size: 22px; color: color-mix(in srgb, var(--rarity) 70%, #fff); margin-bottom: 10px; }
+    .prio ol { list-style: none; counter-reset: p; display: grid; gap: 8px; }
+    .prio li { counter-increment: p; display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: center; }
+    .prio li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--dim); text-align: right; }
+    .prio li .when { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+
+    .pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+    .pips i { width: 8px; height: 8px; border-radius: 50%; background: #3a2a14; border: 1px solid #6b4a1a; }
+    .pips i.on { background: #ffcc33; border-color: #ffe08a; box-shadow: 0 0 6px rgba(255, 204, 51, 0.7); }
+
+    /* --- TALENT CARDS (item shop) --- */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 65%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      cursor: help;
+      transition: transform 0.15s ease;
+    }
+    .card.legendary { --rarity: var(--legendary); }
+    .card.epic { --rarity: var(--epic); }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+    .card.common { --rarity: #9d9d9d; }
+    .card.locked { filter: saturate(0.35); opacity: 0.8; }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+    .card .icon { width: 52px; height: 52px; flex: 0 0 52px; border: 2px solid var(--rarity); border-radius: 4px; background: #07080d; overflow: hidden; }
+    .card .icon img { width: 100%; height: 100%; display: block; }
+    .card h3 { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .card .meta { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rarity); }
+    .card .desc { color: var(--muted); font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+
+    .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .habit { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--druid); padding: 16px 18px; }
+    .habit b { display: block; font-family: var(--display); font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .habit p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      --rarity: var(--utility);
+      background: rgba(8, 9, 16, 0.97);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 300px;
+    }
+    .tip-head { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+    .tip-head img, .tip-head .mini-mono { width: 34px; height: 34px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--rarity) 60%, #333); display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+    .tip-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+    .tip-rank { font-size: 12px; color: var(--muted); }
+    .tip-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
+    .tip-req { color: #ff2020; }
+    .tip-desc { color: var(--gold); margin-top: 6px; }
+    .tip-pro { color: var(--uncommon); margin-top: 6px; }
+    .tip-key { color: var(--dim); margin-top: 6px; font-family: var(--mono); font-size: 11px; }
+
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 3; }
+      .prio-grid { grid-template-columns: 1fr; }
+      .habits { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; }
+      .crest img { width: 52px; height: 52px; }
+      .card { grid-column: span 6; }
+      .habits { grid-template-columns: 1fr; }
+      .board { padding: 42px 8px 18px; }
+      .keys, .row { gap: 5px; }
+      .key .label { display: none; }
+      .step + .step::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .key { transition: none !important; }
+      .card:hover, .key.has:hover, .key.lit { transform: none; }
+      .card::after { display: none; }
+    }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
+  </style>
+  <style>
+    .sitenav { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 8px; }
+    .sitenav a { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 12px; border: 1px solid var(--border); background: rgba(18,21,34,.7); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+    .sitenav a:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .sitenav a.on { color: #0b0d14; background: var(--druid); border-color: var(--druid); }
+    .tblwrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); background: var(--panel); }
+    .tblwrap + .habits, .tblwrap + .tblwrap, .tblwrap + .prio, .callout + .habits, .prio + .habits { margin-top: 16px; }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
+    table.tbl caption { text-align: left; padding: 10px 12px 6px; color: var(--muted); font-size: 12.5px; }
+    table.tbl th { text-align: left; font-family: var(--display); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
+    table.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+    table.tbl tr:last-child td { border-bottom: 0; }
+    table.tbl td b { color: var(--gold); font-weight: 600; }
+    table.tbl .hero { color: var(--epic); } table.tbl .myth { color: var(--legendary); } table.tbl .champ { color: var(--rare); } table.tbl .vet { color: var(--uncommon); }
+    .callout { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--gold); background: var(--panel); font-size: 14px; color: var(--text); }
+    .callout.c-warn { border-left-color: #ff4d4d; } .callout.c-tip { border-left-color: var(--druid); } .callout.c-info { border-left-color: var(--rare); }
+    .callout b { color: var(--gold); }
+    ol.prio-list { list-style: none; counter-reset: p; margin-top: 10px; display: grid; gap: 6px; }
+    ol.prio-list li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 12px; background: var(--panel); border: 1px solid var(--border); align-items: start; }
+    ol.prio-list li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 16px; line-height: 1.3; }
+    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; }
+    .prio + .prio { margin-top: 18px; }
+    .guidegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 14px; }
+    .guidecard { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; color: var(--text); }
+    .guidecard:hover { border-color: var(--druid); }
+    .guidecard img { border-radius: 4px; border: 1px solid var(--border); flex: 0 0 auto; }
+    .guidecard b { font-family: var(--display); font-size: 16px; letter-spacing: .02em; display: block; margin-bottom: 2px; }
+    .guidecard p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    img.ic { vertical-align: -5px; border-radius: 3px; margin-right: 4px; }
+    ul.sources { margin-top: 12px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    ul.sources a { color: var(--rare); text-decoration: none; } ul.sources a:hover { text-decoration: underline; }
+    .ticklist { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; list-style: none; padding: 0; }
+    .ticklist li label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .ticklist input { position: absolute; opacity: 0; pointer-events: none; }
+    .ticklist .box { width: 20px; height: 20px; margin-top: 2px; border: 2px solid var(--dim); border-radius: 4px; display: inline-block; position: relative; }
+    .ticklist input:checked + .box { background: var(--druid); border-color: var(--druid); }
+    .ticklist input:checked + .box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px; border: solid #0b0d14; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+    .ticklist input:checked ~ .txt { color: var(--dim); text-decoration: line-through; }
+    .ticklist .txt b { font-weight: 600; display: block; } .ticklist .txt small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 2px; }
+    .resetline { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+    .resetline button { font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 5px 10px; cursor: pointer; }
+    .resetline button:hover { color: var(--text); }
+    .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    @media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
+    .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin-top: 12px; font-size: 14px; }
+    .kv dt { color: var(--muted); } .kv dd { color: var(--text); }
+    .guidecard-hub { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
+  <div class="wrap">
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/achievement_level_90.jpg" alt="" width="74" height="74"></div>
+        <div>
+          <p class="kicker">Midnight · Patch 12.1.5 · the boost ends at 80, the cap is 90</p>
+          <h1>Leveling 80 to 90</h1>
+          <p class="lede">Where the real Midnight start is (not where the boost points you), the four zones in order, the XP buffs that are free this week, how a Marksman levels without dying, and the first hour at 90.</p>
+          <div class="tags"><span class="tag hot">Image of Lady Liadrin</span><span class="tag">Eversong first</span><span class="tag">~3.7M XP</span><span class="tag">Darkmoon Faire until 7 Nov</span></div>
+          <div class="jump"><a class="btn" href="#door">The door</a><a class="btn ghost" href="#road">The road</a><a class="btn ghost" href="#xp">Free XP</a><a class="btn ghost" href="#hunter">As a Marksman</a><a class="btn ghost" href="#ninety">At 90</a></div>
+        </div>
+      </div>
+      <nav class="sitenav" aria-label="Guides"><a href="../" class="">Setup</a><a href="#" class="on">Leveling</a><a href="../rotation/" class="">Rotation</a><a href="../gear/" class="">Gear</a><a href="../dungeons/" class="">Dungeons & raid</a><a href="../weekly/" class="">Weekly</a><a href="../ui/" class="">UI</a></nav>
+    </header>
+    <main>
+
+      <section id="door">
+        <div class="section-head">
+          <div>
+            <h2>Finding the door</h2>
+            <p class="section-note">The boost drops you in Dornogal with a quest log full of The War Within. None of it is Midnight. Here is what to ignore and where the real start is.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Ignore "Something on the Horizon"</b><p>Brann Bronzebeard's quest is The War Within's level-up campaign skip. Same for Surface Bound, A Time to Come Together, The Fleet Arrives and the "Meet Arator" lore chain by the bank. They do nothing for Midnight.</p></div>
+<div class="habit"><b>The quest is called "Midnight"</b><p>It is auto-accepted when you own the expansion: "Locate the nearest Image of Lady Liadrin". If it is not in your log, open the Adventure Guide (Shift-J) › Suggested Content.</p></div>
+<div class="habit"><b>Image of Lady Liadrin</b><p>Dornogal, Keepers Terrace at 44.2, 34.8. Also Orgrimmar, Valley of Strength at 53.4, 77.3 by the Broken Tusk. Talk to her and you are teleported to the Isle of Quel'Danas.</p></div>
+<div class="habit"><b>The intro scenario</b><p>Defend the Sunwell, then retake Silvermoon: seventeen quests, 15 to 20 minutes on Quel'Danas plus the Silvermoon half, about an hour all told. Mounting is off during the Sunwell part. It ends in Silvermoon with "Paved in Ash". This is the first Midnight character on the account, so there is no skip.</p></div>
+<div class="habit"><b>Set your hearth in Silvermoon</b><p>Wayfarer's Rest, the inn. Ctrl-6 then brings you back to the hub for the whole expansion.</p></div>
+<div class="habit"><b>Fly</b><p>Skyriding and steady flight work in every Midnight zone from the moment the scenario ends; the Pathfinder gate was removed in March 2026. If a boosted character cannot mount after the intro, summon the Highland Drake once (Ctrl-2) and everything works after.</p></div></div>
+      </section>
+
+      <section id="road">
+        <div class="section-head">
+          <div>
+            <h2>The road: 80 to 90</h2>
+            <p class="section-note">Four zones, seventeen campaign chapters, about 3.7 million XP. The campaign alone gets you to 90 or within a world quest of it. Ten hours at a normal pace, five to seven if you skip every side quest.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Levels</th><th>Zone</th><th>What happens</th></tr></thead><tbody><tr><td>80 to 83</td><td>Eversong Woods</td><td>Silvermoon Court renown starts here. Dungeon Windrunner Spire opens at 81; run it once while its campaign quest is up.</td></tr><tr><td>83 to 88</td><td>Zul'Aman, Harandar and Arator's Journey, in any order</td><td>Pick one and finish it before the next. Murder Row at 83, Voidscar Arena at 85, Den of Nalorakk at 86, each once with the quest.</td></tr><tr><td>88 to 90</td><td>Voidstorm</td><td>The initial questline needs 88. Nexus-Point Xenas at 88. Most people ding 90 in Howling Ridge near the end of the chapters.</td></tr></tbody></table></div><div class="habits"><div class="habit"><b>Side quests</b><p>Only the ones that overlap a campaign objective. The campaign plus the first run of each dungeon and the first Delve in each zone is enough XP.</p></div>
+<div class="habit"><b>Delves while leveling</b><p>Patch 12.0.7 raised first-time Delve XP a lot. The fastest known route is Delve-heavy. One Delve per zone the first time you pass it is free XP and starts Valeera's levels.</p></div>
+<div class="habit"><b>Prey hunts and renown weeklies</b><p>Also buffed in 12.0.7. Take them when they are next to you, do not travel for them.</p></div>
+<div class="habit"><b>Exploration XP is gone</b><p>12.1 cut it by 60%. Flying around uncovering the map no longer levels you.</p></div></div>
+      </section>
+
+      <section id="xp">
+        <div class="section-head">
+          <div>
+            <h2>XP that is free this week</h2>
+            <p class="section-note">Stackable. Numbers are the guide sites' figures.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Buff</th><th>How much</th><th>How</th></tr></thead><tbody><tr><td>Darkmoon Faire "WHEE!"</td><td>+10% for one hour</td><td>The Faire is open 1 to 7 November 2026. Ride the carousel or roller coaster, then quest. Portal in Orgrimmar.</td></tr><tr><td>War Mode</td><td>+15%</td><td>Toggle in Orgrimmar or Silvermoon (talent panel, bottom). Other faction can attack you; on a quiet server it is free money.</td></tr><tr><td>Warband Mentors</td><td>+5% per level-90 character, up to +25%</td><td>Only if the account already has 90s. None yet on this account means zero today and +5% after this character.</td></tr><tr><td>Battle Standard of Coordination</td><td>+15% kill XP for 15 minutes</td><td>300 gold from Larissia in Silvermoon or Goram in Orgrimmar. Kill XP only, so pop it for a dungeon or a Delve.</td></tr><tr><td>Rested XP</td><td>Double kill XP while the bar is blue</td><td>Log out in an inn or city. A night in Silvermoon is a free hour of double kills.</td></tr><tr><td>Timewalking</td><td>Up to +30% for three hours</td><td>Only during a Timewalking week: four dungeons stack Mastery of Timeways. Check the in-game calendar; nothing confirmed for this week.</td></tr></tbody></table></div><div class="callout c-warn"><b>Things that do not work:</b> heirlooms give no XP since Shadowlands; Draught of Ten Lands stops at 49; the pre-patch Winds of Mysterious Fortune ended in February; Chromie Time ends at 81. The 22nd Anniversary event usually starts around 23 November and brings its own +10%.</div>
+      </section>
+
+      <section id="hunter">
+        <div class="section-head">
+          <div>
+            <h2>Leveling as a Marksman</h2>
+            <p class="section-note">The spec was built for standing still, and leveling is all movement. These are the adjustments.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Pull two or three</b><p>Hunter's Mark the one that will live longest, Aimed Shot the second, Explosive Shot on two of them, Volley, then Black Arrow whenever it lights. Three mobs die about as fast as one.</p></div>
+<div class="habit"><b>Open from maximum range</b><p>Aimed Shot is a 2.5 second cast. Start it before the mob notices; it lands as the fight starts and you already have Precise Shots.</p></div>
+<div class="habit"><b>Move on instants</b><p>Arcane Shot, Black Arrow, Explosive Shot, Multi-Shot and Volley all cast while moving. Rapid Fire channels while moving. Aimed Shot and Steady Shot do not, so stand for those two.</p></div>
+<div class="habit"><b>Binding Shot at your feet</b><p>Shift-R. Anything that reaches you is stunned a moment later, and Disengage (Shift-2) puts you back at range with Dark Chains slowing the nearest one.</p></div>
+<div class="habit"><b>Exhilaration is a heal</b><p>T, under half health, no cost. Use it every fight that needs it; it is back in two minutes.</p></div>
+<div class="habit"><b>The pet question</b><p>Row three of the spec tree is a choice: Avian Specialization (the eagle, what this character runs) or Unbreakable Bond (a real pet). A tenacity pet like Chinacat holds mobs off you and costs about 3% damage. For solo leveling that is a fair trade; for dungeons and 90 the eagle wins. Swap in the talent panel, no re-taming needed, the stable is still there.</p></div>
+<div class="habit"><b>Dark Ranger or Sentinel for leveling</b><p>Nobody has measured it for questing. Dark Ranger's Bleak Powder cone suits the multi-mob pulls above; Sentinel is a touch stronger on a single target. Keep Dark Ranger until 90, decide then with the <a href="../rotation/#hero">rotation page</a>.</p></div>
+<div class="habit"><b>Spend every talent point</b><p>N glows at each level: the two empty Dark Ranger nodes first, then the gold highlights. The Apex talents at the end of the spec tree open as you level; Marksmanship's is the Take Aim line.</p></div>
+<div class="habit"><b>Dungeons while leveling</b><p>Group Finder (I), queue as damage, Misdirection on the tank (Shift-Q) before every pull. One run of each Midnight dungeon with its campaign quest is the whole plan; after that the quest XP beats the queue time.</p></div></div>
+      </section>
+
+      <section id="ninety">
+        <div class="section-head">
+          <div>
+            <h2>The moment you hit 90</h2>
+            <p class="section-note">The first hour at cap, in order. After this the <a href="../gear/#fresh90">gear page</a> takes over.</p>
+          </div>
+          
+        </div>
+        <div class="prio"><ol class="prio-list"><li><b>"The Last Push" from Lor'themar Theron in Silvermoon</b><span>Turns on world quests and the rest of the endgame.</span></li><li><b>"Midnight: World Tour" and "Feeding the Flame"</b><span>One of each weekly event. World Tour pays the first Spark of Tides.</span></li><li><b>"Midnight Delves!" and Valeera Sanguinar</b><span>Delver's Headquarters, Silvermoon 52.5, 78.3. Then "The Season Starts: Midnight".</span></li><li><b>Two Apex Cache weeklies outside the bank</b><span>Veteran gear for showing up.</span></li><li><b>Field Accolades to Maren Silverwing</b><span>200 for an Adventurer cache, 500 for a random Veteran piece, 750 for a chosen slot.</span></li><li><b>Professions</b><span>Trainers just north of the Sanctum of Light: Talmar (Leatherworking) 43.2, 55.8 and Tyn (Skinning) 43.3, 55.6, or Danwe (Engineering) 43.6, 54.1.</span></li><li><b>Heroic dungeons at 266, the Lair at 273, Delves to tier 8</b><span>The ladder is on the gear page.</span></li></ol></div>
+      </section>
+
+      <section id="sources">
+        <div class="section-head">
+          <div>
+            <h2>Sources</h2>
+            <p class="section-note">Checked 3 Nov 2026. Wowhead's own 12.1.5 Marksmanship leveling guide exists but would not load for the research pass; the hunter section above is built from Method, the wiki and the Blizzard notes instead.</p>
+          </div>
+          
+        </div>
+        <ul class="sources"><li><a href="https://warcraft.wiki.gg/wiki/Midnight_(quest)" rel="noopener">Warcraft Wiki: Midnight (quest)</a></li><li><a href="https://warcraft.wiki.gg/wiki/Image_of_Lady_Liadrin" rel="noopener">Warcraft Wiki: Image of Lady Liadrin</a> · coordinates</li><li><a href="https://warcraft.wiki.gg/wiki/Something_on_the_Horizon" rel="noopener">Warcraft Wiki: Something on the Horizon</a> · why it is not Midnight</li><li><a href="https://warcraft.wiki.gg/wiki/Midnight_intro_experience" rel="noopener">Warcraft Wiki: Midnight intro experience</a> · zone level bands</li><li><a href="https://warcraft.wiki.gg/wiki/Character_Boost" rel="noopener">Warcraft Wiki: Character Boost</a> · what the boost grants</li><li><a href="https://games.gg/world-of-warcraft/guides/wow-midnight-leveling-guide-level-90/" rel="noopener">games.gg: Midnight leveling guide to 90</a> · times, dungeon levels</li><li><a href="https://icy-veins.com/wow/news/midnight-xp-buffs-cut-harldans-80-90-leveling-route-to-98-minutes/" rel="noopener">Icy Veins: Harldan's 98 minute route</a> · XP buffs</li><li><a href="https://warcraft.wiki.gg/wiki/Darkmoon_Faire" rel="noopener">Warcraft Wiki: Darkmoon Faire</a> · dates</li><li><a href="https://warcraft.wiki.gg/wiki/Steady_flight" rel="noopener">Warcraft Wiki: Steady flight</a> · Pathfinder removed 13 Mar 2026</li><li><a href="https://news.blizzard.com/en-us/article/24293281" rel="noopener">Blizzard: 12.1 patch notes</a> · exploration XP, Explosive Shot</li><li><a href="https://news.blizzard.com/en-us/article/24304162/12-1-5-content-update-notes" rel="noopener">Blizzard: 12.1.5 content update notes</a></li><li><a href="https://warcraft.wiki.gg/wiki/The_Last_Push" rel="noopener">Warcraft Wiki: The Last Push</a> · and Midnight: World Tour, Midnight Delves!</li><li><a href="https://www.method.gg/guides/location-of-the-auction-house-bank-notable-npcs-and-vendors-in-midnight-silvermoon-city" rel="noopener">Method: Silvermoon NPC locations</a> · trainers</li><li><a href="https://us.forums.blizzard.com/en/wow/t/marksman-question/2286904" rel="noopener">Blizzard forums: Marksman pet question</a> · Unbreakable Bond while leveling</li></ul>
+      </section>
+    </main>
+    <footer>
+      <span>Part of the <a href="../">Alaranarises guides</a> · unlisted, not linked from <a href="../../">willhsu.dev</a></span>
+      <span>Icons from Wowhead. Not affiliated with Blizzard Entertainment. Checked against patch 12.1.5 on 3 Nov 2026.</span>
+    </footer>
+  </div>
+  
+  <script>
+    // Tick lists: saved in this browser only. mode=week clears after the Tuesday 15:00 UTC reset, mode=day after each 15:00 UTC.
+    (() => {
+      const now = new Date();
+      const periodKey = (mode) => {
+        const t = new Date(now);
+        if (mode === 'forever') return 'x';
+        // shift so the day boundary is 15:00 UTC
+        const shifted = new Date(t.getTime() - 15 * 3600 * 1000);
+        if (mode === 'day') return shifted.toISOString().slice(0, 10);
+        const dow = shifted.getUTCDay(); // Tuesday = 2
+        const back = (dow - 2 + 7) % 7;
+        shifted.setUTCDate(shifted.getUTCDate() - back);
+        return 'w' + shifted.toISOString().slice(0, 10);
+      };
+      document.querySelectorAll('.ticklist').forEach(ul => {
+        const store = ul.dataset.store, mode = ul.dataset.mode || 'forever';
+        const key = store + ':' + periodKey(mode);
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+        try { Object.keys(localStorage).forEach(k => { if (k.startsWith(store + ':') && k !== key) localStorage.removeItem(k); }); } catch {}
+        ul.querySelectorAll('input').forEach(cb => {
+          cb.checked = !!saved[cb.dataset.i];
+          cb.addEventListener('change', () => {
+            saved[cb.dataset.i] = cb.checked;
+            try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
+          });
+        });
+        const reset = document.querySelector(`[data-reset="${ul.id}"]`);
+        if (reset) reset.addEventListener('click', () => { saved = {}; try { localStorage.removeItem(key); } catch {} ul.querySelectorAll('input').forEach(cb => cb.checked = false); });
+      });
+      const nr = document.getElementById('next-reset');
+      if (nr) {
+        const t = new Date(now); const s = new Date(t.getTime() - 15 * 3600 * 1000);
+        const dow = s.getUTCDay(); const fwd = (2 - dow + 7) % 7 || 7;
+        const next = new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate() + fwd, 15, 0, 0));
+        nr.textContent = next.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      }
+    })();
+  </script>
+  
+</body>
+</html>
