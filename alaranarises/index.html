@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alaranarises · Marksmanship Hunter</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff7c0a'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --druid: #aad372;
+      --gold: #ffd100;
+      --builder: var(--rare);
+      --finisher: var(--legendary);
+      --cooldown: var(--epic);
+      --defensive: var(--uncommon);
+      --utility: #9d9d9d;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(170, 211, 114, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--druid); color: #0b0d14; }
+    .clickrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 64px 0 36px; }
+
+    .sheet { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e6f5c8, var(--druid));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .crest img {
+      width: 74px;
+      height: 74px;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--druid);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 600px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .tag.hot { color: var(--druid); border-color: color-mix(in srgb, var(--druid) 50%, transparent); }
+
+    .jump { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn.ghost { background: var(--panel-2); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SECTIONS --- */
+    section { padding-bottom: 56px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-note { color: var(--dim); font-size: 13px; }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab.mod[aria-pressed="true"] { background: var(--druid); border-color: var(--druid); }
+
+    /* --- KEYBOARD --- */
+    .board {
+      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      position: relative;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
+      border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 28px 16px 22px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .layer-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--druid);
+      color: #0b0d14;
+    }
+
+    .keys { display: grid; gap: 8px; justify-content: center; }
+    .row { display: flex; gap: 8px; }
+    .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
+    .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
+    .row:nth-child(4) { padding-left: calc(var(--key) * 0.9); }
+
+    .key {
+      --role: var(--utility);
+      position: relative;
+      width: var(--key);
+      height: var(--key);
+      flex: 0 0 auto;
+      display: block;
+      padding: 0;
+      background: #07080d;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text);
+      font: inherit;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.08s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .key.has { border-color: color-mix(in srgb, var(--role) 70%, transparent); border-bottom-color: color-mix(in srgb, var(--role) 55%, #000); cursor: help; }
+    .key.has:hover, .key.has:focus-visible, .key.lit {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--role), 0 0 22px color-mix(in srgb, var(--role) 55%, transparent);
+    }
+    .key.pressed { transform: translateY(1px); border-bottom-width: 1px; }
+    .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .key .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85)); }
+    .key .cap {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .key .label {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 3px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: left;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .key.move { background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 4px, transparent 4px 9px), #0d0f17; }
+    .key.move .label, .key.empty .label { color: var(--dim); text-shadow: none; }
+    .key.empty .cap, .key.move .cap { color: var(--dim); text-shadow: none; }
+    .key .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; color: color-mix(in srgb, var(--role) 70%, #fff); background: color-mix(in srgb, var(--role) 18%, #07080d); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; color: var(--muted); font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--c); display: inline-block; }
+
+    .hint { text-align: center; color: var(--dim); font-size: 12px; }
+    .hint.touch { display: none; }
+    @media (hover: none) {
+      .hint.keys-hint { display: none; }
+      .hint.touch { display: block; }
+    }
+    .hint kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+
+    /* --- ROTATION --- */
+    .combo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .combo-title { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--druid); width: 100%; }
+    .step { display: inline-flex; align-items: center; gap: 8px; }
+    .step + .step::before { content: "›"; font-family: var(--display); font-size: 22px; color: var(--dim); margin-right: 2px; }
+    .chipkey {
+      --role: var(--utility);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #07080d;
+      border: 1px solid color-mix(in srgb, var(--role) 60%, transparent);
+      border-radius: 4px;
+      cursor: help;
+      font: inherit;
+      color: var(--text);
+    }
+    .chipkey img, .chipkey .mini-mono { width: 28px; height: 28px; border-radius: 3px; display: block; }
+    .chipkey .mini-mono { display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: color-mix(in srgb, var(--role) 25%, #07080d); }
+    .chipkey b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+    .chipkey kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; }
+
+    .prio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prio {
+      --rarity: var(--legendary);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 50%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 18px;
+    }
+    .prio.aoe { --rarity: var(--epic); }
+    .prio h3 { font-family: var(--display); font-weight: 700; font-size: 22px; color: color-mix(in srgb, var(--rarity) 70%, #fff); margin-bottom: 10px; }
+    .prio ol { list-style: none; counter-reset: p; display: grid; gap: 8px; }
+    .prio li { counter-increment: p; display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: center; }
+    .prio li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--dim); text-align: right; }
+    .prio li .when { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+
+    .pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+    .pips i { width: 8px; height: 8px; border-radius: 50%; background: #3a2a14; border: 1px solid #6b4a1a; }
+    .pips i.on { background: #ffcc33; border-color: #ffe08a; box-shadow: 0 0 6px rgba(255, 204, 51, 0.7); }
+
+    /* --- TALENT CARDS (item shop) --- */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 65%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      cursor: help;
+      transition: transform 0.15s ease;
+    }
+    .card.legendary { --rarity: var(--legendary); }
+    .card.epic { --rarity: var(--epic); }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+    .card.common { --rarity: #9d9d9d; }
+    .card.locked { filter: saturate(0.35); opacity: 0.8; }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+    .card .icon { width: 52px; height: 52px; flex: 0 0 52px; border: 2px solid var(--rarity); border-radius: 4px; background: #07080d; overflow: hidden; }
+    .card .icon img { width: 100%; height: 100%; display: block; }
+    .card h3 { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .card .meta { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rarity); }
+    .card .desc { color: var(--muted); font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+
+    .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .habit { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--druid); padding: 16px 18px; }
+    .habit b { display: block; font-family: var(--display); font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .habit p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      --rarity: var(--utility);
+      background: rgba(8, 9, 16, 0.97);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 300px;
+    }
+    .tip-head { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+    .tip-head img, .tip-head .mini-mono { width: 34px; height: 34px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--rarity) 60%, #333); display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+    .tip-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+    .tip-rank { font-size: 12px; color: var(--muted); }
+    .tip-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
+    .tip-req { color: #ff2020; }
+    .tip-desc { color: var(--gold); margin-top: 6px; }
+    .tip-pro { color: var(--uncommon); margin-top: 6px; }
+    .tip-key { color: var(--dim); margin-top: 6px; font-family: var(--mono); font-size: 11px; }
+
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 3; }
+      .prio-grid { grid-template-columns: 1fr; }
+      .habits { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; }
+      .crest img { width: 52px; height: 52px; }
+      .card { grid-column: span 6; }
+      .habits { grid-template-columns: 1fr; }
+      .board { padding: 42px 8px 18px; }
+      .keys, .row { gap: 5px; }
+      .key .label { display: none; }
+      .step + .step::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .key { transition: none !important; }
+      .card:hover, .key.has:hover, .key.lit { transform: none; }
+      .card::after { display: none; }
+    }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
+  </style>
+</head>
+<body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
+  <div class="wrap">
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_ability_darkrangerhunter_blackarrow.jpg" alt="" width="74" height="74"></div>
+        <div>
+          <p class="kicker">Secret page · Patch 12.1.5 Midnight</p>
+          <h1>Alaranarises</h1>
+          <p class="lede">Level 80 Horde Marksmanship Hunter, boosted 2 Nov 2026, Dark Ranger hero tree. Keybinds, rotation and talents for leveling 80 to 90. Hover anything for its tooltip.</p>
+          <div class="tags" aria-label="Character">
+            <span class="tag hot">Marksmanship</span>
+            <span class="tag">Level 80 · ilvl 102</span>
+            <span class="tag">Hero: Dark Ranger</span>
+            <span class="tag">Pet: Chinacat</span>
+          </div>
+          <div class="jump">
+            <a class="btn" href="#binds">Keybinds</a>
+            <a class="btn ghost" href="#rotation">Rotation</a>
+            <a class="btn ghost" href="#talents">Talents</a>
+            <a class="btn ghost" href="#habits">Habits</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section id="binds">
+        <div class="section-head">
+          <div>
+            <h2>Keybinds</h2>
+            <p class="section-note">Same keys as Scarletfire: 1 to 5 and Q E R F G T Z. Every fight button is on the main bar; hold Shift for the bar above it (escapes, traps, the stun, Harrier's Cry).</p>
+          </div>
+          <div class="tabs" role="group" aria-label="Bar">
+            <button class="tab" data-layer="main" aria-pressed="true">Main</button>
+            <button class="tab mod" data-layer="shift" aria-pressed="false">Shift</button>
+          </div>
+        </div>
+        <div class="board">
+          <span class="layer-name" id="layer-name">Main bar</span>
+          <div class="keys" id="keys"></div>
+          <div class="legend" aria-label="Key colours">
+            <span style="--c: var(--builder)"><i></i>Shot</span>
+            <span style="--c: var(--finisher)"><i></i>Black Arrow</span>
+            <span style="--c: var(--cooldown)"><i></i>Cooldown</span>
+            <span style="--c: var(--defensive)"><i></i>Defensive</span>
+            <span style="--c: var(--utility)"><i></i>Utility</span>
+          </div>
+          <p class="hint keys-hint">Try it: press your keys. Hold <kbd>Shift</kbd> to see that bar.</p>
+          <p class="hint touch">Tap a key for its tooltip.</p>
+        </div>
+        <div class="combo">
+          <p class="combo-title">The opener, every real pull</p>
+          <span class="step" data-ref="huntersmark"></span>
+          <span class="step" data-ref="aimed"></span>
+          <span class="step" data-ref="blackarrow"></span>
+          <span class="step" data-ref="explosive"></span>
+          <span class="step" data-ref="volley"></span>
+          <span class="step" data-ref="trueshot"></span>
+          <span class="step" data-ref="aimed"></span>
+          <span class="step" data-ref="blackarrow"></span>
+          <span class="step" data-ref="rapidfire"></span>
+        </div>
+        <div class="prio-grid">
+          <div class="prio">
+            <h3>Single target</h3>
+            <ol>
+              <li><span data-ref="blackarrow"></span><span class="when">Whenever it is lit and you have Precise Shots.</span></li>
+              <li><span data-ref="explosive"></span><span class="when">On cooldown.</span></li>
+              <li><span data-ref="volley"></span><span class="when">On cooldown, even on one target.</span></li>
+              <li><span data-ref="trueshot"></span><span class="when">On cooldown. Chain Black Arrows inside it.</span></li>
+              <li><span data-ref="rapidfire"></span><span class="when">On cooldown.</span></li>
+              <li><span data-ref="aimed"></span><span class="when">When you have no Precise Shots, or it is about to hit 2 charges.</span></li>
+              <li><span data-ref="arcane"></span><span class="when">Spend leftover Precise Shots.</span></li>
+              <li><span data-ref="steady"></span><span class="when">Nothing else ready.</span></li>
+            </ol>
+          </div>
+          <div class="prio aoe">
+            <h3>AoE (3+ mobs)</h3>
+            <ol>
+              <li><span data-ref="explosive"></span><span class="when">On cooldown, each cast on a different mob.</span></li>
+              <li><span data-ref="volley"></span><span class="when">On the pack. Trick Shots for 6 sec.</span></li>
+              <li><span data-ref="multishot"></span><span class="when">Once, to get Trick Shots if Volley is down.</span></li>
+              <li><span data-ref="rapidfire"></span><span class="when">With Trick Shots up, it hits everything.</span></li>
+              <li><span data-ref="aimed"></span><span class="when">With Trick Shots up, it cleaves too.</span></li>
+              <li><span data-ref="blackarrow"></span><span class="when">Spend Precise Shots; Withering Fire sprays extra arrows.</span></li>
+              <li><span data-ref="multishot"></span><span class="when">Spend leftover Precise Shots.</span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <section id="talents">
+        <div class="section-head">
+          <div>
+            <h2>Talents</h2>
+            <p class="section-note">Blizzard's level 80 Marksmanship loadout plus the Dark Ranger hero tree, set 2 Nov 2026. 10 of 13 hero nodes filled; the rest come with levels.</p>
+          </div>
+        </div>
+        <div class="grid" id="talent-grid"></div>
+      </section>
+      <section id="habits">
+        <div class="section-head">
+          <div>
+            <h2>Expert habits</h2>
+            <p class="section-note">What a good Marksman does without thinking.</p>
+          </div>
+        </div>
+        <div class="habits">
+          <div class="habit"><b>Open from range</b><p>Mark, then start Aimed Shot before the mob notices you. It lands as the pull begins and you already have Precise Shots.</p></div>
+          <div class="habit"><b>Black Arrow first</b><p>If it is lit, it beats everything. Above 80% and below 20% it is always lit; in between it needs a Deathblow proc, which Rapid Fire guarantees.</p></div>
+          <div class="habit"><b>Never cap Aimed Shot</b><p>Two charges sitting there is wasted damage. Watch the little counter on key 1.</p></div>
+          <div class="habit"><b>Cooldowns are not rare</b><p>Explosive Shot, Volley and Rapid Fire come back every 16 to 45 seconds. Press them every pull, do not save them.</p></div>
+          <div class="habit"><b>Kite, do not tank</b><p>Tar Trap at your feet, Disengage away, keep shooting. Exhilaration under 50%, Turtle when it goes wrong, Feign Death to reset.</p></div>
+          <div class="habit"><b>Ditch WeakAuras</b><p>It is dead in Midnight. Use Blizzard's built-in Cooldown Manager in Edit Mode instead; it tracks Precise Shots and Deathblow for you.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <span>Unlisted · not linked from <a href="../">willhsu.dev</a></span>
+      <span>Icons from Wowhead. Not affiliated with Blizzard Entertainment.</span>
+    </footer>
+  </div>
+  <div id="float-tip" class="tip" role="tooltip"></div>
+  <script>
+    const ICON = 'https://wow.zamimg.com/images/wow/icons/large/';
+    // every ability on the bars; costs and cooldowns from Wowhead for patch 12.1.5, descriptions in plain words
+    const SPELLS = {"aimed": {"name": "Aimed Shot", "icon": "inv_spear_07", "role": "builder", "rows": [["35 Focus", "40 yd range"], ["2.5 sec cast", "15 sec recharge"], ["2 Charges", ""]], "desc": "Your biggest single shot. 2.5 sec cast, 2 charges, 15 sec recharge. Every cast gives you Precise Shots, which make your next Arcane Shot, Multi-Shot or Black Arrow hit much harder.", "pro": "Never sit on 2 charges. Cast it when you have no Precise Shots to spend. Stand still: it is a cast."}, "rapidfire": {"name": "Rapid Fire", "icon": "ability_hunter_efficiency", "role": "cooldown", "rows": [["40 yd range", "Channeled (2 sec cast)"], ["16 sec cooldown", ""]], "desc": "Channel a stream of shots for 2 sec. Hits hard, guarantees a Deathblow proc (free Black Arrow) and generates Precise Shots.", "pro": "Press it on cooldown. You can move while channelling. In AoE, make sure Trick Shots is up first (Multi-Shot 3+ targets)."}, "arcane": {"name": "Arcane Shot", "icon": "ability_impalingbolt", "role": "builder", "rows": [["40 Focus", "40 yd range"], ["Instant", ""]], "desc": "Instant filler. Spend Precise Shots here on a single target.", "pro": "If Black Arrow is ready, spend Precise Shots on that instead. Arcane Shot is the leftovers."}, "multishot": {"name": "Multi-Shot", "icon": "ability_upgrademoonglaive", "role": "builder", "rows": [["30 Focus", "40 yd range"], ["Instant", ""]], "desc": "Hits every enemy within 10 yds. On 3+ targets it gives you Trick Shots, which makes Aimed Shot and Rapid Fire cleave.", "pro": "Your AoE spender for Precise Shots. One Multi-Shot before each Aimed Shot or Rapid Fire when there are 3 or more mobs."}, "steady": {"name": "Steady Shot", "icon": "ability_hunter_steadyshot", "role": "builder", "rows": [["40 yd range", "1.7 sec cast"]], "desc": "1.7 sec cast filler that refunds Focus and shaves time off Aimed Shot.", "pro": "Only when nothing else is ready. If you are pressing it a lot, you are missing cooldowns."}, "blackarrow": {"name": "Black Arrow", "icon": "inv_ability_darkrangerhunter_blackarrow", "role": "finisher", "rows": [["10 Focus", "40 yd range"], ["Instant", "10 sec cooldown"], ["1 Charge", ""]], "desc": "The Dark Ranger button. Instant Shadow damage plus a damage-over-time, usable on enemies above 80% or below 20% health, or any time Deathblow procs. Replaces Kill Shot.", "pro": "Top priority: spend Precise Shots on it whenever it lights up. During Trueshot it hits about three times harder, so chain as many as you can."}, "explosive": {"name": "Explosive Shot", "icon": "ability_hunter_explosiveshot", "role": "cooldown", "rows": [["20 Focus", "40 yd range"], ["Instant", "30 sec cooldown"]], "desc": "Plants a bomb on the target that burns everything nearby for 3 sec. 30 sec cooldown.", "pro": "On cooldown, always. In AoE, put the second cast on a different target."}, "countershot": {"name": "Counter Shot", "icon": "inv_ammo_arrow_03", "role": "utility", "rows": [["40 yd range", "Instant"], ["24 sec cooldown", ""]], "desc": "Interrupts spellcasting and locks that school for 5 sec. 24 sec cooldown.", "pro": "Watch the enemy cast bar. Casters in Midnight zones hit hard; kicking the heal or the big nuke is worth more than any DPS button."}, "trueshot": {"name": "Trueshot", "icon": "ability_trueshot", "role": "cooldown", "rows": [["Instant", "2 min cooldown"]], "desc": "15 sec burst window: +10% crit, +20% crit damage, Aimed Shot and Rapid Fire recharge far faster. With Withering Fire every Black Arrow fires extra arrows. 2 min cooldown.", "pro": "Press it on cooldown, right after your opener. It also turns into Wailing Arrow for one cast while active."}, "volley": {"name": "Volley", "icon": "ability_hunter_rapidkilling", "role": "cooldown", "rows": [["40 yd range", "Instant"], ["45 sec cooldown", ""]], "desc": "Rains arrows on an area for 6 sec and grants Trick Shots the whole time. 45 sec cooldown.", "pro": "On cooldown, on top of the biggest pack. Cast Rapid Fire inside it."}, "exhilaration": {"name": "Exhilaration", "icon": "ability_hunter_onewithnature", "role": "defensive", "rows": [["45 yd range", "Instant"], ["2 min cooldown", ""]], "desc": "Heals you for 30% (more with Rejuvenating Wind) and your pet for 100%. 2 min cooldown.", "pro": "Press it under 50% health, do not save it for an emergency that never comes."}, "turtle": {"name": "Aspect of the Turtle", "icon": "ability_hunter_pet_turtle", "role": "defensive", "rows": [["Instant", "3 min cooldown"]], "desc": "Deflect everything and take 30% less damage for 8 sec, but you cannot attack. 3 min cooldown.", "pro": "Your panic button. Pop it, then Disengage or Feign Death when it ends."}, "huntersmark": {"name": "Hunter's Mark", "icon": "ability_hunter_markedfordeath", "role": "utility", "rows": [["60 yd range", "Instant"]], "desc": "Marks the target: always visible, and your damage against it is increased while it is above 80% health.", "pro": "Put it on every boss or elite before the pull. Free damage."}, "disengage": {"name": "Disengage", "icon": "ability_rogue_feint", "role": "utility", "rows": [["Unlimited range", "Instant"], ["20 sec cooldown", "1 Charge"]], "desc": "Leap backwards. With Dark Chains, in combat it also chains the nearest enemy and slows it by 40%.", "pro": "Face the enemy, press it, you are 20 yds away. Great for melee mobs and for leaving puddles."}, "feign": {"name": "Feign Death", "icon": "ability_rogue_feigndeath", "role": "utility", "rows": [["Instant", "30 sec cooldown"]], "desc": "Drop dead for up to 6 min. Enemies lose interest.", "pro": "Pulled too many? Feign, wait 3 sec, stand up and start again. Also drops aggro in a group."}, "sotf": {"name": "Survival of the Fittest", "icon": "spell_nature_spiritarmor", "role": "defensive", "rows": [["Unlimited range", "Instant"], ["1.5 min cooldown", "1 Charge"]], "desc": "You and your pet take 30% less damage for 6 sec. 1.5 min cooldown.", "pro": "Your everyday defensive. Press it when a big hit is coming, keep Turtle for real trouble."}, "freezingtrap": {"name": "Freezing Trap", "icon": "spell_frost_chainsofice", "role": "utility", "rows": [["40 yd range", "Instant"], ["30 sec cooldown", ""]], "desc": "Throw a trap that freezes the first enemy to walk over it for 1 min. Damage breaks it.", "pro": "Crowd control one mob in a pack of three: trap, then kill the others away from it."}, "tartrap": {"name": "Tar Trap", "icon": "spell_yorsahj_bloodboil_black", "role": "utility", "rows": [["40 yd range", "Instant"], ["30 sec cooldown", ""]], "desc": "Pool of tar that slows everything in it by 50% for 30 sec.", "pro": "Drop it at your feet when melee mobs reach you, then Disengage out."}, "intimidation": {"name": "Intimidation", "icon": "ability_devour", "role": "utility", "rows": [["100 yd range", "Instant"], ["1 min cooldown", ""]], "desc": "Stun the target for 5 sec. 1 min cooldown.", "pro": "Stop a caster, or stun a mob that is beating on you while you back off."}, "flare": {"name": "Flare", "icon": "spell_fire_flare", "role": "utility", "rows": [["40 yd range", "Instant"], ["20 sec cooldown", ""]], "desc": "Reveals stealthed and invisible enemies in an area for 20 sec.", "pro": "Mostly a PvP tool. Harmless on the click bar."}, "harrierscry": {"name": "Harrier's Cry", "icon": "ability_hunter_harrierscry", "role": "cooldown", "rows": [["Instant", "10 min cooldown"]], "desc": "The hunter Bloodlust: 30% haste for you and your group for 40 sec. 10 min cooldown.", "pro": "Save it for a boss or a dungeon pull. Solo, use it on an elite you are struggling with."}, "eagleeye": {"name": "Eagle Eye", "icon": "ability_hunter_eagleeye", "role": "utility", "rows": [["Unlimited range", "Channeled (1 min cast)"]], "desc": "Look through an eagle’s eyes at a distant spot for up to 1 min. Outdoors only.", "pro": "Scout a camp before you walk into it."}, "callpet": {"name": "Call Pet", "icon": "ability_hunter_beastcall", "role": "utility", "rows": [["Instant", ""]], "desc": "Calls Chinacat to your side.", "pro": "Marksmanship does most of its damage without a pet, but a pet holds a mob off you while leveling. Call it, then forget about it."}, "cheetah": {"name": "Aspect of the Cheetah", "icon": "ability_mount_jungletiger", "role": "utility", "rows": [["Instant", "3 min cooldown"]], "desc": "90% movement speed for 3 sec, then 30% for a while. 3 min cooldown.", "pro": "Out of combat sprint, or to get out of a bad spot in combat."}};
+    // key → spell id per bar, exactly as set in game on 2 Nov 2026
+    const LAYERS = {
+      main: { label: 'Main bar', keys: { 1: 'aimed', 2: 'rapidfire', 3: 'arcane', 4: 'multishot', 5: 'steady', Q: 'blackarrow', E: 'explosive', R: 'countershot', F: 'trueshot', G: 'volley', T: 'exhilaration', Z: 'turtle' } },
+      shift: { label: 'Shift bar · the bar above it', mod: 'Shift-', keys: { 1: 'huntersmark', 2: 'disengage', 3: 'feign', 4: 'sotf', 5: 'freezingtrap', Q: 'tartrap', E: 'intimidation', R: 'flare', F: 'harrierscry', G: 'cheetah', T: 'eagleeye', Z: 'callpet' } }
+    };
+    const ROWS = [['1', '2', '3', '4', '5', '6'], ['Q', 'W', 'E', 'R', 'T'], ['A', 'S', 'D', 'F', 'G'], ['Z', 'X', 'C', 'V']];
+    const MOVE = { W: 'Forward', A: 'Strafe', S: 'Back', D: 'Strafe' };
+    const TALENTS = [{"name": "Black Arrow", "icon": "inv_ability_darkrangerhunter_blackarrow", "rarity": "legendary", "meta": "Dark Ranger · keystone", "desc": "Kill Shot becomes Black Arrow: Shadow damage, a DoT, and usable above 80% health as well as below 20%. The whole hero tree feeds this button.", "spell": "blackarrow"}, {"name": "Withering Fire", "icon": "spell_shadow_painspike", "rarity": "legendary", "meta": "Dark Ranger · capstone", "desc": "Trueshot grants Deathblow and Withering Fire: every Black Arrow fires 2 extra Black Arrows at nearby enemies. This is why you chain Black Arrows inside Trueshot.", "spell": "trueshot"}, {"name": "Bleak Arrows", "icon": "inv_quiver_1h_mawraid_d_01", "rarity": "epic", "meta": "Dark Ranger", "desc": "Auto shots deal Shadow damage, bypass armour and hit for double. Free damage while you cast."}, {"name": "Soul Drinker", "icon": "ability_warlock_soulsiphon", "rarity": "epic", "meta": "Dark Ranger", "desc": "Aimed Shot is 10% more likely to grant Deathblow and Rapid Fire always does. More free Black Arrows."}, {"name": "Through the Eyes", "icon": "inv_misc_eye_01", "rarity": "rare", "meta": "Dark Ranger · choice node", "desc": "Picked over the alternative. Keeps Black Arrow's damage-over-time rolling on more targets."}, {"name": "Dark Chains", "icon": "inv_belt_44c", "rarity": "rare", "meta": "Dark Ranger · choice node", "desc": "Disengage chains the closest enemy to the ground and slows it 40%. Picked over Shadow Dagger because it saves your life while leveling.", "spell": "disengage"}, {"name": "Trueshot", "icon": "ability_trueshot", "rarity": "epic", "meta": "Marksmanship", "desc": "Your 2 minute burst. Everything in this build is tuned to land inside it.", "spell": "trueshot"}, {"name": "Volley", "icon": "ability_hunter_rapidkilling", "rarity": "rare", "meta": "Marksmanship", "desc": "6 sec rain of arrows that also grants Trick Shots. The AoE anchor.", "spell": "volley"}, {"name": "Explosive Shot", "icon": "ability_hunter_explosiveshot", "rarity": "rare", "meta": "Marksmanship", "desc": "Bomb on the target. On cooldown in every priority list.", "spell": "explosive"}, {"name": "Intimidation", "icon": "ability_devour", "rarity": "uncommon", "meta": "Class", "desc": "A 5 sec stun on a 1 min cooldown. Your only hard stop besides Freezing Trap.", "spell": "intimidation"}, {"name": "Survival of the Fittest", "icon": "spell_nature_spiritarmor", "rarity": "uncommon", "meta": "Class", "desc": "30% damage reduction for 6 sec. Press it early.", "spell": "sotf"}, {"name": "2 Dark Ranger nodes", "icon": "inv_misc_questionmark", "rarity": "common", "locked": true, "meta": "Next · levels 81 to 83", "desc": "The hero tree has 13 nodes and you have 10 points. The two empty row-3 nodes fill in as you level; just click them when the tree glows."}, {"name": "Sentinel", "icon": "inv_ability_sentinelhunter_lunarstorm", "rarity": "common", "locked": true, "meta": "Alternative hero tree", "desc": "The other Marksmanship hero tree. Guides rate it a little higher in dungeons and raids right now. Swapping is one click in the talent panel, no cost, so try it later if Dark Ranger feels flat."}];
+    const tip = document.getElementById('float-tip');
+    const hoverable = matchMedia('(hover: hover)').matches;
+
+    const iconImg = (id, name, size) => `<img src="${ICON}${id}.jpg" alt="" width="${size}" height="${size}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'mini-mono',textContent:'${name[0]}'}))">`;
+
+    function spellTip(id, keyText) {
+      const s = SPELLS[id];
+      const rows = (s.rows || []).map(([a, b]) => `<div class="tip-row"><span>${a}</span><span>${b}</span></div>`).join('');
+      return `
+        <div class="tip-head">${iconImg(s.icon, s.name, 34)}<div><div class="tip-name">${s.name}</div><div class="tip-rank">${s.badge ? s.badge + ' · ' : ''}${s.role[0].toUpperCase() + s.role.slice(1)}</div></div></div>
+        ${rows}
+        ${s.req ? `<div class="tip-req">${s.req}</div>` : ''}
+        <div class="tip-desc">${s.desc}</div>
+        ${s.pro ? `<div class="tip-pro">Pro tip: ${s.pro}</div>` : ''}
+        ${keyText ? `<div class="tip-key">Keybind: ${keyText}</div>` : ''}`;
+    }
+
+    function showTip(html, role, x, y) {
+      tip.innerHTML = html;
+      tip.style.setProperty('--rarity', `var(--${role})`);
+      tip.style.display = 'block';
+      placeTip(x, y);
+    }
+    function placeTip(x, y) {
+      const pad = 16, w = tip.offsetWidth, h = tip.offsetHeight;
+      let left = x + pad, top = y + pad;
+      if (left + w > innerWidth - 8) left = x - w - pad;
+      if (top + h > innerHeight - 8) top = y - h - pad;
+      tip.style.left = Math.max(8, left) + 'px';
+      tip.style.top = Math.max(8, top) + 'px';
+    }
+    function tipAtElement(el, html, role) {
+      const r = el.getBoundingClientRect();
+      showTip(html, role, r.right - 8, r.bottom - 8);
+    }
+    const hideTip = () => { tip.style.display = 'none'; };
+
+    // hover follows the cursor; focus and tap anchor to the element
+    function bindTip(el, getHtml, role) {
+      if (hoverable) {
+        el.addEventListener('mouseenter', e => showTip(getHtml(), role(), e.clientX, e.clientY));
+        el.addEventListener('mousemove', e => placeTip(e.clientX, e.clientY));
+        el.addEventListener('mouseleave', hideTip);
+      } else {
+        el.addEventListener('click', e => { e.stopPropagation(); tipAtElement(el, getHtml(), role()); });
+      }
+      el.addEventListener('focus', () => tipAtElement(el, getHtml(), role()));
+      el.addEventListener('blur', hideTip);
+    }
+    document.addEventListener('click', hideTip);
+    addEventListener('scroll', hideTip, { passive: true });
+
+    // --- keyboard ---
+    const keysEl = document.getElementById('keys');
+    const layerName = document.getElementById('layer-name');
+    const tabs = document.querySelectorAll('[data-layer]');
+    let base = 'main';  // the tab you picked
+    let layer = 'main'; // what's showing, which a held Shift/Ctrl can override
+    const keyEls = {};
+
+    ROWS.forEach(row => {
+      const r = document.createElement('div');
+      r.className = 'row';
+      row.forEach(k => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'key';
+        b.dataset.k = k;
+        bindTip(b, () => {
+          const id = LAYERS[layer].keys[k];
+          return id ? spellTip(id, (LAYERS[layer].mod || '') + k) : '';
+        }, () => SPELLS[LAYERS[layer].keys[k]]?.role || 'utility');
+        r.appendChild(b);
+        keyEls[k] = b;
+      });
+      keysEl.appendChild(r);
+    });
+
+    function render() {
+      const L = LAYERS[layer];
+      layerName.textContent = L.label;
+      tabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.layer === layer || (t.dataset.layer === base && !LAYERS[layer].mod)));
+      for (const k in keyEls) {
+        const b = keyEls[k];
+        const id = L.keys[k];
+        const s = SPELLS[id];
+        b.classList.toggle('has', !!s);
+        b.classList.toggle('move', !s && !L.mod && k in MOVE);
+        b.classList.toggle('empty', !s && !(k in MOVE && !L.mod));
+        b.style.setProperty('--role', s ? `var(--${s.role})` : 'var(--utility)');
+        b.tabIndex = s ? 0 : -1;
+        b.setAttribute('aria-label', s ? `${L.mod || ''}${k}: ${s.name}` : `${k}: ${MOVE[k] || 'unbound'}`);
+        b.innerHTML = s
+          ? `${iconImg(s.icon, s.name, 92)}<span class="shade"></span><span class="cap">${k}</span><span class="label">${s.name}</span>`
+          : `<span class="cap">${k}</span><span class="label">${!L.mod && MOVE[k] ? MOVE[k] : ''}</span>`;
+      }
+      if (tip.style.display === 'block') hideTip();
+    }
+
+    tabs.forEach(t => t.addEventListener('click', () => {
+      base = layer = t.dataset.layer;
+      render();
+    }));
+
+    // press your real keys: Shift/Ctrl swap bars, letters light up
+    function modLayer(e) { return e.shiftKey ? 'shift' : e.ctrlKey ? 'ctrl' : base; }
+    addEventListener('keydown', e => {
+      if (e.metaKey || e.altKey || e.target.closest('input, textarea')) return;
+      const want = modLayer(e);
+      if (want !== layer) { layer = want; render(); }
+      const k = (e.code.startsWith('Digit') ? e.code.slice(5) : e.code.startsWith('Key') ? e.code.slice(3) : '').toUpperCase();
+      const b = keyEls[k];
+      if (!b) return;
+      b.classList.add('pressed', 'lit');
+      const id = LAYERS[layer].keys[k];
+      if (id) tipAtElement(b, spellTip(id, (LAYERS[layer].mod || '') + k), SPELLS[id].role);
+    });
+    addEventListener('keyup', e => {
+      const want = modLayer(e);
+      if (want !== layer) { layer = want; render(); }
+      document.querySelectorAll('.key.pressed').forEach(b => b.classList.remove('pressed'));
+      setTimeout(() => document.querySelectorAll('.key.lit').forEach(b => b.classList.remove('lit')), 250);
+    });
+    addEventListener('blur', () => { if (layer !== base) { layer = base; render(); } });
+
+    render();
+
+    // --- rotation chips ---
+    function keyFor(id) {
+      for (const [k, v] of Object.entries(LAYERS.main.keys)) if (v === id) return k;
+      for (const [k, v] of Object.entries(LAYERS.shift.keys)) if (v === id) return 'Shift-' + k;
+      return '';
+    }
+    document.querySelectorAll('[data-ref]').forEach(slot => {
+      const id = slot.dataset.ref;
+      const s = SPELLS[id];
+      const key = keyFor(id);
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chipkey';
+      chip.style.setProperty('--role', `var(--${s.role})`);
+      chip.innerHTML = `${iconImg(s.icon, s.name, 28)}<b>${s.name}</b>${key ? `<kbd>${key}</kbd>` : ''}`;
+      bindTip(chip, () => spellTip(id, key), () => s.role);
+      slot.appendChild(chip);
+    });
+
+    // --- talent cards ---
+    const grid = document.getElementById('talent-grid');
+    TALENTS.forEach(t => {
+      const c = document.createElement('article');
+      c.className = `card ${t.rarity}${t.locked ? ' locked' : ''}`;
+      c.tabIndex = 0;
+      c.innerHTML = `<div class="icon">${iconImg(t.icon, t.name, 52)}</div><div><p class="meta">${t.meta}</p><h3>${t.name}</h3><p class="desc">${t.desc}</p></div>`;
+      const role = { legendary: 'finisher', epic: 'cooldown', rare: 'builder', uncommon: 'defensive', common: 'utility' }[t.rarity];
+      bindTip(c, () => t.spell ? spellTip(t.spell, keyFor(t.spell)) : `
+        <div class="tip-head">${iconImg(t.icon, t.name, 34)}<div><div class="tip-name">${t.name}</div><div class="tip-rank">${t.locked ? 'Not learned yet' : 'Learned'}</div></div></div>
+        <div class="tip-desc">${t.desc}</div>
+        <div class="tip-key">${t.meta}</div>`, () => role);
+      grid.appendChild(c);
+    });
+  </script>
+</body>
+</html>
