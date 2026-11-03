@@ -242,6 +242,7 @@
     @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
   
     /* phone screenshots */
+    .phones.four { grid-template-columns: repeat(4, 1fr); max-width: 760px; }
     .phones { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 0 6px; }
     .phone { display: block; }
     .phone img { width: 100%; height: auto; display: block; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
@@ -258,7 +259,7 @@
     .node.file { --rarity: #ffd100; }
     .node.mini { --rarity: var(--rare); }
     .node.phone-node { --rarity: var(--uncommon); }
-    @media (max-width: 640px) { .phones { grid-template-columns: repeat(2, 1fr); } .flow.five { grid-template-columns: 1fr; } .cmds { grid-template-columns: 1fr; gap: 2px 0; } .cmds dd { margin-bottom: 8px; } }
+    @media (max-width: 640px) { .phones, .phones.four { grid-template-columns: repeat(2, 1fr); } .flow.five { grid-template-columns: 1fr; } .cmds { grid-template-columns: 1fr; gap: 2px 0; } .cmds dd { margin-bottom: 8px; } }
     .app-icon { width: 56px; height: 56px; object-fit: cover; border-radius: 14px; border: 1px solid var(--border); vertical-align: middle; margin-right: 12px; }
   </style>
 </head>
@@ -288,7 +289,7 @@
     <a class="back" href="/">← willhsu.dev</a>
 
     <header>
-      <p class="kicker">Field notes · 2 November 2026</p>
+      <p class="kicker">Field notes · 2 to 3 November 2026</p>
       <h1><img class="app-icon" src="../assets/companion/icon.webp" alt="" width="56" height="56">WoW Companion</h1>
       <p class="lede">My World of Warcraft character on my phone. One addon in the game, one server on the Mac mini, one app on the home screen: who she is, every spec's loadout, her gear and stats, every keybind on every bar, the spec guide with my own keys on each step, and a journal that writes its own chapter at night. Built in one evening, as an MVP, on retail. Forever next.</p>
     </header>
@@ -307,6 +308,14 @@
       </div>
       <p class="caption">Scarletfire, level 22 Feral, as the app showed her at 10:30 pm. The screenshots are headless Chrome at iPhone size; the phone itself had not opened it yet.</p>
 
+      <div class="phones four">
+        <a class="phone" href="../assets/companion/alar-character.webp"><img src="../assets/companion/alar-character.webp" alt="The Character tab the next day: Alaranarises, level 80 Marksmanship, rendered by Transmogify from her look code, with her stats" width="780" height="1688" loading="lazy"><span>Day two: Character</span></a>
+        <a class="phone" href="../assets/companion/alar-guide.webp"><img src="../assets/companion/alar-guide.webp" alt="The Guide tab: the Marksmanship opener with her keys on every step and a red 'no key' badge on Explosive Shot" width="780" height="1688" loading="lazy"><span>Guide, with a red badge</span></a>
+        <a class="phone" href="../assets/companion/alar-keys.webp"><img src="../assets/companion/alar-keys.webp" alt="The Keys tab: her main bar as a keyboard, spell icons on 1 to 5, Q, E, R, T, F, G and Z" width="780" height="1688" loading="lazy"><span>Keys</span></a>
+        <a class="phone" href="../assets/companion/alar-journal.webp"><img src="../assets/companion/alar-journal.webp" alt="The Journal tab: the first chat lines the addon caught, another player's emote in Dornogal" width="780" height="1688" loading="lazy"><span>Journal</span></a>
+      </div>
+      <p class="caption">The next afternoon, from the real client: Alaranarises, level 80, the first character the Companion addon itself wrote to the file. No photo yet, so the hero is Transmogify's render of her look code. The guide's red badge is Explosive Shot, which turned out to be on no key.</p>
+
       <h2>The flow</h2>
       <div class="flow five" role="img" aria-label="The game, the saved file, the mini, the phone">
         <div class="node game"><b>The game</b><span>The Companion addon reads what the client tells it: spec, loadouts, gear, bars, journal, chat. Nothing protected, nothing in combat.</span></div>
@@ -321,7 +330,7 @@
 
       <h2>The spec</h2>
       <dl class="stats">
-        <dt>Addon</dt><dd><code>addon/Companion</code>, retail 12.1.5 (<code>Interface: 120105</code>), SavedVariables <code>CompanionDB</code>, slash <code>/companion</code> and <code>/comp</code>. Seven Lua files, one spec guide (Feral), 50 checks under a stub client.</dd>
+        <dt>Addon</dt><dd><code>addon/Companion</code>, retail 12.1.5 (<code>Interface: 120105</code>), SavedVariables <code>CompanionDB</code>, slash <code>/companion</code> and <code>/comp</code>. Eight Lua files, two spec guides (Feral Druid, Marksmanship Hunter), 52 checks under a stub client.</dd>
         <dt>Server</dt><dd><code>server.mjs</code>, Node 26, no dependencies. Port 4210 on localhost and the Tailscale address. launchd <code>com.william.wow-companion</code>.</dd>
         <dt>App</dt><dd>Vanilla HTML, CSS and JS, hash-routed bottom tabs, safe areas, <code>apple-mobile-web-app-capable</code>, a manifest and a home-screen icon. No framework, no build, no service worker (plain http).</dd>
         <dt>Sync</dt><dd>ssh with 5 s connect timeout, a shared control connection, 15 s between checks, 60 s after three failures. A sleeping MacBook turns the header red; the last file is kept on disk so a restart serves at once.</dd>
@@ -338,7 +347,7 @@
         <li><strong>Character.</strong> The photo, her class colour on the name, level and spec, item level, the stats grid, the gear doll in quality colours with item level per slot (each piece links to Wowhead), and the Mogshot code with a copy button.</li>
         <li><strong>Build.</strong> Every saved loadout for every spec with <em>Copy</em>, which is tonight's one phone-to-game path: copy the import string on the couch, paste it in the talent window. Below it the talents in hero, spec and class groups, tap for the full description.</li>
         <li><strong>Keys.</strong> Cat Form, Bear Form, Caster Form, the Shift bar and the Ctrl bar as a keyboard, with the spell's icon on the key I bound it to. Tap a key for the tooltip and the other keys it's on.</li>
-        <li><strong>Guide.</strong> The Feral guide, opener and priorities and "when it goes wrong", each step wearing the key I actually press. Talents marked learned, next, later. The habits. A warning for any step not on a bound key.</li>
+        <li><strong>Guide.</strong> The spec guide, opener and priorities and "when it goes wrong", each step wearing the key I actually press. Talents marked learned, next, later. The habits. A warning for any step not on a bound key. Two guides so far: Feral, and Marksmanship written from <a href="/alaranarises/rotation/">Alaranarises's rotation page</a>. Each is one Lua file; the server keeps a copy so a new guide shows on the phone before the game has saved again.</li>
         <li><strong>Journal.</strong> Newest day first, pictures inline, what was said in character as speech bubbles, a box to write a note, and a button that has Claude write the chapter.</li>
       </ul>
 
@@ -384,7 +393,7 @@
             <li>One message at 9:50 pm: "come up with ideas, I want an MVP tonight"</li>
             <li>Four answers to four questions (standalone, use what you need, journal plus notes plus chapter, call it Companion)</li>
             <li>Playing the druid while it was built</li>
-            <li>Not yet: logging out and back in so the new addon loads</li>
+            <li>The next afternoon: logged in on the hunter, so the real client wrote the file</li>
           </ul>
         </div>
         <div>
@@ -401,15 +410,17 @@
 
       <h2>Status</h2>
       <ul class="status">
-        <li><b>Running.</b> The service is up on the mini and already shows Scarletfire from RP Spec's file, since the new addon writes the same schema and the server falls back to the old file until the first <code>/companion save</code>.</li>
-        <li><b>Verified.</b> 50 addon checks under the stub client, the API on both addresses, a phone note landing in the timeline, a chapter written, every tab at 390 px, and a mini with no MacBook reporting "away" instead of crashing.</li>
-        <li class="no"><b>Not verified.</b> The addon in the real 12.1.5 client. Whether other specs' import strings come back before each spec has been opened once. That <code>/emote</code> lines land as chat. The home-screen install on iOS over plain http.</li>
-        <li class="no"><b>Not done.</b> Nothing reaches the game from the phone. One spec guide. The repo lives on the mini, not on GitHub.</li>
+        <li><b>Running on real data.</b> On 3 Nov the real 12.1.5 client wrote <code>Companion.lua</code> for the first time, from Alaranarises, level 80 Marksmanship. The mini picked it up within 15 s: 66 talent nodes with the game's descriptions, three bar layers with every key placed, the Dark Ranger loadout with its import string, and the first chat lines. The first thing the journal caught was another player's <code>/emote</code> in Dornogal, so emotes land as chat.</li>
+        <li><b>Verified.</b> 52 addon checks under the stub client, the API on both addresses, a phone note landing in the timeline, a chapter written, every tab at 390 px, a mini with no MacBook reporting "away" instead of crashing, and now the addon in the live game.</li>
+        <li><b>The guide caught something.</b> The Marksmanship guide puts her keys on every step and flagged one: Explosive Shot is on no bar (E holds Salvo). The rotation page had said E was Explosive Shot. That warning is the whole point of a guide that reads your bindings.</li>
+        <li class="no"><b>Not verified.</b> Other specs' loadouts: she has one saved loadout, so the list shows one. Whether Beast Mastery and Survival strings come back before each spec has been opened once is still open. The home-screen install on iOS over plain http.</li>
+        <li class="no"><b>Not done.</b> Nothing reaches the game from the phone. Two spec guides. Chat capture records everyone in earshot, which in a capital is noise. The repo lives on the mini, not on GitHub.</li>
       </ul>
 
       <h2>Next</h2>
       <ul class="plain">
-        <li><strong>Log out, log in, <code>/companion save</code>.</strong> Then see if the loadouts list fills and the night's /say lines show up.</li>
+        <li><strong>Quieter chat.</strong> Keep only my own lines, plus replies within a minute of them or lines that name me. Who counts as the scene is the RP decision to make next.</li>
+        <li><strong>Explosive Shot on a key.</strong> The one thing the guide says to fix in game.</li>
         <li><strong>The inbox.</strong> Phone notes into the game after a reload, the way Rambleon's chapters go in.</li>
         <li><strong>Forever.</strong> The same addon on <code>Interface: 16001</code> for Rambleon and Hermajesty, where the classic client's talent API is a different shape.</li>
         <li>Guides for the other eight classes; scenes from the chat; the chapter posted to the guild's Discord.</li>
