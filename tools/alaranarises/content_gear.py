@@ -2,6 +2,23 @@ from h import *
 
 S = []
 
+S.append(section('at80', 'At 80: what the boost gave you and what it buys',
+  'Checked in the bags on 3 Nov 2026. The short version: nothing for sale at level 80 beats the boost set, because every piece you can buy was squished to the same place.',
+  table(['You have', 'Amount', 'What it is good for'], [
+    ['Gold', '4,977', 'Repairs, flasks later, the Battle Standard of Coordination (300 g, +15% kill XP). Not gear: nothing on the auction house at 80 to 83 beats item level 102 for long enough to matter.'],
+    ['Resonance Crystals', '5,000', 'The War Within\'s currency. Its gear was squished to item level 102 and below, so the quartermasters sell you sidegrades at best. Spend it on transmog or mounts in Dornogal, or leave it.'],
+    ['Kej', '5,000', 'Undermine\'s currency. Same story: cosmetics and recipes, no upgrades.'],
+    ['Trader\'s Tender', '1,210', 'Trading Post cosmetics only.'],
+    ['Venomblight Manaflux', '6', 'Catalyst charges. They turn a season 2 piece into tier at 90. Boost gear cannot be converted, so these wait.'],
+    ['Four 24-slot bags', '', 'Spare. Your five equipped bags are bigger; sell or bank them.'],
+    ['Void Flakes', '2', 'Vendor for about 95 gold the pair.'],
+    ['A second Trailseeker set', 'full set', 'Item level 80 duplicates of everything you wear. Vendor trash, one silver each.'],
+    ['Trailseeker Crossbow and Spear', '102', 'The crossbow is a hair above the bow (16.3 against 16.2 damage a second) with the same stats; you prefer the bow, so the bow stays. The spear is a melee polearm: never equip it, you cannot shoot with it.'],
+    ['Enchant Ring - Glimmering Haste', 'used', 'Applied to your Ring of Onslaught on 3 Nov. That completes the "Gear Enchanting" objective; turn the quest in when you pass its giver.'],
+  ])
+  + note('<b>So how do you gear at 80?</b> You do not. Item level 102 is tuned for Eversong Woods, quest rewards in the first zone already pass it, and by 83 the whole boost set is gone. Every hour spent shopping in Dornogal is an hour not spent on the <a href="../leveling/">road to 90</a>, where the list below starts paying.', 'warn')
+))
+
 S.append(section('ladder', 'The ladder: item 102 to 344',
   'Midnight squished item levels. The boost set is 102. Leveling greens at 90 are about 253 to 259. Season 2 gear runs on five tracks, six ranks each, and every rank costs 20 of that track\'s Mistcrest.',
   table(['Track', 'Rank 1 to 6', 'Crest', 'Where it drops'], [
@@ -165,6 +182,6 @@ PAGE = dict(
   kicker='Season 2 · Patch 12.1.5 · for a Marksmanship Hunter arriving at 90',
   h1='Gear', lede='Item level 102 is where the boost leaves you. This page is the whole road from there: the tracks and crests, what to do in the first two days at 90, what each key and raid pays, and the stats, enchants, gems and consumables once pieces stop changing.',
   tags=['Fresh 90 first', 'Agility · Crit · Mastery', 'Delve tier 8 is the breakpoint', 'Two embellishments'],
-  jump=[('ladder', 'Ladder'), ('fresh90', 'Fresh 90'), ('mplus', 'Keys & vault'), ('stats', 'Stats'), ('enchants', 'Enchants'), ('consumables', 'Consumables'), ('crafted', 'Crafted'), ('trinkets', 'Trinkets & tier'), ('professions', 'Professions')],
+  jump=[('at80', 'At 80'), ('ladder', 'Ladder'), ('fresh90', 'Fresh 90'), ('mplus', 'Keys & vault'), ('stats', 'Stats'), ('enchants', 'Enchants'), ('consumables', 'Consumables'), ('crafted', 'Crafted'), ('trinkets', 'Trinkets & tier'), ('professions', 'Professions')],
   sections=S,
 )
