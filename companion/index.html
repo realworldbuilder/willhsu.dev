@@ -244,7 +244,7 @@
     /* phone screenshots */
     .phones { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 20px 0 6px; }
     .phone { display: block; }
-    .phone img { width: 100%; display: block; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
+    .phone img { width: 100%; height: auto; display: block; border-radius: 18px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
     .phone span { display: block; margin-top: 8px; font-family: var(--display); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); text-align: center; }
     .cmds { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin: 16px 0; font-size: 14px; }
     .cmds dt { font-family: var(--mono); color: var(--rare); white-space: nowrap; }
@@ -259,7 +259,7 @@
     .node.mini { --rarity: var(--rare); }
     .node.phone-node { --rarity: var(--uncommon); }
     @media (max-width: 640px) { .phones { grid-template-columns: repeat(2, 1fr); } .flow.five { grid-template-columns: 1fr; } .cmds { grid-template-columns: 1fr; gap: 2px 0; } .cmds dd { margin-bottom: 8px; } }
-    .app-icon { width: 56px; height: 56px; border-radius: 14px; border: 1px solid var(--border); vertical-align: middle; margin-right: 12px; }
+    .app-icon { width: 56px; height: 56px; object-fit: cover; border-radius: 14px; border: 1px solid var(--border); vertical-align: middle; margin-right: 12px; }
   </style>
 </head>
 <body>
