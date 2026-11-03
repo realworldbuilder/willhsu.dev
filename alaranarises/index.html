@@ -58,6 +58,18 @@
     .clickrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .code { font-family: var(--mono); font-size: 12px; word-break: break-all; background: var(--panel-2); border: 1px solid var(--border); padding: 8px 10px; margin: 8px 0; user-select: all; color: var(--text); }
     span.code { display: inline; padding: 1px 4px; }
+    .todo { display: grid; gap: 8px; }
+    .todo label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .todo input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--druid); }
+    .todo b { display: block; font-family: var(--display); font-weight: 600; letter-spacing: .5px; }
+    .todo small { color: var(--muted); }
+    .todo label.done b { text-decoration: line-through; color: var(--dim); }
+    .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .check { background: var(--panel); border: 1px solid var(--border); padding: 14px 16px; }
+    .check h3 { font-family: var(--display); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--druid); margin-bottom: 8px; }
+    .check ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+    .todo-reset { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 1px solid var(--border); padding: 4px 10px; cursor: pointer; }
+
     a { color: inherit; }
     :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
 
@@ -507,6 +519,8 @@
             <a class="btn ghost" href="#talents">Talents</a>
             <a class="btn ghost" href="#pet">Where is my pet</a>
             <a class="btn ghost" href="#gear">Stats &amp; gear</a>
+            <a class="btn ghost" href="#todo">To-do</a>
+            <a class="btn ghost" href="#checks">Checks</a>
           </div>
         </div>
       </div>
@@ -679,6 +693,42 @@
           <div class="habit"><b>Sentinel instead?</b><p>The other hero tree. Guides rate it a little higher in dungeons and raids right now. One click in the talent panel swaps; the bars do not change except Black Arrow becomes Kill Shot on Q.</p></div>
           <div class="habit"><b>Turn on Assisted Highlight</b><p>Escape, Options, Gameplay Enhancements, tick Assisted Highlight. The game then glows the button it thinks you should press next, using this exact priority. It only works for abilities that are on a bar, which is why everything is on one. Do not use the Single-Button Assistant spell: it adds a global cooldown penalty.</p></div>
           <div class="habit"><b>Interrupt nag</b><p>The game keeps saying "add an interrupt ability". Counter Shot is already on R; the nag stops once you use it in a fight.</p></div>
+        </div>
+      </section>
+      <section id="todo">
+        <div class="section-head">
+          <div>
+            <h2>To-do</h2>
+            <p class="section-note">What is still open on this character. Ticks are saved in this browser only.</p>
+          </div>
+          <button class="todo-reset" type="button" id="todo-reset">Clear ticks</button>
+        </div>
+        <div class="todo" id="todo-list">
+          <label><input type="checkbox" data-todo="hearth"><span><b>Set your hearth</b><small>Innkeeper in Dornogal now, then the first Midnight hub you quest from. Ctrl-6 should bring you back to where the quests are.</small></span></label>
+          <label><input type="checkbox" data-todo="mounts"><span><b>Star two favourite mounts</b><small>Shift-P, hover a mount, click the star. Highland Drake and one ground mount. Then Ctrl-1 stops picking the turkey.</small></span></label>
+          <label><input type="checkbox" data-todo="campaign"><span><b>Finish the Midnight intro campaign</b><small>Campaign tracker on the right: Champions of Quel'Danas, then on. It unlocks the leveling zones and flying there.</small></span></label>
+          <label><input type="checkbox" data-todo="ring"><span><b>Do the Gear Enchanting quest</b><small>It is in your log already and hands you a free ring enchant. Two minutes.</small></span></label>
+          <label><input type="checkbox" data-todo="house"><span><b>Visit a housing neighborhood</b><small>Quest "A House For You" in your log. Midnight housing; free decor and a second hearth later.</small></span></label>
+          <label><input type="checkbox" data-todo="pet"><span><b>Decide on Chinacat</b><small>Keep the eagle build (recommended), or refund Avian Specialization in the talent panel to get the wolf back for solo leveling.</small></span></label>
+          <label><input type="checkbox" data-todo="dungeon"><span><b>Run one normal dungeon</b><small>Group Finder (I), Dungeon Finder, queue as damage. Misdirect the tank (Shift-Q) on every pull and nobody will know it is your first.</small></span></label>
+          <label><input type="checkbox" data-todo="bars"><span><b>Press every key once in town</b><small>Shift and Ctrl bars included, so your hands know where things are before a fight asks.</small></span></label>
+          <label><input type="checkbox" data-todo="ninety"><span><b>At 90: swap to the single-target build for bosses</b><small>Import string is in Start here. Keep the AoE loadout for everything else; switching is a dropdown.</small></span></label>
+        </div>
+      </section>
+      <section id="checks">
+        <div class="section-head">
+          <div>
+            <h2>Recurring checks</h2>
+            <p class="section-note">The things a good hunter does on a loop. Read top to bottom until they are habits.</p>
+          </div>
+        </div>
+        <div class="checks">
+          <div class="check"><h3>Every pull</h3><ul><li>Hunter's Mark on the big one (Shift-1).</li><li>Start Aimed Shot before the mob notices you.</li><li>In a group: Misdirection on the tank first (Shift-Q).</li><li>Black Arrow whenever it lights up.</li><li>Explosive Shot and Volley the moment they are back.</li></ul></div>
+          <div class="check"><h3>Every fight that goes wrong</h3><ul><li>Under 50%: Exhilaration (T).</li><li>Big hit coming: Survival of the Fittest (Shift-4).</li><li>Melee on you: Binding Shot at your feet (Shift-R), Disengage (Shift-2).</li><li>Dying: Turtle (Z), then Feign Death (Shift-3) when it ends.</li></ul></div>
+          <div class="check"><h3>Every session</h3><ul><li>Repair at any vendor with an anvil icon.</li><li>Bags: sell greys, keep potions and food stocked.</li><li>Hearth still set where you quest? Ctrl-6 tooltip says where.</li><li>Quest log under 20 so new ones fit.</li></ul></div>
+          <div class="check"><h3>Every level</h3><ul><li>N glows: spend the point. Hero tree empties first, then the gold "next" highlights.</li><li>Equip any quest reward with a higher item level; Crit or Mastery breaks ties.</li><li>Check the spellbook (P) for a new ability and give it a key.</li></ul></div>
+          <div class="check"><h3>Every week at 90</h3><ul><li>Great Vault: it rewards dungeons and world activities done the week before.</li><li>Weekly quests in the capital hub.</li><li>Re-read the Method guide once; builds move with patches.</li></ul></div>
+          <div class="check"><h3>Every patch</h3><ul><li>Re-import the talent string from Method or Icy Veins.</li><li>Walk the bars again: a changed talent can leave a greyed-out button.</li><li>Update this page.</li></ul></div>
         </div>
       </section>
       <section id="habits">
@@ -862,6 +912,30 @@
       bindTip(chip, () => spellTip(id, key), () => s.role);
       slot.appendChild(chip);
     });
+
+
+    // --- to-do ticks, kept in this browser only ---
+    (() => {
+      const KEY = 'alaranarises-todo';
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch {}
+      const boxes = document.querySelectorAll('#todo-list input[data-todo]');
+      const paint = b => b.closest('label').classList.toggle('done', b.checked);
+      boxes.forEach(b => {
+        b.checked = !!saved[b.dataset.todo];
+        paint(b);
+        b.addEventListener('change', () => {
+          saved[b.dataset.todo] = b.checked;
+          paint(b);
+          try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch {}
+        });
+      });
+      document.getElementById('todo-reset').addEventListener('click', () => {
+        saved = {};
+        try { localStorage.removeItem(KEY); } catch {}
+        boxes.forEach(b => { b.checked = false; paint(b); });
+      });
+    })();
 
     // --- talent cards ---
     const grid = document.getElementById('talent-grid');
