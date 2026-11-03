@@ -481,6 +481,53 @@
     }
     @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
   </style>
+  <style>
+    .sitenav { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 8px; }
+    .sitenav a { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 12px; border: 1px solid var(--border); background: rgba(18,21,34,.7); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+    .sitenav a:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .sitenav a.on { color: #0b0d14; background: var(--druid); border-color: var(--druid); }
+    .tblwrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); background: var(--panel); }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
+    table.tbl caption { text-align: left; padding: 10px 12px 6px; color: var(--muted); font-size: 12.5px; }
+    table.tbl th { text-align: left; font-family: var(--display); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
+    table.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+    table.tbl tr:last-child td { border-bottom: 0; }
+    table.tbl td b { color: var(--gold); font-weight: 600; }
+    table.tbl .hero { color: var(--epic); } table.tbl .myth { color: var(--legendary); } table.tbl .champ { color: var(--rare); } table.tbl .vet { color: var(--uncommon); }
+    .callout { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--gold); background: var(--panel); font-size: 14px; color: var(--text); }
+    .callout.c-warn { border-left-color: #ff4d4d; } .callout.c-tip { border-left-color: var(--druid); } .callout.c-info { border-left-color: var(--rare); }
+    .callout b { color: var(--gold); }
+    ol.prio-list { list-style: none; counter-reset: p; margin-top: 10px; display: grid; gap: 6px; }
+    ol.prio-list li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 12px; background: var(--panel); border: 1px solid var(--border); align-items: start; }
+    ol.prio-list li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 16px; line-height: 1.3; }
+    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; }
+    .prio + .prio { margin-top: 18px; }
+    .guidegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 14px; }
+    .guidecard { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; color: var(--text); }
+    .guidecard:hover { border-color: var(--druid); }
+    .guidecard img { border-radius: 4px; border: 1px solid var(--border); flex: 0 0 auto; }
+    .guidecard b { font-family: var(--display); font-size: 16px; letter-spacing: .02em; display: block; margin-bottom: 2px; }
+    .guidecard p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    img.ic { vertical-align: -5px; border-radius: 3px; margin-right: 4px; }
+    ul.sources { margin-top: 12px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    ul.sources a { color: var(--rare); text-decoration: none; } ul.sources a:hover { text-decoration: underline; }
+    .ticklist { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; list-style: none; padding: 0; }
+    .ticklist li label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .ticklist input { position: absolute; opacity: 0; pointer-events: none; }
+    .ticklist .box { width: 20px; height: 20px; margin-top: 2px; border: 2px solid var(--dim); border-radius: 4px; display: inline-block; position: relative; }
+    .ticklist input:checked + .box { background: var(--druid); border-color: var(--druid); }
+    .ticklist input:checked + .box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px; border: solid #0b0d14; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+    .ticklist input:checked ~ .txt { color: var(--dim); text-decoration: line-through; }
+    .ticklist .txt b { font-weight: 600; display: block; } .ticklist .txt small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 2px; }
+    .resetline { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+    .resetline button { font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 5px 10px; cursor: pointer; }
+    .resetline button:hover { color: var(--text); }
+    .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    @media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
+    .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin-top: 12px; font-size: 14px; }
+    .kv dt { color: var(--muted); } .kv dd { color: var(--text); }
+    .guidecard-hub { margin-top: 10px; }
+  </style>
 </head>
 <body>
   <canvas class="backdrop" aria-hidden="true" data-src="../assets/azeroth.js"></canvas>
@@ -502,20 +549,18 @@
       <div class="sheet">
         <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_ability_darkrangerhunter_blackarrow.jpg" alt="" width="74" height="74"></div>
         <div>
-          <p class="kicker">Boosted to 80 · Dark Ranger Marksmanship · Patch 12.1.5 Midnight</p>
+          <p class="kicker">Boosted to 80 of 90 · Dark Ranger Marksmanship · Patch 12.1.5 Midnight</p>
           <h1>Alaranarises</h1>
-          <p class="lede">The setup guide for a freshly boosted Marksmanship Hunter, built on Alaranarises (Horde, boosted 2 Nov 2026). Skip the Catch Up quests, set this up in ten minutes, go play. Hover anything for its tooltip.</p>
+          <p class="lede">The setup guide for a freshly boosted Marksmanship Hunter, built on Alaranarises (Horde, boosted 2 Nov 2026). Skip the Catch Up quests, set this up in ten minutes, go play. The cap is 90, so the next stop is the <a href="leveling/">leveling road</a>; the other guides are in the row below. Hover anything for its tooltip.</p>
           <div class="tags" aria-label="Character">
             <span class="tag hot">Marksmanship</span>
-            <span class="tag">Level 80 · ilvl 102</span>
+            <span class="tag">Level 80 of 90 · ilvl 102</span>
             <span class="tag">Hero: Dark Ranger</span>
             <span class="tag">No pet: eagle build</span>
           </div>
           <div class="jump">
             <a class="btn" href="#start">Start here</a>
             <a class="btn ghost" href="#binds">Keybinds</a>
-            <a class="btn ghost" href="#why">Why these keys</a>
-            <a class="btn ghost" href="#rotation">Rotation</a>
             <a class="btn ghost" href="#why">Why these keys</a>
             <a class="btn ghost" href="#rotation">Rotation</a>
             <a class="btn ghost" href="#talents">Talents</a>
@@ -526,6 +571,7 @@
           </div>
         </div>
       </div>
+      <nav class="sitenav" aria-label="Guides"><a href="#" class="on">Setup</a><a href="leveling/" class="">Leveling</a><a href="rotation/" class="">Rotation</a><a href="gear/" class="">Gear</a><a href="dungeons/" class="">Dungeons & raid</a><a href="weekly/" class="">Weekly</a><a href="ui/" class="">UI</a></nav>
     </header>
     <main>
       <section id="start">
@@ -541,8 +587,17 @@
           <div class="habit"><b>3 · Turn on the bars</b><p>Escape, Options, Action Bars: tick Action Bars 2, 3 and 5. Bar 2 is Shift, bar 3 is Ctrl, bar 5 sits on the right for clicking. Lock Action Bars stays ticked.</p></div>
           <div class="habit"><b>4 · Fill them like this page</b><p>Drag from the spellbook (P) onto the slots below. Mounts come from Shift-P, the Summon Random Favorite Mount button is at the top right of the journal. Hearthstone and potions drag straight out of the bag.</p></div>
           <div class="habit"><b>5 · Leave Catch Up</b><p>Red X on "Leave Catch Up" at the top right of the screen. You land in Dornogal with the Midnight campaign in your quest log. Follow the Campaign tracker on the right ("Champions of Quel'Danas" and on); that is the 80 to 90 road.</p></div>
-          <div class="habit"><b>6 · Set your hearth</b><p>Talk to the innkeeper in Dornogal (or the first Midnight hub) so Ctrl-6 brings you home. Ctrl-1 already summons a random mount; star favourites in the journal if you want to narrow it. Also tick Auto Loot under Options, Controls.</p></div>
+          <div class="habit"><b>6 · Set your hearth</b><p>Talk to the innkeeper in Dornogal (or the first Midnight hub) so Ctrl-6 brings you home. Ctrl-1 summons a random favourite: five are starred (Highland Drake, Renewed Proto-Drake, Cliffside Wylderdrake, Lightwing Dragonhawk, Cerulean Prideclaw), so the turkey stays home. Also tick Auto Loot under Options, Controls.</p></div>
         </div>
+      </section>
+      <section id="guides">
+        <div class="section-head">
+          <div>
+            <h2>The guides</h2>
+            <p class="section-note">One page per question. All checked against patch 12.1.5; each ends with its sources.</p>
+          </div>
+        </div>
+        <div class="guidegrid"><a class="card guidecard" href="leveling/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/achievement_level_90.jpg" alt="" width="40" height="40" loading="lazy"><div><b>Leveling 80 to 90</b><p>The Midnight campaign in order, XP that is free, what a hunter pulls.</p></div></a><a class="card guidecard" href="rotation/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/inv_ability_darkrangerhunter_blackarrow.jpg" alt="" width="40" height="40" loading="lazy"><div><b>Rotation</b><p>Opener, single target, AoE, cooldowns, every Dark Ranger node, with the why.</p></div></a><a class="card guidecard" href="gear/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bag_12.jpg" alt="" width="40" height="40" loading="lazy"><div><b>Gear</b><p>Tracks and crests, fresh-90 shopping list, stats, enchants, gems, consumables, trinkets.</p></div></a><a class="card guidecard" href="dungeons/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/achievement_dungeon_outland_dungeonmaster.jpg" alt="" width="40" height="40" loading="lazy"><div><b>Dungeons & raid</b><p>The eight keys, affixes by level, first-key manners, the Venomous Abyss, delves.</p></div></a><a class="card guidecard" href="weekly/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_pocketwatch_01.jpg" alt="" width="40" height="40" loading="lazy"><div><b>Weekly</b><p>The reset checklist with ticks that clear on Tuesday.</p></div></a><a class="card guidecard" href="ui/"><img class="ic" src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_gear_01.jpg" alt="" width="40" height="40" loading="lazy"><div><b>UI without addons</b><p>Cooldown Manager, damage meter, nameplates, bags, Edit Mode. Every option this character has on.</p></div></a></div>
       </section>
       <section id="binds">
         <div class="section-head">
@@ -699,17 +754,17 @@
         <div class="section-head">
           <div>
             <h2>Stats, gear and everything else</h2>
-            <p class="section-note">The boost set is item level 102. Quest rewards pass it within an evening, so do not spend gold on gear.</p>
+            <p class="section-note">The boost set is item level 102. Quest rewards pass it within an evening, so do not spend gold on gear before 90. The long version is the <a href="gear/">gear page</a>.</p>
           </div>
         </div>
         <div class="habits">
-          <div class="habit"><b>Stat priority</b><p>Agility first, then Critical Strike, Mastery, Versatility, Haste (wow.gg, 12.1.5). When two quest rewards tie on item level, take the one with Crit or Mastery. Ranged weapon upgrades beat everything.</p></div>
-          <div class="habit"><b>Gear while leveling</b><p>Take every quest reward that raises item level. Dungeons through the Group Finder (I) drop better. At 90, crafted and dungeon gear start to matter; not before.</p></div>
-          <div class="habit"><b>Consumables</b><p>The boost gave healing potions, food and bandages; they are on the right bar. Eat out of combat below half health, potion in combat, bandage when neither is up.</p></div>
-          <div class="habit"><b>The windows</b><p>C character, P spellbook, N talents, Shift-P mounts and pets, B bags, M map, L quest log, I group finder. Escape then Edit Mode moves any frame; the Cooldown Manager in there replaces WeakAuras.</p></div>
+          <div class="habit"><b>Stat priority</b><p>Agility first, then Critical Strike, Mastery, Versatility, Haste (Method, Icy Veins, 12.1.5). When two quest rewards tie on item level, take the one with Crit or Mastery. Ranged weapon upgrades beat everything.</p></div>
+          <div class="habit"><b>Gear while leveling</b><p>Take every quest reward that raises item level. Dungeons through the Group Finder (I) drop better. At 90 the <a href="gear/#fresh90">fresh 90 list</a> takes over: vendor gear, delves at tier 8, the world boss.</p></div>
+          <div class="habit"><b>Consumables</b><p>The boost gave healing potions, food and bandages; they are on the right bar. Eat out of combat below half health, potion in combat, bandage when neither is up. Flasks and food that matter are on the gear page.</p></div>
+          <div class="habit"><b>The windows</b><p>C character, P spellbook, N talents, Shift-P mounts and pets, B bags, M map, L quest log, I group finder. Escape then Edit Mode moves any frame.</p></div>
           <div class="habit"><b>Talents as you level</b><p>Every level to 90 gives points. Open N when it glows: hero points into the two empty Dark Ranger nodes first, then follow the gold highlights.</p></div>
-          <div class="habit"><b>Sentinel instead?</b><p>The other hero tree. Guides rate it a little higher in dungeons and raids right now. One click in the talent panel swaps; the bars do not change except Black Arrow becomes Kill Shot on Q.</p></div>
-          <div class="habit"><b>Turn on Assisted Highlight</b><p>Escape, Options, Gameplay Enhancements, tick Assisted Highlight. The game then glows the button it thinks you should press next, using this exact priority. It only works for abilities that are on a bar, which is why everything is on one. Do not use the Single-Button Assistant spell: it adds a global cooldown penalty.</p></div>
+          <div class="habit"><b>Sentinel instead?</b><p>The other hero tree. Every guide rates it higher in 12.1.5 and 47 of the top 50 key hunters run it. Dark Ranger is what this character runs because Black Arrow teaches the spec better. One click in the talent panel swaps; the bars do not change except Black Arrow becomes Kill Shot on Q.</p></div>
+          <div class="habit"><b>Assisted Highlight is on</b><p>Options, Gameplay Enhancements. The game glows the button it thinks you should press next, using this exact priority. It only works for abilities on a bar, which is why everything is on one. The Single-Button Assistant spell is not used: it adds a global cooldown penalty.</p></div>
           <div class="habit"><b>Interrupt nag</b><p>The game keeps saying "add an interrupt ability". Counter Shot is already on F; the nag stops once you use it in a fight.</p></div>
         </div>
       </section>
@@ -723,14 +778,16 @@
         </div>
         <div class="todo" id="todo-list">
           <label><input type="checkbox" data-todo="hearth"><span><b>Set your hearth</b><small>Innkeeper in Dornogal now, then the first Midnight hub you quest from. Ctrl-6 should bring you back to where the quests are.</small></span></label>
-          <label><input type="checkbox" data-todo="mounts"><span><b>Star two favourite mounts</b><small>Shift-P, hover a mount, click the star. Highland Drake and one ground mount. Then Ctrl-1 stops picking the turkey.</small></span></label>
-          <label><input type="checkbox" data-todo="campaign"><span><b>Finish the Midnight intro campaign</b><small>Campaign tracker on the right: Champions of Quel'Danas, then on. It unlocks the leveling zones and flying there.</small></span></label>
+          <label><input type="checkbox" data-todo="intro"><span><b>Start the Midnight intro</b><small>"Something on the Horizon": talk to Brann Bronzebeard in Dornogal. That quest is the door to Quel'Thalas; the Campaign tracker ("Champions of Quel'Danas" and on) is the road after it.</small></span></label>
+          <label><input type="checkbox" data-todo="ninety"><span><b>Level to 90</b><small>Ten levels, about 3.7 million XP. The <a href="leveling/">leveling page</a> has the zone order and the free XP. Nothing on the gear page matters until this is done.</small></span></label>
           <label><input type="checkbox" data-todo="ring"><span><b>Do the Gear Enchanting quest</b><small>It is in your log already and hands you a free ring enchant. Two minutes.</small></span></label>
           <label><input type="checkbox" data-todo="house"><span><b>Visit a housing neighborhood</b><small>Quest "A House For You" in your log. Midnight housing; free decor and a second hearth later.</small></span></label>
           <label><input type="checkbox" data-todo="pet"><span><b>Decide on Chinacat</b><small>Keep the eagle build (recommended), or refund Avian Specialization in the talent panel to get the wolf back for solo leveling.</small></span></label>
           <label><input type="checkbox" data-todo="dungeon"><span><b>Run one normal dungeon</b><small>Group Finder (I), Dungeon Finder, queue as damage. Misdirect the tank (Shift-Q) on every pull and nobody will know it is your first.</small></span></label>
           <label><input type="checkbox" data-todo="bars"><span><b>Press every key once in town</b><small>Shift and Ctrl bars included, so your hands know where things are before a fight asks.</small></span></label>
-          <label><input type="checkbox" data-todo="ninety"><span><b>At 90: swap to the single-target build for bosses</b><small>Import string is in Start here. Keep the AoE loadout for everything else; switching is a dropdown.</small></span></label>
+          <label><input type="checkbox" data-todo="prof"><span><b>At 90: pick two professions</b><small>Leatherworking and Skinning for the class, Inscription or Jewelcrafting for gold. Trainers in Silvermoon. The <a href="gear/#professions">gear page</a> says why.</small></span></label>
+          <label><input type="checkbox" data-todo="build"><span><b>At 90: swap to the single-target build for bosses</b><small>Import string is in Start here. Keep the AoE loadout for everything else; switching is a dropdown.</small></span></label>
+          <label><input type="checkbox" data-todo="weekly"><span><b>At 90: start the weekly list</b><small>The <a href="weekly/">weekly page</a> ticks itself clean every Tuesday. Vault, Spark, world boss, delves.</small></span></label>
         </div>
       </section>
       <section id="checks">

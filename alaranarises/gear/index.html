@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gear · Alaranarises</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff7c0a'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --druid: #aad372;
+      --gold: #ffd100;
+      --builder: var(--rare);
+      --finisher: var(--legendary);
+      --cooldown: var(--epic);
+      --defensive: var(--uncommon);
+      --utility: #9d9d9d;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(170, 211, 114, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--druid); color: #0b0d14; }
+    .clickrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .code { font-family: var(--mono); font-size: 12px; word-break: break-all; background: var(--panel-2); border: 1px solid var(--border); padding: 8px 10px; margin: 8px 0; user-select: all; color: var(--text); }
+    span.code { display: inline; padding: 1px 4px; }
+    .todo { display: grid; gap: 8px; }
+    .todo label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .todo input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--druid); }
+    .todo b { display: block; font-family: var(--display); font-weight: 600; letter-spacing: .5px; }
+    .todo small { color: var(--muted); }
+    .todo label.done b { text-decoration: line-through; color: var(--dim); }
+    .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .check { background: var(--panel); border: 1px solid var(--border); padding: 14px 16px; }
+    .check h3 { font-family: var(--display); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--druid); margin-bottom: 8px; }
+    .check ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+    .todo-reset { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 1px solid var(--border); padding: 4px 10px; cursor: pointer; }
+
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 64px 0 36px; }
+
+    .sheet { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e6f5c8, var(--druid));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .crest img {
+      width: 74px;
+      height: 74px;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--druid);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 600px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .tag.hot { color: var(--druid); border-color: color-mix(in srgb, var(--druid) 50%, transparent); }
+
+    .jump { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn.ghost { background: var(--panel-2); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SECTIONS --- */
+    section { padding-bottom: 56px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-note { color: var(--dim); font-size: 13px; }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab.mod[aria-pressed="true"] { background: var(--druid); border-color: var(--druid); }
+
+    /* --- KEYBOARD --- */
+    .board {
+      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      position: relative;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
+      border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 28px 16px 22px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .layer-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--druid);
+      color: #0b0d14;
+    }
+
+    .keys { display: grid; gap: 8px; justify-content: center; }
+    .row { display: flex; gap: 8px; }
+    .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
+    .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
+    .row:nth-child(4) { padding-left: calc(var(--key) * 0.9); }
+
+    .key {
+      --role: var(--utility);
+      position: relative;
+      width: var(--key);
+      height: var(--key);
+      flex: 0 0 auto;
+      display: block;
+      padding: 0;
+      background: #07080d;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text);
+      font: inherit;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.08s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .key.has { border-color: color-mix(in srgb, var(--role) 70%, transparent); border-bottom-color: color-mix(in srgb, var(--role) 55%, #000); cursor: help; }
+    .key.has:hover, .key.has:focus-visible, .key.lit {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--role), 0 0 22px color-mix(in srgb, var(--role) 55%, transparent);
+    }
+    .key.pressed { transform: translateY(1px); border-bottom-width: 1px; }
+    .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .key .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85)); }
+    .key .cap {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .key .label {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 3px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: left;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .key.move { background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 4px, transparent 4px 9px), #0d0f17; }
+    .key.move .label, .key.empty .label { color: var(--dim); text-shadow: none; }
+    .key.empty .cap, .key.move .cap { color: var(--dim); text-shadow: none; }
+    .key .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; color: color-mix(in srgb, var(--role) 70%, #fff); background: color-mix(in srgb, var(--role) 18%, #07080d); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; color: var(--muted); font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--c); display: inline-block; }
+
+    .hint { text-align: center; color: var(--dim); font-size: 12px; }
+    .hint.touch { display: none; }
+    @media (hover: none) {
+      .hint.keys-hint { display: none; }
+      .hint.touch { display: block; }
+    }
+    .hint kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+
+    /* --- ROTATION --- */
+    .combo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .combo-title { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--druid); width: 100%; }
+    .step { display: inline-flex; align-items: center; gap: 8px; }
+    .step + .step::before { content: "›"; font-family: var(--display); font-size: 22px; color: var(--dim); margin-right: 2px; }
+    .chipkey {
+      --role: var(--utility);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #07080d;
+      border: 1px solid color-mix(in srgb, var(--role) 60%, transparent);
+      border-radius: 4px;
+      cursor: help;
+      font: inherit;
+      color: var(--text);
+    }
+    .chipkey img, .chipkey .mini-mono { width: 28px; height: 28px; border-radius: 3px; display: block; }
+    .chipkey .mini-mono { display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: color-mix(in srgb, var(--role) 25%, #07080d); }
+    .chipkey b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+    .chipkey kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; }
+
+    .prio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prio {
+      --rarity: var(--legendary);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 50%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 18px;
+    }
+    .prio.aoe { --rarity: var(--epic); }
+    .prio h3 { font-family: var(--display); font-weight: 700; font-size: 22px; color: color-mix(in srgb, var(--rarity) 70%, #fff); margin-bottom: 10px; }
+    .prio ol { list-style: none; counter-reset: p; display: grid; gap: 8px; }
+    .prio li { counter-increment: p; display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: center; }
+    .prio li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--dim); text-align: right; }
+    .prio li .when { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+
+    .pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+    .pips i { width: 8px; height: 8px; border-radius: 50%; background: #3a2a14; border: 1px solid #6b4a1a; }
+    .pips i.on { background: #ffcc33; border-color: #ffe08a; box-shadow: 0 0 6px rgba(255, 204, 51, 0.7); }
+
+    /* --- TALENT CARDS (item shop) --- */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 65%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      cursor: help;
+      transition: transform 0.15s ease;
+    }
+    .card.legendary { --rarity: var(--legendary); }
+    .card.epic { --rarity: var(--epic); }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+    .card.common { --rarity: #9d9d9d; }
+    .card.locked { filter: saturate(0.35); opacity: 0.8; }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+    .card .icon { width: 52px; height: 52px; flex: 0 0 52px; border: 2px solid var(--rarity); border-radius: 4px; background: #07080d; overflow: hidden; }
+    .card .icon img { width: 100%; height: 100%; display: block; }
+    .card h3 { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .card .meta { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rarity); }
+    .card .desc { color: var(--muted); font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+
+    .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .habit { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--druid); padding: 16px 18px; }
+    .habit b { display: block; font-family: var(--display); font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .habit p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      --rarity: var(--utility);
+      background: rgba(8, 9, 16, 0.97);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 300px;
+    }
+    .tip-head { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+    .tip-head img, .tip-head .mini-mono { width: 34px; height: 34px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--rarity) 60%, #333); display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+    .tip-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+    .tip-rank { font-size: 12px; color: var(--muted); }
+    .tip-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
+    .tip-req { color: #ff2020; }
+    .tip-desc { color: var(--gold); margin-top: 6px; }
+    .tip-pro { color: var(--uncommon); margin-top: 6px; }
+    .tip-key { color: var(--dim); margin-top: 6px; font-family: var(--mono); font-size: 11px; }
+
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 3; }
+      .prio-grid { grid-template-columns: 1fr; }
+      .habits { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; }
+      .crest img { width: 52px; height: 52px; }
+      .card { grid-column: span 6; }
+      .habits { grid-template-columns: 1fr; }
+      .board { padding: 42px 8px 18px; }
+      .keys, .row { gap: 5px; }
+      .key .label { display: none; }
+      .step + .step::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .key { transition: none !important; }
+      .card:hover, .key.has:hover, .key.lit { transform: none; }
+      .card::after { display: none; }
+    }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
+  </style>
+  <style>
+    .sitenav { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 8px; }
+    .sitenav a { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 12px; border: 1px solid var(--border); background: rgba(18,21,34,.7); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+    .sitenav a:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .sitenav a.on { color: #0b0d14; background: var(--druid); border-color: var(--druid); }
+    .tblwrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); background: var(--panel); }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
+    table.tbl caption { text-align: left; padding: 10px 12px 6px; color: var(--muted); font-size: 12.5px; }
+    table.tbl th { text-align: left; font-family: var(--display); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
+    table.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+    table.tbl tr:last-child td { border-bottom: 0; }
+    table.tbl td b { color: var(--gold); font-weight: 600; }
+    table.tbl .hero { color: var(--epic); } table.tbl .myth { color: var(--legendary); } table.tbl .champ { color: var(--rare); } table.tbl .vet { color: var(--uncommon); }
+    .callout { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--gold); background: var(--panel); font-size: 14px; color: var(--text); }
+    .callout.c-warn { border-left-color: #ff4d4d; } .callout.c-tip { border-left-color: var(--druid); } .callout.c-info { border-left-color: var(--rare); }
+    .callout b { color: var(--gold); }
+    ol.prio-list { list-style: none; counter-reset: p; margin-top: 10px; display: grid; gap: 6px; }
+    ol.prio-list li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 12px; background: var(--panel); border: 1px solid var(--border); align-items: start; }
+    ol.prio-list li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 16px; line-height: 1.3; }
+    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; }
+    .prio + .prio { margin-top: 18px; }
+    .guidegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 14px; }
+    .guidecard { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; color: var(--text); }
+    .guidecard:hover { border-color: var(--druid); }
+    .guidecard img { border-radius: 4px; border: 1px solid var(--border); flex: 0 0 auto; }
+    .guidecard b { font-family: var(--display); font-size: 16px; letter-spacing: .02em; display: block; margin-bottom: 2px; }
+    .guidecard p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    img.ic { vertical-align: -5px; border-radius: 3px; margin-right: 4px; }
+    ul.sources { margin-top: 12px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    ul.sources a { color: var(--rare); text-decoration: none; } ul.sources a:hover { text-decoration: underline; }
+    .ticklist { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; list-style: none; padding: 0; }
+    .ticklist li label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .ticklist input { position: absolute; opacity: 0; pointer-events: none; }
+    .ticklist .box { width: 20px; height: 20px; margin-top: 2px; border: 2px solid var(--dim); border-radius: 4px; display: inline-block; position: relative; }
+    .ticklist input:checked + .box { background: var(--druid); border-color: var(--druid); }
+    .ticklist input:checked + .box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px; border: solid #0b0d14; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+    .ticklist input:checked ~ .txt { color: var(--dim); text-decoration: line-through; }
+    .ticklist .txt b { font-weight: 600; display: block; } .ticklist .txt small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 2px; }
+    .resetline { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+    .resetline button { font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 5px 10px; cursor: pointer; }
+    .resetline button:hover { color: var(--text); }
+    .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    @media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
+    .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin-top: 12px; font-size: 14px; }
+    .kv dt { color: var(--muted); } .kv dd { color: var(--text); }
+    .guidecard-hub { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
+  <div class="wrap">
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_misc_bag_12.jpg" alt="" width="74" height="74"></div>
+        <div>
+          <p class="kicker">Season 2 · Patch 12.1.5 · for a Marksmanship Hunter arriving at 90</p>
+          <h1>Gear</h1>
+          <p class="lede">Item level 102 is where the boost leaves you. This page is the whole road from there: the tracks and crests, what to do in the first two days at 90, what each key and raid pays, and the stats, enchants, gems and consumables once pieces stop changing.</p>
+          <div class="tags"><span class="tag hot">Fresh 90 first</span><span class="tag">Agility · Crit · Mastery</span><span class="tag">Delve tier 8 is the breakpoint</span><span class="tag">Two embellishments</span></div>
+          <div class="jump"><a class="btn" href="#ladder">Ladder</a><a class="btn ghost" href="#fresh90">Fresh 90</a><a class="btn ghost" href="#mplus">Keys & vault</a><a class="btn ghost" href="#stats">Stats</a><a class="btn ghost" href="#enchants">Enchants</a><a class="btn ghost" href="#consumables">Consumables</a><a class="btn ghost" href="#crafted">Crafted</a><a class="btn ghost" href="#trinkets">Trinkets & tier</a><a class="btn ghost" href="#professions">Professions</a></div>
+        </div>
+      </div>
+      <nav class="sitenav" aria-label="Guides"><a href="../" class="">Setup</a><a href="../leveling/" class="">Leveling</a><a href="../rotation/" class="">Rotation</a><a href="#" class="on">Gear</a><a href="../dungeons/" class="">Dungeons & raid</a><a href="../weekly/" class="">Weekly</a><a href="../ui/" class="">UI</a></nav>
+    </header>
+    <main>
+
+      <section id="ladder">
+        <div class="section-head">
+          <div>
+            <h2>The ladder: item 102 to 344</h2>
+            <p class="section-note">Midnight squished item levels. The boost set is 102. Leveling greens at 90 are about 253 to 259. Season 2 gear runs on five tracks, six ranks each, and every rank costs 20 of that track's Mistcrest.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><caption>Live values from the Midnight Season 2 wiki page (28 Oct 2026) and Icy Veins. Ignore charts that still show 259 to 328: those are PTR numbers.</caption><thead><tr><th>Track</th><th>Rank 1 to 6</th><th>Crest</th><th>Where it drops</th></tr></thead><tbody><tr><td><span class="vet">Adventurer</span></td><td>266 to 282</td><td>Adventurer Mistcrest</td><td>Outdoor events, Heroic dungeons, Delve tier 4</td></tr><tr><td><span class="vet">Veteran</span></td><td>279 to 295</td><td>Veteran Mistcrest</td><td>LFR, Heroic dungeons (10 crests a run), Delves 5 to 6, Field Accolade caches</td></tr><tr><td><span class="champ">Champion</span></td><td>292 to 308</td><td>Champion Mistcrest</td><td>Normal raid, Mythic 0, keys +2 to +5, Delves 7 to 10, Renown 9 vendor gear</td></tr><tr><td><span class="hero">Hero</span></td><td>305 to 321</td><td>Hero Mistcrest</td><td>Heroic raid, keys +6 to +9, Delve tier 8 Trovehunter map and tier 11 (15 crests a run), first world boss item of the week</td></tr><tr><td><span class="myth">Myth</span></td><td>318 to 334</td><td>Myth Mistcrest</td><td>Mythic raid, keys +10 and up, Gilded Stash after tier 11 delves, Labyrinth vendor (321)</td></tr><tr><td><span class="myth">Myth 9/6</span></td><td>344</td><td>none</td><td>Last two Mythic raid bosses and their vault slots only</td></tr><tr><td>Ascendant Venomstones</td><td>Hero 321 to about 331, Myth 334 to about 344</td><td>10 Venomstones, one use per item</td><td>12.1.5. Weapon, trinket or neck at max rank. Sources give 328/340 or 331/344; check the tooltip in game</td></tr></tbody></table></div><div class="callout c-info"><b>Crests are uncapped</b> since the 20 Oct 2026 hotfix. Three lower crests trade for one higher at the Crest Exchange in Silvermoon once you have that track's Feat of Strength. Under about 286 item level, pug groups will not take you, so get there through delves and the vendors below before you touch the Group Finder for keys.</div>
+      </section>
+
+      <section id="fresh90">
+        <div class="section-head">
+          <div>
+            <h2>Fresh 90: the first two days</h2>
+            <p class="section-note">In order of item level per hour. Everything here is solo or queueable. Do the vendor lines first, they are the free ones.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Do this</th><th>Gets you</th><th>Track</th></tr></thead><tbody><tr><td><b>Zul'jarra's Forces to Renown 9</b> (Coiled Isle world quests, Vaults of Atal'Utek dailies)</td><td>Neck, helm, belt, trinket and bracers from the quartermaster</td><td><span class="champ">Champion</span></td></tr><tr><td><b>Field Accolades</b> from Void Strikes and Ritual Sites, turned in to Maren Silverwing in Silvermoon. World quests pay 30 each on Heroic World Tier, 10 on Normal</td><td>Caches with a Veteran piece</td><td><span class="vet">Veteran</span></td></tr><tr><td><b>First two Weekly Apex Caches</b> and Venom-Cursed Fragments</td><td>Veteran, then Champion pieces</td><td><span class="vet">Veteran</span> → <span class="champ">Champion</span></td></tr><tr><td><b>Heroic dungeons</b>, queue opens at item level 266</td><td>276 drops, vault slot 289, 10 Veteran crests a run</td><td><span class="vet">Adventurer 4</span></td></tr><tr><td><b>Prey hunts</b> on the Coiled Isle, four or five a week</td><td>Normal 266, Hard 279, Nightmare 292. Vault 279 / 292 / 305</td><td>up to <span class="champ">Champion</span></td></tr><tr><td><b>World boss</b> Nymrissa Wavecaller, Tidebound Grotto on the Coiled Isle</td><td>First item of the week is guaranteed Hero track</td><td><span class="hero">Hero</span></td></tr><tr><td><b>Bountiful Delves tier 8</b> as soon as Valeera and you survive them</td><td>295 from the coffer, 305 Hero from the weekly Trovehunter map, vault 305</td><td><span class="champ">Champion 2</span> → <span class="hero">Hero 1</span></td></tr><tr><td><b>Mythic 0</b>, one run of each of the eight dungeons per day</td><td>292, vault 302</td><td><span class="champ">Champion 1</span></td></tr><tr><td><b>LFR Venomous Abyss</b>, needs average 276</td><td>279 to 289 by wing, vault 292</td><td><span class="vet">Veteran</span></td></tr><tr><td><b>Labyrinth of Kindo'jan</b> (12.1.5)</td><td>Wah'du sells 321 gear for Mythical Soul Fragments, one a week; chambers count as World activities for the vault</td><td><span class="myth">Myth 2</span></td></tr></tbody></table></div><div class="callout c-tip"><b>Delve tier 8 is the breakpoint.</b> Tiers 9 to 11 drop the same 295 and 305 and only add crests, so go to 11 for Hero and Myth crests, not for the coffer. Four Bountiful delves a day, each needs a Restored Coffer Key (100 shards, shard cap 600 a week). Valeera Sanguinar is your companion and now levels to 80; past level 15 she only gains XP in Bountiful delves.</div>
+      </section>
+
+      <section id="mplus">
+        <div class="section-head">
+          <div>
+            <h2>Mythic+ and the Great Vault</h2>
+            <p class="section-note">End-of-dungeon loot and the vault slot each key level earns. Method and the wiki disagree on the +7 to +9 vault item (311 or 315), so expect either.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Key</th><th>End of dungeon</th><th>Vault</th><th>Crests</th></tr></thead><tbody><tr><td>+2 to +3</td><td>295 <span class="champ">C2</span></td><td>305 <span class="hero">H1</span></td><td>Champion 12 / 14</td></tr><tr><td>+4</td><td>298 <span class="champ">C3</span></td><td>308 <span class="hero">H2</span></td><td>Hero 10</td></tr><tr><td>+5</td><td>302 <span class="champ">C4</span></td><td>308 <span class="hero">H2</span></td><td>Hero 10</td></tr><tr><td>+6</td><td>305 <span class="hero">H1</span></td><td>311 <span class="hero">H3</span></td><td>Hero 12</td></tr><tr><td>+7</td><td>305 <span class="hero">H1</span></td><td>311 or 315</td><td>Hero 14</td></tr><tr><td>+8</td><td>308 <span class="hero">H2</span></td><td>311 or 315</td><td>Hero 18</td></tr><tr><td>+9</td><td>308 <span class="hero">H2</span></td><td>311 or 315</td><td>Myth 10</td></tr><tr><td>+10 to +11</td><td>311 <span class="hero">H3</span></td><td>318 <span class="myth">M1</span></td><td>Myth 12 / 14</td></tr><tr><td>+12 and up</td><td>311 <span class="hero">H3</span></td><td>318 <span class="myth">M1</span></td><td>Myth 16</td></tr></tbody></table></div><div class="tblwrap"><table class="tbl "><caption>Great Vault thresholds. From the second week of the season, any three filled slots can be traded for a Nebulous Voidcore bonus roll instead of an item.</caption><thead><tr><th>Vault row</th><th>Slot 1</th><th>Slot 2</th><th>Slot 3</th></tr></thead><tbody><tr><td>Dungeons</td><td>1 key or M0</td><td>4</td><td>8</td></tr><tr><td>Raid</td><td>2 bosses</td><td>4</td><td>6 (one source says 5 and 8)</td></tr><tr><td>World</td><td>2 activities (delves, prey hunts, world boss, Labyrinth chambers, Curse Surges)</td><td>4</td><td>8</td></tr></tbody></table></div><div class="tblwrap"><table class="tbl "><caption>The Venomous Abyss. Kith'ix, the one-boss raid from 12.1.5, drops 285 / 298 / 311 / 324 by difficulty and counts for the raid row.</caption><thead><tr><th>Raid difficulty</th><th>Bosses 1 to 2</th><th>3 to 4</th><th>5 to 6</th><th>7 to 8</th><th>Vault</th></tr></thead><tbody><tr><td>LFR</td><td>279</td><td>282</td><td>285</td><td>289</td><td>292 <span class="champ">C1</span></td></tr><tr><td>Normal</td><td>292</td><td>295</td><td>298</td><td>302</td><td>305 <span class="hero">H1</span></td></tr><tr><td>Heroic</td><td>305</td><td>308</td><td>311</td><td>315</td><td>318 <span class="myth">M1</span></td></tr><tr><td>Mythic</td><td>318</td><td>321</td><td>324</td><td><b>344</b></td><td>334, or 344 from the last two</td></tr></tbody></table></div>
+      </section>
+
+      <section id="stats">
+        <div class="section-head">
+          <div>
+            <h2>Stats</h2>
+            <p class="section-note">Every hand-written 12.1.5 guide agrees on the shape. Item level first, because Agility beats any secondary.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Weapon damage, then Agility</b><p>A ranged weapon upgrade beats everything else in the bag. After that, higher item level is more Agility and wins almost every time.</p></div>
+<div class="habit"><b>Critical Strike</b><p>Feeds Penetrating Shots, Lethality, Critical Precision and the capstones. The Bell Tolls adds 3% on top. Your best secondary.</p></div>
+<div class="habit"><b>Mastery</b><p>Sniper Training: more range and more damage on everything. Second.</p></div>
+<div class="habit"><b>Versatility</b><p>Flat damage and flat damage reduction. Third, and the one to like in keys.</p></div>
+<div class="habit"><b>Haste</b><p>Only speeds Auto Shot, Focus and Aimed Shot. Last, no breakpoints to chase.</p></div>
+<div class="habit"><b>Tertiaries</b><p>Method says Avoidance, then Speed, then Leech. Top key players wear Leech first. Either way, never pick a tertiary over item level.</p></div></div><div class="callout c-info">The order is <b>Agility &gt; Crit &gt; Mastery &gt; Versatility &gt; Haste</b> from Method, Icy Veins and Murlok. Noxxic's auto-generated page puts Versatility and Haste first; ignore it. Nobody publishes a separate Dark Ranger order, so use this one for both hero trees.</div>
+      </section>
+
+      <section id="enchants">
+        <div class="section-head">
+          <div>
+            <h2>Enchants, gems, sockets</h2>
+            <p class="section-note">Midnight removed cloak and wrist enchants and brought helm and shoulder enchants back. Prices move, so buy one slot at a time as pieces stop changing.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Slot</th><th>Enchant</th><th>Note</th></tr></thead><tbody><tr><td>Weapon</td><td>Rite of the Hash'ey</td><td>What 45 of the top 50 key hunters run. Method lists Acuity of the Ren'dorei instead; both are fine, Hash'ey is the popular one</td></tr><tr><td>Head</td><td>Empowered Rune of Avoidance</td><td>Hex of Leeching for keys if you take a lot of chip damage</td></tr><tr><td>Shoulders</td><td>Amirdrassil's Grace</td><td></td></tr><tr><td>Chest</td><td>Mark of the Worldsoul</td><td>Unanimous</td></tr><tr><td>Legs</td><td>Forest Hunter's Armor Kit</td><td>Leatherworking</td></tr><tr><td>Boots</td><td>Lynx's Dexterity or Shaladrassil's Roots</td><td>Split evenly among top players; movement speed or stats</td></tr><tr><td>Rings, both</td><td>Eyes of the Eagle</td><td>Unanimous. The Gear Enchanting quest in your log teaches the mechanics with a weaker one</td></tr><tr><td>Wrist, cloak</td><td>none</td><td>No enchant exists for these in Midnight</td></tr></tbody></table></div><div class="habits"><div class="habit"><b>Gems</b><p>One Eversong Diamond in your single unique socket: Powerful (most players) or Indecipherable. Every other socket a Flawless Masterful Garnet (Crit and Mastery). For the diamond's colour bonus, one each of Deadly Amethyst, Deadly Peridot and Deadly Lapis, then Garnets.</p></div>
+<div class="habit"><b>Buying sockets</b><p>Radiant Jewelbinder adds a socket to helm, bracers or belt, from Vaultkeeper Elysa in Silvermoon for 6 Thalassian Tokens of Merit. The season 2 version is the Miasmic Jewelbinder from the Great Vault vendor. Head, wrist and waist only; one socket per piece.</p></div>
+<div class="habit"><b>Hunter ammo and scopes</b><p>Engineering makes Laced Zoomshots and Weighted Boomshots (ammo) and Smuggler's Lynxeye and Farstrider's Hawkeye (scopes). Method's consumables list says these replace oils and weapon enchants for hunters, but every spec guide still lists Phoenix Oil plus a normal enchant. Test in game: if the oil buff drops when you load ammo, they do not stack.</p></div></div>
+      </section>
+
+      <section id="consumables">
+        <div class="section-head">
+          <div>
+            <h2>Consumables</h2>
+            <p class="section-note">What to carry for a key or a raid night. The boost's healing potions and food are fine while leveling.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Type</th><th>Item</th><th>Made by</th></tr></thead><tbody><tr><td>Flask</td><td>Flask of the Shattered Sun (Crit) or Flask of the Magisters (Mastery)</td><td>Alchemy</td></tr><tr><td>Combat potion, raid</td><td>Potion of Recklessness; Light's Potential as a second pot at the end of a fight</td><td>Alchemy</td></tr><tr><td>Combat potion, keys</td><td>Liquid Luster (stacking Versatility)</td><td>Alchemy</td></tr><tr><td>Health potion</td><td>Concentrated Silvermoon Health Potion</td><td>Alchemy</td></tr><tr><td>Food</td><td>Hearty Royal Roast (survives a death). Feasts: Harandar Celebration, Silvermoon Parade</td><td>Cooking</td></tr><tr><td>Augment rune</td><td>Void-Touched Augment Rune, one hour, lost on death</td><td>Vendor and drops</td></tr><tr><td>Weapon oil</td><td>Thalassian Phoenix Oil (Crit and Haste). Oils are Enchanting now, not Alchemy</td><td>Enchanting</td></tr><tr><td>Cauldrons</td><td>Cauldron of Sin'dorei Flasks, Voidlight Potion Cauldron</td><td>Alchemy</td></tr></tbody></table></div>
+      </section>
+
+      <section id="crafted">
+        <div class="section-head">
+          <div>
+            <h2>Crafted gear and embellishments</h2>
+            <p class="section-note">Two embellished items at once, no more. Crafted gear tops out at 331, so it is only worth wearing for those two slots.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Spark of Tides</b><p>One a week from the weekly quests: Trailing Xal'atath (Vereesa Windrunner, Silvermoon, 100 Fading Voidwhispers), Sparks of War (Zerella, Falconwing Square, PvP) or Turn Back the Surge (Talon Commander Zela, Tokka's Landing, three Curse Surges). Armour costs two Sparks.</p></div>
+<div class="habit"><b>Crafted item level</b><p>Spark only: 305. Add 80 Hero crests: 318. Add 80 Myth crests: 331.</p></div>
+<div class="habit"><b>The two pieces</b><p>Farstrider's Trophy Belt and Farstrider's Plated Bracers, Leatherworking mail, Crit and Mastery, each with the Arcanoweave Lining embellishment (a mana wyrm that grants primary stat to you and an ally). 97 of 100 top-player embellishment slots are Arcanoweave.</p></div>
+<div class="habit"><b>Do not craft a weapon</b><p>Nebulous Voidcore bonus rolls can hand you a Myth-track weapon from a boss. A crafted one would be dead gold.</p></div>
+<div class="habit"><b>New season 2 embellishments</b><p>Adorned Fang, Snakeskin Lining, Polished Ammolite, Hunter's Ritual Stone, Coiled Snake-Eye. None of the hunter guides rate them over Arcanoweave; skip unless a sim says otherwise.</p></div></div>
+      </section>
+
+      <section id="trinkets">
+        <div class="section-head">
+          <div>
+            <h2>Trinkets and the tier set</h2>
+            <p class="section-note">Bloodmallet single-target sim from 28 Oct 2026, cross-checked with Method, Maxroll and the top 50 key hunters.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>#</th><th>Trinket</th><th>From</th><th>Why</th></tr></thead><tbody><tr><td>1</td><td>Voracious Heart of Ula'tek</td><td>Ula'tek, Venomous Abyss</td><td>90 second on-use Agility; line it up with Trueshot every time</td></tr><tr><td>2</td><td>Font of Venomous Rage</td><td>Ula'tek, Venomous Abyss</td><td>Four minute on-use channel, big Nature hit plus splash. Do not try to sync it with Trueshot if you also carry Voracious Heart</td></tr><tr><td>3</td><td>Zul'jin's Guillotine Technique</td><td>The Coiled Altar, Venomous Abyss</td><td>Axe proc that scales with missing health. Single target only</td></tr><tr><td>4</td><td>Vile Vial of Volatile Venom</td><td>Altar of Fangs</td><td>On-use Agility, the dungeon one</td></tr><tr><td>5</td><td>Lustrous Golden Plumage</td><td>Kings' Rest</td><td>On-use Agility</td></tr><tr><td>Keys</td><td>Twisted Horror's Tendril</td><td>Kith'ix</td><td>Stacking Crit proc, number two among key hunters, strongest in AoE. Swap it in for the Coiled Altar trinket in keys</td></tr></tbody></table></div><div class="habits"><div class="habit"><b>Skulking Viper's Ambush, the hunter tier</b><p>Two pieces: Explosive Shot lasts one second longer and does 5% more. Four pieces: Aimed Shot and Rapid Fire do 5% more, and every Explosive Shot burst takes half a second off both cooldowns. Explosive Shot on cooldown is already rule two of the rotation; the set is why.</p></div>
+<div class="habit"><b>Where the pieces drop</b><p>Head from The Twin Fangs, hands from Entombed Sentinels, chest from Vashnik the Malignant, shoulders from The Lost Explorers, legs from Sszorak. Ula'tek drops the Slumbering Coil Curio, a token Kirana in Silvermoon turns into any slot.</p></div>
+<div class="habit"><b>The Catalyst</b><p>In the Silvermoon Bazaar next to the Voidforge. Venomblight Manaflux charges: one every two weeks, cap eight, plus extra from Serpent Scion and (after your first set bonus) from keys, raid bosses and Bountiful delves. Converted pieces keep their secondaries.</p></div></div>
+      </section>
+
+      <section id="professions">
+        <div class="section-head">
+          <div>
+            <h2>Professions</h2>
+            <p class="section-note">Pick two in Silvermoon. The class answer and the gold answer are different.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Leatherworking + Skinning</b><p>The class pick. Leatherworking crafts the belt and bracers above and the Adorned Fang embellishment; Skinning feeds it Void-Tempered Leather and sells the rest.</p></div>
+<div class="habit"><b>Gold instead</b><p>Inscription (missives on every crafted piece), Jewelcrafting and Alchemy top every 2026 gold list. Herbalism or Mining if you want zero crafting-order effort.</p></div>
+<div class="habit"><b>Engineering</b><p>Only if you want the hunter ammo and scopes above. Check that they stack with oil and a weapon enchant before committing.</p></div></div>
+      </section>
+
+      <section id="sources">
+        <div class="section-head">
+          <div>
+            <h2>Sources</h2>
+            <p class="section-note">Checked 3 Nov 2026. Icy Veins blocks automated reads, so its numbers came through search snippets and its news mirror.</p>
+          </div>
+          
+        </div>
+        <ul class="sources"><li><a href="https://warcraft.wiki.gg/wiki/Midnight_Season_2" rel="noopener">Midnight Season 2</a> · tracks, crests, delves, M+ table</li><li><a href="https://www.method.gg/guides/how-to-gear-fast-and-reach-item-level-335-in-wow-midnight-season-2" rel="noopener">Method: how to gear fast to 335</a></li><li><a href="https://method.gg/guides/marksmanship-hunter/gearing" rel="noopener">Method: Marksmanship gearing</a> · trinkets, crafted picks</li><li><a href="https://method.gg/guides/marksmanship-hunter/stats-races-and-consumables" rel="noopener">Method: stats, races and consumables</a></li><li><a href="https://www.method.gg/guides/wow-midnight-season-2-great-vault-reward-item-levels-and-upgrade-track" rel="noopener">Method: Great Vault item levels</a></li><li><a href="https://www.method.gg/guides/list-of-all-midnight-consumables-enchants-and-gems" rel="noopener">Method: all Midnight consumables, enchants and gems</a></li><li><a href="https://maxroll.gg/wow/class-guides/marksmanship-hunter-raid-guide" rel="noopener">Maxroll: Marksmanship raid guide</a> · enchants, gems, embellishments</li><li><a href="https://murlok.io/hunter/marksmanship/m+" rel="noopener">Murlok.io: Marksmanship M+ top players</a> · what the top 50 actually wear</li><li><a href="https://bloodmallet.com/chart/get/trinkets/castingpatchwerk/hunter/marksmanship" rel="noopener">Bloodmallet: Marksmanship trinkets</a></li><li><a href="https://wp-prod.icy-veins.com/item-level-of-loot-in-midnight-season-2/" rel="noopener">Icy Veins: item level of loot in Season 2</a></li><li><a href="https://conquestcapped.com/guides/wow/midnight-delves-rewards/" rel="noopener">Delve rewards table</a></li><li><a href="https://worldofwarcraft.blizzard.com/news/24307310/hotfixes-october-30-2026" rel="noopener">Blizzard hotfixes, 30 Oct 2026</a> · crest cap removed</li><li><a href="https://warcraft.wiki.gg/wiki/Skulking_Viper's_Ambush" rel="noopener">Skulking Viper's Ambush</a> · tier set</li></ul>
+      </section>
+    </main>
+    <footer>
+      <span>Part of the <a href="../">Alaranarises guides</a> · unlisted, not linked from <a href="../../">willhsu.dev</a></span>
+      <span>Icons from Wowhead. Not affiliated with Blizzard Entertainment. Checked against patch 12.1.5 on 3 Nov 2026.</span>
+    </footer>
+  </div>
+  
+  <script>
+    // Tick lists: saved in this browser only. mode=week clears after the Tuesday 15:00 UTC reset, mode=day after each 15:00 UTC.
+    (() => {
+      const now = new Date();
+      const periodKey = (mode) => {
+        const t = new Date(now);
+        if (mode === 'forever') return 'x';
+        // shift so the day boundary is 15:00 UTC
+        const shifted = new Date(t.getTime() - 15 * 3600 * 1000);
+        if (mode === 'day') return shifted.toISOString().slice(0, 10);
+        const dow = shifted.getUTCDay(); // Tuesday = 2
+        const back = (dow - 2 + 7) % 7;
+        shifted.setUTCDate(shifted.getUTCDate() - back);
+        return 'w' + shifted.toISOString().slice(0, 10);
+      };
+      document.querySelectorAll('.ticklist').forEach(ul => {
+        const store = ul.dataset.store, mode = ul.dataset.mode || 'forever';
+        const key = store + ':' + periodKey(mode);
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+        try { Object.keys(localStorage).forEach(k => { if (k.startsWith(store + ':') && k !== key) localStorage.removeItem(k); }); } catch {}
+        ul.querySelectorAll('input').forEach(cb => {
+          cb.checked = !!saved[cb.dataset.i];
+          cb.addEventListener('change', () => {
+            saved[cb.dataset.i] = cb.checked;
+            try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
+          });
+        });
+        const reset = document.querySelector(`[data-reset="${ul.id}"]`);
+        if (reset) reset.addEventListener('click', () => { saved = {}; try { localStorage.removeItem(key); } catch {} ul.querySelectorAll('input').forEach(cb => cb.checked = false); });
+      });
+      const nr = document.getElementById('next-reset');
+      if (nr) {
+        const t = new Date(now); const s = new Date(t.getTime() - 15 * 3600 * 1000);
+        const dow = s.getUTCDay(); const fwd = (2 - dow + 7) % 7 || 7;
+        const next = new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate() + fwd, 15, 0, 0));
+        nr.textContent = next.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      }
+    })();
+  </script>
+  
+</body>
+</html>

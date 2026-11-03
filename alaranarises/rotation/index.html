@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotation · Alaranarises</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b0d14">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff7c0a'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0b0d14;
+      --panel: #121522;
+      --panel-2: #181c2c;
+      --text: #eceef5;
+      --muted: #9aa0b5;
+      --dim: #646a80;
+      --border: rgba(255, 255, 255, 0.08);
+      --legendary: #ff8000;
+      --epic: #a335ee;
+      --rare: #2b8cff;
+      --uncommon: #1eff00;
+      --druid: #aad372;
+      --gold: #ffd100;
+      --builder: var(--rare);
+      --finisher: var(--legendary);
+      --cooldown: var(--epic);
+      --defensive: var(--uncommon);
+      --utility: #9d9d9d;
+      --display: 'Chakra Petch', 'Avenir Next Condensed', 'Arial Narrow', system-ui, sans-serif;
+      --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+      --cut: 14px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(170, 211, 114, 0.16), transparent 60%),
+        radial-gradient(800px 500px at 95% 0%, rgba(163, 53, 238, 0.14), transparent 60%),
+        var(--bg);
+      background-repeat: no-repeat;
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--druid); color: #0b0d14; }
+    .clickrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .code { font-family: var(--mono); font-size: 12px; word-break: break-all; background: var(--panel-2); border: 1px solid var(--border); padding: 8px 10px; margin: 8px 0; user-select: all; color: var(--text); }
+    span.code { display: inline; padding: 1px 4px; }
+    .todo { display: grid; gap: 8px; }
+    .todo label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .todo input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--druid); }
+    .todo b { display: block; font-family: var(--display); font-weight: 600; letter-spacing: .5px; }
+    .todo small { color: var(--muted); }
+    .todo label.done b { text-decoration: line-through; color: var(--dim); }
+    .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .check { background: var(--panel); border: 1px solid var(--border); padding: 14px 16px; }
+    .check h3 { font-family: var(--display); font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--druid); margin-bottom: 8px; }
+    .check ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+    .todo-reset { font: inherit; font-size: 12px; color: var(--muted); background: none; border: 1px solid var(--border); padding: 4px 10px; cursor: pointer; }
+
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid var(--rare); outline-offset: 2px; }
+
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+    /* --- HERO / CHARACTER SHEET --- */
+    .hero { padding: 64px 0 36px; }
+
+    .sheet { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+
+    .crest {
+      width: 112px;
+      height: 112px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e6f5c8, var(--druid));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .crest img {
+      width: 74px;
+      height: 74px;
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+
+    .kicker {
+      font-family: var(--display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--druid);
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: clamp(40px, 8vw, 72px);
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      font-style: italic;
+      margin: 6px 0 12px;
+    }
+
+    .lede { color: var(--muted); font-size: 17px; max-width: 600px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .tag {
+      font-family: var(--display);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+    }
+    .tag.hot { color: var(--druid); border-color: color-mix(in srgb, var(--druid) 50%, transparent); }
+
+    .jump { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .btn {
+      display: inline-block;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 10px 18px;
+      background: #ffe14d;
+      color: #14120a;
+      clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+      transition: transform 0.12s ease, filter 0.12s ease;
+    }
+    .btn.ghost { background: var(--panel-2); color: var(--text); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    /* --- SECTIONS --- */
+    section { padding-bottom: 56px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 24px 0 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: var(--display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-note { color: var(--dim); font-size: 13px; }
+
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      cursor: pointer;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .tab:hover { color: var(--text); }
+    .tab[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab.mod[aria-pressed="true"] { background: var(--druid); border-color: var(--druid); }
+
+    /* --- KEYBOARD --- */
+    .board {
+      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      position: relative;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
+      border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 28px 16px 22px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .layer-name {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--display);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      background: var(--druid);
+      color: #0b0d14;
+    }
+
+    .keys { display: grid; gap: 8px; justify-content: center; }
+    .row { display: flex; gap: 8px; }
+    .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
+    .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
+    .row:nth-child(4) { padding-left: calc(var(--key) * 0.9); }
+
+    .key {
+      --role: var(--utility);
+      position: relative;
+      width: var(--key);
+      height: var(--key);
+      flex: 0 0 auto;
+      display: block;
+      padding: 0;
+      background: #07080d;
+      border: 1px solid var(--border);
+      border-bottom: 3px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      color: var(--text);
+      font: inherit;
+      overflow: hidden;
+      cursor: default;
+      transition: transform 0.08s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+    }
+    .key.has { border-color: color-mix(in srgb, var(--role) 70%, transparent); border-bottom-color: color-mix(in srgb, var(--role) 55%, #000); cursor: help; }
+    .key.has:hover, .key.has:focus-visible, .key.lit {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--role), 0 0 22px color-mix(in srgb, var(--role) 55%, transparent);
+    }
+    .key.pressed { transform: translateY(1px); border-bottom-width: 1px; }
+    .key img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .key .shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.85)); }
+    .key .cap {
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 13px;
+      line-height: 1;
+      text-shadow: 0 1px 2px #000, 0 0 4px #000;
+    }
+    .key .label {
+      position: absolute;
+      left: 4px;
+      right: 4px;
+      bottom: 3px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 10px;
+      line-height: 1.1;
+      text-align: left;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .key.move { background: repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 4px, transparent 4px 9px), #0d0f17; }
+    .key.move .label, .key.empty .label { color: var(--dim); text-shadow: none; }
+    .key.empty .cap, .key.move .cap { color: var(--dim); text-shadow: none; }
+    .key .mono { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; color: color-mix(in srgb, var(--role) 70%, #fff); background: color-mix(in srgb, var(--role) 18%, #07080d); }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; color: var(--muted); font-size: 12px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 2px; background: var(--c); display: inline-block; }
+
+    .hint { text-align: center; color: var(--dim); font-size: 12px; }
+    .hint.touch { display: none; }
+    @media (hover: none) {
+      .hint.keys-hint { display: none; }
+      .hint.touch { display: block; }
+    }
+    .hint kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--text);
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-bottom-width: 2px;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+
+    /* --- ROTATION --- */
+    .combo {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+    .combo-title { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--druid); width: 100%; }
+    .step { display: inline-flex; align-items: center; gap: 8px; }
+    .step + .step::before { content: "›"; font-family: var(--display); font-size: 22px; color: var(--dim); margin-right: 2px; }
+    .chipkey {
+      --role: var(--utility);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      background: #07080d;
+      border: 1px solid color-mix(in srgb, var(--role) 60%, transparent);
+      border-radius: 4px;
+      cursor: help;
+      font: inherit;
+      color: var(--text);
+    }
+    .chipkey img, .chipkey .mini-mono { width: 28px; height: 28px; border-radius: 3px; display: block; }
+    .chipkey .mini-mono { display: grid; place-items: center; font-family: var(--display); font-weight: 700; background: color-mix(in srgb, var(--role) 25%, #07080d); }
+    .chipkey b { font-family: var(--display); font-weight: 600; font-size: 14px; }
+    .chipkey kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; }
+
+    .prio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .prio {
+      --rarity: var(--legendary);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 16%, var(--panel)) 0%, var(--panel) 50%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 50%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      padding: 18px;
+    }
+    .prio.aoe { --rarity: var(--epic); }
+    .prio h3 { font-family: var(--display); font-weight: 700; font-size: 22px; color: color-mix(in srgb, var(--rarity) 70%, #fff); margin-bottom: 10px; }
+    .prio ol { list-style: none; counter-reset: p; display: grid; gap: 8px; }
+    .prio li { counter-increment: p; display: grid; grid-template-columns: 22px auto 1fr; gap: 10px; align-items: center; }
+    .prio li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--dim); text-align: right; }
+    .prio li .when { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+
+    .pips { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 4px; }
+    .pips i { width: 8px; height: 8px; border-radius: 50%; background: #3a2a14; border: 1px solid #6b4a1a; }
+    .pips i.on { background: #ffcc33; border-color: #ffe08a; box-shadow: 0 0 6px rgba(255, 204, 51, 0.7); }
+
+    /* --- TALENT CARDS (item shop) --- */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+
+    .card {
+      --rarity: var(--rare);
+      grid-column: span 2;
+      position: relative;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      background: linear-gradient(180deg, color-mix(in srgb, var(--rarity) 22%, var(--panel)) 0%, var(--panel) 65%);
+      border: 1px solid color-mix(in srgb, var(--rarity) 55%, transparent);
+      clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut)));
+      overflow: hidden;
+      cursor: help;
+      transition: transform 0.15s ease;
+    }
+    .card.legendary { --rarity: var(--legendary); }
+    .card.epic { --rarity: var(--epic); }
+    .card.rare { --rarity: var(--rare); }
+    .card.uncommon { --rarity: var(--uncommon); }
+    .card.common { --rarity: #9d9d9d; }
+    .card.locked { filter: saturate(0.35); opacity: 0.8; }
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.10) 50%, transparent 60%);
+      transform: translateX(-100%);
+      pointer-events: none;
+    }
+    .card:hover { transform: translateY(-3px); }
+    .card:hover::after { transform: translateX(100%); transition: transform 0.6s ease; }
+    .card .icon { width: 52px; height: 52px; flex: 0 0 52px; border: 2px solid var(--rarity); border-radius: 4px; background: #07080d; overflow: hidden; }
+    .card .icon img { width: 100%; height: 100%; display: block; }
+    .card h3 { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .card .meta { font-family: var(--display); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rarity); }
+    .card .desc { color: var(--muted); font-size: 13.5px; margin-top: 4px; line-height: 1.45; }
+
+    .habits { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .habit { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--druid); padding: 16px 18px; }
+    .habit b { display: block; font-family: var(--display); font-weight: 700; font-size: 17px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .habit p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    /* --- TOOLTIP --- */
+    .tip {
+      --rarity: var(--utility);
+      background: rgba(8, 9, 16, 0.97);
+      border: 1px solid color-mix(in srgb, var(--rarity) 70%, #444);
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      width: 300px;
+    }
+    .tip-head { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; }
+    .tip-head img, .tip-head .mini-mono { width: 34px; height: 34px; border-radius: 3px; border: 1px solid color-mix(in srgb, var(--rarity) 60%, #333); display: grid; place-items: center; font-family: var(--display); font-weight: 700; }
+    .tip-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+    .tip-rank { font-size: 12px; color: var(--muted); }
+    .tip-row { display: flex; justify-content: space-between; gap: 12px; color: var(--text); }
+    .tip-req { color: #ff2020; }
+    .tip-desc { color: var(--gold); margin-top: 6px; }
+    .tip-pro { color: var(--uncommon); margin-top: 6px; }
+    .tip-key { color: var(--dim); margin-top: 6px; font-family: var(--mono); font-size: 11px; }
+
+    #float-tip {
+      position: fixed;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .card { grid-column: span 3; }
+      .prio-grid { grid-template-columns: 1fr; }
+      .habits { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 40px 0 28px; }
+      .sheet { grid-template-columns: 1fr; gap: 18px; }
+      .crest { width: 80px; height: 80px; }
+      .crest img { width: 52px; height: 52px; }
+      .card { grid-column: span 6; }
+      .habits { grid-template-columns: 1fr; }
+      .board { padding: 42px 8px 18px; }
+      .keys, .row { gap: 5px; }
+      .key .label { display: none; }
+      .step + .step::before { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .card::after, .btn, .key { transition: none !important; }
+      .card:hover, .key.has:hover, .key.lit { transform: none; }
+      .card::after { display: none; }
+    }
+
+    /* --- BACKDROP: three.js Azeroth zones behind the page (assets/azeroth.js) --- */
+    :root { --veil: 56%; }
+    @media (max-width: 700px) { :root { --veil: 72%; } }
+    .backdrop {
+      position: fixed; inset: 0; width: 100%; height: 100vh; height: 100lvh;
+      z-index: -1; pointer-events: none; opacity: 0; transition: opacity 1.2s ease;
+      -webkit-mask-image: linear-gradient(to bottom, #000 84%, transparent);
+      mask-image: linear-gradient(to bottom, #000 84%, transparent);
+    }
+    .backdrop.on { opacity: 1; }
+    .wrap {
+      background: color-mix(in srgb, var(--bg) var(--veil), transparent);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 0 40px 16px color-mix(in srgb, var(--bg) 35%, transparent);
+    }
+    @media (prefers-reduced-motion: reduce) { .backdrop { display: none; } }
+  </style>
+  <style>
+    .sitenav { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 8px; }
+    .sitenav a { font-family: var(--display); font-weight: 600; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 12px; border: 1px solid var(--border); background: rgba(18,21,34,.7); clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px); }
+    .sitenav a:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+    .sitenav a.on { color: #0b0d14; background: var(--druid); border-color: var(--druid); }
+    .tblwrap { overflow-x: auto; margin-top: 14px; border: 1px solid var(--border); background: var(--panel); }
+    table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 520px; }
+    table.tbl caption { text-align: left; padding: 10px 12px 6px; color: var(--muted); font-size: 12.5px; }
+    table.tbl th { text-align: left; font-family: var(--display); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; font-size: 11.5px; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: var(--panel-2); white-space: nowrap; }
+    table.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+    table.tbl tr:last-child td { border-bottom: 0; }
+    table.tbl td b { color: var(--gold); font-weight: 600; }
+    table.tbl .hero { color: var(--epic); } table.tbl .myth { color: var(--legendary); } table.tbl .champ { color: var(--rare); } table.tbl .vet { color: var(--uncommon); }
+    .callout { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-left: 3px solid var(--gold); background: var(--panel); font-size: 14px; color: var(--text); }
+    .callout.c-warn { border-left-color: #ff4d4d; } .callout.c-tip { border-left-color: var(--druid); } .callout.c-info { border-left-color: var(--rare); }
+    .callout b { color: var(--gold); }
+    ol.prio-list { list-style: none; counter-reset: p; margin-top: 10px; display: grid; gap: 6px; }
+    ol.prio-list li { counter-increment: p; display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 9px 12px; background: var(--panel); border: 1px solid var(--border); align-items: start; }
+    ol.prio-list li::before { content: counter(p); font-family: var(--display); font-weight: 700; color: var(--gold); font-size: 16px; line-height: 1.3; }
+    ol.prio-list li b { color: var(--text); display: block; font-weight: 600; } ol.prio-list li span { color: var(--muted); font-size: 13.5px; }
+    .prio + .prio { margin-top: 18px; }
+    .guidegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin-top: 14px; }
+    .guidecard { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--panel); border: 1px solid var(--border); text-decoration: none; color: var(--text); }
+    .guidecard:hover { border-color: var(--druid); }
+    .guidecard img { border-radius: 4px; border: 1px solid var(--border); flex: 0 0 auto; }
+    .guidecard b { font-family: var(--display); font-size: 16px; letter-spacing: .02em; display: block; margin-bottom: 2px; }
+    .guidecard p { color: var(--muted); font-size: 13px; line-height: 1.45; }
+    img.ic { vertical-align: -5px; border-radius: 3px; margin-right: 4px; }
+    ul.sources { margin-top: 12px; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    ul.sources a { color: var(--rare); text-decoration: none; } ul.sources a:hover { text-decoration: underline; }
+    .ticklist { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; list-style: none; padding: 0; }
+    .ticklist li label { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); cursor: pointer; }
+    .ticklist input { position: absolute; opacity: 0; pointer-events: none; }
+    .ticklist .box { width: 20px; height: 20px; margin-top: 2px; border: 2px solid var(--dim); border-radius: 4px; display: inline-block; position: relative; }
+    .ticklist input:checked + .box { background: var(--druid); border-color: var(--druid); }
+    .ticklist input:checked + .box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px; border: solid #0b0d14; border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
+    .ticklist input:checked ~ .txt { color: var(--dim); text-decoration: line-through; }
+    .ticklist .txt b { font-weight: 600; display: block; } .ticklist .txt small { color: var(--muted); font-size: 12.5px; display: block; margin-top: 2px; }
+    .resetline { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 10px; color: var(--muted); font-size: 13px; flex-wrap: wrap; }
+    .resetline button { font: inherit; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 5px 10px; cursor: pointer; }
+    .resetline button:hover { color: var(--text); }
+    .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    @media (max-width: 760px) { .twocol { grid-template-columns: 1fr; } }
+    .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin-top: 12px; font-size: 14px; }
+    .kv dt { color: var(--muted); } .kv dd { color: var(--text); }
+    .guidecard-hub { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <canvas class="backdrop" aria-hidden="true" data-src="../../assets/azeroth.js"></canvas>
+  <script>
+    // Load the Azeroth backdrop once the page is idle, on machines that can run it.
+    (() => {
+      const c = document.querySelector('canvas.backdrop');
+      if (!c || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      let gl = false;
+      try { gl = !!document.createElement('canvas').getContext('webgl2'); } catch {}
+      const n = navigator;
+      if (!gl || (n.hardwareConcurrency ?? 8) < 4 || (n.deviceMemory ?? 8) < 4) return;
+      const go = () => import(c.dataset.src).then(m => m.start(c)).catch(() => {});
+      'requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1500 }) : setTimeout(go, 300);
+    })();
+  </script>
+  <div class="wrap">
+    <header class="hero">
+      <div class="sheet">
+        <div class="crest" aria-hidden="true"><img src="https://wow.zamimg.com/images/wow/icons/large/inv_ability_darkrangerhunter_blackarrow.jpg" alt="" width="74" height="74"></div>
+        <div>
+          <p class="kicker">Dark Ranger Marksmanship · Patch 12.1.5 · keys in brackets are the setup page's bars</p>
+          <h1>Rotation</h1>
+          <p class="lede">Opener, single target, AoE, cooldowns and every Dark Ranger node, in the order you press them. Each line says why, so when a patch moves one, you can tell which lines moved with it.</p>
+          <div class="tags"><span class="tag hot">Black Arrow when lit</span><span class="tag">Explosive & Volley on cooldown</span><span class="tag">Never cap Aimed Shot</span><span class="tag">Steady Shot is the filler</span></div>
+          <div class="jump"><a class="btn" href="#idea">The idea</a><a class="btn ghost" href="#opener">Opener</a><a class="btn ghost" href="#st">Single target</a><a class="btn ghost" href="#aoe">AoE</a><a class="btn ghost" href="#cds">Cooldowns</a><a class="btn ghost" href="#hero">Hero tree</a></div>
+        </div>
+      </div>
+      <nav class="sitenav" aria-label="Guides"><a href="../" class="">Setup</a><a href="../leveling/" class="">Leveling</a><a href="#" class="on">Rotation</a><a href="../gear/" class="">Gear</a><a href="../dungeons/" class="">Dungeons & raid</a><a href="../weekly/" class="">Weekly</a><a href="../ui/" class="">UI</a></nav>
+    </header>
+    <main>
+
+      <section id="idea">
+        <div class="section-head">
+          <div>
+            <h2>The idea in one paragraph</h2>
+            
+          </div>
+          
+        </div>
+        <p class="section-note">Aimed Shot makes <b>Precise Shots</b>. Black Arrow spends them and is the hardest hit you have when it is lit. Explosive Shot, Volley and Rapid Fire come back every 16 to 45 seconds and are pressed the moment they return. Trueshot every two minutes turns the next fifteen seconds into the Withering Fire window where Black Arrow fires extra arrows. Steady Shot is what you press when nothing else is ready. That is the whole spec; the lists below are the order when two things are ready at once.</p><div class="habits"><div class="habit"><b>Precise Shots</b><p>Two stacks after every Aimed Shot. Make Black Arrow or Arcane Shot (Multi-Shot in AoE) 60% cheaper and stronger. Never let them sit while you cast another Aimed Shot: that wastes the next two.</p></div>
+<div class="habit"><b>Deathblow</b><p>The proc that lets Black Arrow fire in the middle of a fight (it is always usable above 80% and below 20% health). Rapid Fire always grants one (Soul Drinker); Aimed Shot has a chance; Wailing Arrow procs it.</p></div>
+<div class="habit"><b>Trick Shots</b><p>Makes Aimed Shot and Rapid Fire cleave. Multi-Shot on three or more targets gives it, Volley gives it for six seconds without eating it, and Bleak Powder hitting two or more enemies gives it (fixed in 12.1.5).</p></div>
+<div class="habit"><b>Lock and Load</b><p>A free, instant Aimed Shot. Spend it as it comes; it has no line of its own in the Dark Ranger list.</p></div>
+<div class="habit"><b>Withering Fire</b><p>Trueshot's window. Black Arrow fires two extra arrows at nearby targets at 30% damage (Blighted Quiver adds two more), and you get a free Deathblow. Black Arrow is about three times its normal value inside it.</p></div>
+<div class="habit"><b>The eagle</b><p>Avian Specialization. No pet, so no Misdirection target of your own, no taunt and nothing to hold a mob. In return Aimed Shot and Rapid Fire hit harder and Harrier's Cry is a burst button. Fetch: Eagle (Ctrl-7) loots for you.</p></div></div>
+      </section>
+
+      <section id="opener">
+        <div class="section-head">
+          <div>
+            <h2>Single target: the opener</h2>
+            <p class="section-note">Pre-pull and the first ten seconds. Potion and the Voracious Heart trinket go with Trueshot.</p>
+          </div>
+          
+        </div>
+        <div class="prio"><ol class="prio-list"><li><b>Hunter's Mark (Shift-1), before the pull</b><span>Flat damage buff on up to five targets since 12.1. Put it on the thing that will live longest.</span></li><li><b>Aimed Shot (1), start it about 2.5 seconds before the tank pulls</b><span>It lands as combat starts and you already hold two Precise Shots.</span></li><li><b>Black Arrow (Q)</b><span>The target is above 80%, so it is usable. Starts the DoT and the Corpsecaller minion engine.</span></li><li><b>Explosive Shot (E), then Explosive Shot again</b><span>The 12.1 version stacks when double-cast and the two-piece tier makes it last longer.</span></li><li><b>Volley (R)</b><span>Six seconds of free Trick Shots. Fine on a single target too.</span></li><li><b>Trueshot (G), potion, trinket</b><span>Opens Withering Fire, hands you a Deathblow and a Dark Hound.</span></li><li><b>Aimed Shot (1), Black Arrow (Q), Rapid Fire (3)</b><span>Deathblow makes Aimed Shot hand you a free Black Arrow; Rapid Fire guarantees the next Deathblow.</span></li></ol></div>
+      </section>
+
+      <section id="st">
+        <div class="section-head">
+          <div>
+            <h2>Single target: the priority</h2>
+            <p class="section-note">Top to bottom, press the highest thing that is ready. Assisted Highlight glows the same answer on your bar.</p>
+          </div>
+          
+        </div>
+        <div class="prio"><ol class="prio-list"><li><b>Black Arrow (Q) with Precise Shots up</b><span>About three times its damage inside Trueshot. Precise Shots should never cap at two.</span></li><li><b>Explosive Shot (E) on cooldown, back to back when you can</b><span>It stacks, and with the four-piece every burst takes half a second off Aimed Shot and Rapid Fire.</span></li><li><b>Volley (R) on cooldown</b><span>Trick Shots for six seconds and Salvo if talented.</span></li><li><b>Aimed Shot (1) during Trueshot if you are about to cap two charges, or when Precise Shots is down and Black Arrow is ready</b><span>Two charges sitting there is wasted damage. Watch the little counter on key 1.</span></li><li><b>Trueshot (G) on cooldown</b><span>Two minutes. Do not save it for a phase that may never come.</span></li><li><b>Rapid Fire (3) on cooldown</b><span>As Dark Ranger you cast it regardless of Precise Shots: guaranteed Deathblow, and a 30% Lock and Load chance through Windrunner Quiver.</span></li><li><b>Wailing Arrow (the Trueshot button, once per window)</b><span>Wailing Dead turns G into it for fifteen seconds after Trueshot. Shadow AoE, silences NPCs, procs Deathblow.</span></li><li><b>Arcane Shot (2) to spend Precise Shots</b><span>60% cheaper while the buff is up. Spend before the next Aimed Shot.</span></li><li><b>Aimed Shot (1) on cooldown</b><span>The builder. 2.5 second cast, two charges.</span></li><li><b>Steady Shot (5)</b><span>Filler and Focus. Never stop casting.</span></li></ol></div>
+      </section>
+
+      <section id="aoe">
+        <div class="section-head">
+          <div>
+            <h2>AoE and keys</h2>
+            <p class="section-note">Explosive Shot on different targets, Volley on cooldown, keep Trick Shots up, and Black Arrow's Bleak Powder cone does the rest.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Targets</th><th>What changes</th></tr></thead><tbody><tr><td>1</td><td>List above. Arcane Shot spends Precise Shots.</td></tr><tr><td>2</td><td>Multi-Shot (4) instead of Arcane Shot, and Bleak Powder hitting both gives you Trick Shots for free.</td></tr><tr><td>3 or more</td><td>Multi-Shot grants Trick Shots. Aimed Shot and Rapid Fire now cleave; Rapid Fire eats the buff, so reapply before it.</td></tr><tr><td>Pack opener</td><td>Hunter's Mark on the five best targets, Explosive Shot on two different mobs, Volley, Trueshot if the pack deserves it.</td></tr></tbody></table></div><div class="prio"><ol class="prio-list"><li><b>Explosive Shot (E) on cooldown, on different targets</b><span>Each target gets its own DoT and its own tier-set cooldown refund.</span></li><li><b>Volley (R) on cooldown</b><span>Six seconds of Trick Shots that nothing consumes.</span></li><li><b>Aimed Shot (1) with Trick Shots when about to cap, or when Precise Shots is down and Black Arrow is ready</b><span>Trick Shots makes it cleave.</span></li><li><b>Black Arrow (Q) to spend Precise Shots</b><span>Bleak Powder: a cone behind the target, eight-target cap. Umbral Reach gives Trick Shots back when it hits two or more.</span></li><li><b>Multi-Shot (4) to apply Trick Shots</b><span>Only when it is down and Volley is not running.</span></li><li><b>Trueshot (G) on cooldown</b><span>Withering Fire arrows spray the pack.</span></li><li><b>Rapid Fire (3) with Trick Shots up</b><span>It consumes the buff to cleave, so apply first.</span></li><li><b>Wailing Arrow once per Trueshot window</b><span></span></li><li><b>Multi-Shot (4) to spend Precise Shots</b><span></span></li><li><b>Aimed Shot (1) with Trick Shots up</b><span></span></li><li><b>Steady Shot (5)</b><span>Filler.</span></li></ol></div>
+      </section>
+
+      <section id="cds">
+        <div class="section-head">
+          <div>
+            <h2>Cooldowns and defensives</h2>
+            <p class="section-note">Where each of the other keys fits.</p>
+          </div>
+          
+        </div>
+        <div class="habits"><div class="habit"><b>Trueshot (G), 2 min</b><p>Burst. Pair with the on-use trinket and the potion. In keys, the biggest pack coming up beats the boss if the boss is not close.</p></div>
+<div class="habit"><b>Harrier's Cry (Shift-F)</b><p>The eagle's burst, from Avian Specialization. Use it on the same pull as Trueshot or the one after; it has no reason to wait.</p></div>
+<div class="habit"><b>Counter Shot (F), 24 s</b><p>Your interrupt. Twenty-four seconds is short enough to kick every other cast in a pack; call it in group chat if the tank asks who has the next one.</p></div>
+<div class="habit"><b>Exhilaration (T)</b><p>Heals you. Under 50%, press it. Smoke Screen gives you three seconds of Survival of the Fittest with it.</p></div>
+<div class="habit"><b>Survival of the Fittest (Shift-4)</b><p>Big damage reduction for a short time. The tank's raid-warning or a boss cast bar is the cue. Smoke Screen fires Exhilaration at 50% while it is up.</p></div>
+<div class="habit"><b>Aspect of the Turtle (Z)</b><p>You cannot attack while it is up. It is for the moment you would otherwise die. Feign Death (Shift-3) the second it ends if the mob is still on you.</p></div>
+<div class="habit"><b>Disengage (Shift-2), Binding Shot (Shift-R), Freezing Trap (Shift-5), Intimidation (Shift-E)</b><p>Space-makers. Dark Chains makes Disengage root-then-slow the nearest enemy. Binding Shot at your own feet is the panic button for melee adds.</p></div>
+<div class="habit"><b>Misdirection (Shift-Q)</b><p>On the tank before every pull in a group. There is no pet to take it instead.</p></div></div>
+      </section>
+
+      <section id="hero">
+        <div class="section-head">
+          <div>
+            <h2>Dark Ranger: every node</h2>
+            <p class="section-note">The 12.1.5 tree as it is in game. The talent string on the setup page takes all of it.</p>
+          </div>
+          
+        </div>
+        <div class="tblwrap"><table class="tbl "><thead><tr><th>Node</th><th>What it does for Marksmanship</th></tr></thead><tbody><tr><td>Black Arrow (keystone)</td><td>Kill Shot becomes Black Arrow: Shadow hit plus an eight second DoT. Usable above 80% or below 20% health, or on a Deathblow proc.</td></tr><tr><td>Bleak Arrows</td><td>Auto Shot does Shadow damage (ignores armour) and a lot more of it.</td></tr><tr><td>Soul Drinker</td><td>Aimed Shot has 10% more Deathblow chance; Rapid Fire always grants Deathblow.</td></tr><tr><td>Bleak Powder</td><td>Black Arrow bursts in an eight yard cone behind the target, eight-target cap. Your AoE engine.</td></tr><tr><td>Umbral Reach</td><td>Black Arrow DoT doubled; Bleak Powder hitting two or more enemies grants Trick Shots.</td></tr><tr><td>Corpsecaller</td><td>The Black Arrow DoT sometimes summons a Dark Minion for 20 seconds.</td></tr><tr><td>Pact of the Hollow</td><td>Aimed Shot makes that minion fire Blighted Arrow at up to eight targets.</td></tr><tr><td>Through the Eyes</td><td>Black Arrow damage up 10%.</td></tr><tr><td>The Bell Tolls / Banshee's Mark (choice)</td><td>3% crit and 10% minion damage, or 10% crit damage on Black Arrow and Bleak Powder. The string takes The Bell Tolls.</td></tr><tr><td>Dark Chains</td><td>Disengage roots then slows the nearest enemy by 40%.</td></tr><tr><td>Smoke Screen</td><td>Exhilaration grants three seconds of Survival of the Fittest; Survival of the Fittest fires Exhilaration at 50% health.</td></tr><tr><td>Wailing Dead</td><td>Trueshot summons a Dark Hound; for fifteen seconds afterwards the Trueshot button is Wailing Arrow.</td></tr><tr><td>Withering Fire (capstone)</td><td>Trueshot grants Withering Fire for its duration plus one Deathblow; Black Arrow fires two extra arrows at nearby targets.</td></tr><tr><td>Blighted Quiver</td><td>Two more arrows in that barrage; Trick Shots bonus up 10%, Aspect of the Hydra up 12%.</td></tr></tbody></table></div><div class="callout c-warn"><b>Honest note on Sentinel.</b> Icy Veins, Maxroll and the top-50 key sample (47 Sentinel, 3 Dark Ranger) all rate Sentinel higher in every kind of content in 12.1.5. Dark Ranger is playable and it is what this character runs, because Black Arrow is a better teaching tool and the eagle build is already set. If you ever want the last few percent for a hard key, one click in the talent panel swaps hero trees and the only key that changes is Q, which becomes Kill Shot. Headshot and Double Tap were removed from the spec tree in 12.1, so old videos that mention them are out of date.</div>
+      </section>
+
+      <section id="sources">
+        <div class="section-head">
+          <div>
+            <h2>Sources</h2>
+            
+          </div>
+          
+        </div>
+        <ul class="sources"><li><a href="https://method.gg/guides/marksmanship-hunter/playstyle-and-rotation" rel="noopener">Method: Marksmanship playstyle and rotation (13 Oct 2026)</a> · the opener and both priority lists</li><li><a href="https://maxroll.gg/wow/class-guides/marksmanship-hunter-raid-guide" rel="noopener">Maxroll: Marksmanship raid guide</a> · Sentinel skeleton, target counts</li><li><a href="https://www.icy-veins.com/wow/marksmanship-hunter-pve-dps-easy-mode" rel="noopener">Icy Veins: Marksmanship easy mode</a> · snippets only, the site blocks automated reads</li><li><a href="https://hackmd.io/@Azortharion/HunterPatch121-1" rel="noopener">Azortharion: hunter changes in 12.1</a> · Hunter's Mark on five, Headshot and Double Tap removed</li><li><a href="https://warcraft.wiki.gg/wiki/Black_Arrow" rel="noopener">Warcraft Wiki: Black Arrow</a> · and the other node pages, each with dated patch notes</li><li><a href="https://murlok.io/hunter/marksmanship/m+" rel="noopener">Murlok.io: Marksmanship M+</a> · hero tree split among the top 50</li></ul>
+      </section>
+    </main>
+    <footer>
+      <span>Part of the <a href="../">Alaranarises guides</a> · unlisted, not linked from <a href="../../">willhsu.dev</a></span>
+      <span>Icons from Wowhead. Not affiliated with Blizzard Entertainment. Checked against patch 12.1.5 on 3 Nov 2026.</span>
+    </footer>
+  </div>
+  
+  <script>
+    // Tick lists: saved in this browser only. mode=week clears after the Tuesday 15:00 UTC reset, mode=day after each 15:00 UTC.
+    (() => {
+      const now = new Date();
+      const periodKey = (mode) => {
+        const t = new Date(now);
+        if (mode === 'forever') return 'x';
+        // shift so the day boundary is 15:00 UTC
+        const shifted = new Date(t.getTime() - 15 * 3600 * 1000);
+        if (mode === 'day') return shifted.toISOString().slice(0, 10);
+        const dow = shifted.getUTCDay(); // Tuesday = 2
+        const back = (dow - 2 + 7) % 7;
+        shifted.setUTCDate(shifted.getUTCDate() - back);
+        return 'w' + shifted.toISOString().slice(0, 10);
+      };
+      document.querySelectorAll('.ticklist').forEach(ul => {
+        const store = ul.dataset.store, mode = ul.dataset.mode || 'forever';
+        const key = store + ':' + periodKey(mode);
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch {}
+        try { Object.keys(localStorage).forEach(k => { if (k.startsWith(store + ':') && k !== key) localStorage.removeItem(k); }); } catch {}
+        ul.querySelectorAll('input').forEach(cb => {
+          cb.checked = !!saved[cb.dataset.i];
+          cb.addEventListener('change', () => {
+            saved[cb.dataset.i] = cb.checked;
+            try { localStorage.setItem(key, JSON.stringify(saved)); } catch {}
+          });
+        });
+        const reset = document.querySelector(`[data-reset="${ul.id}"]`);
+        if (reset) reset.addEventListener('click', () => { saved = {}; try { localStorage.removeItem(key); } catch {} ul.querySelectorAll('input').forEach(cb => cb.checked = false); });
+      });
+      const nr = document.getElementById('next-reset');
+      if (nr) {
+        const t = new Date(now); const s = new Date(t.getTime() - 15 * 3600 * 1000);
+        const dow = s.getUTCDay(); const fwd = (2 - dow + 7) % 7 || 7;
+        const next = new Date(Date.UTC(s.getUTCFullYear(), s.getUTCMonth(), s.getUTCDate() + fwd, 15, 0, 0));
+        nr.textContent = next.toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      }
+    })();
+  </script>
+  
+</body>
+</html>
