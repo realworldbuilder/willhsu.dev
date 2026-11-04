@@ -335,7 +335,7 @@
         <dt>App</dt><dd>Vanilla HTML, CSS and JS, hash-routed bottom tabs, safe areas, <code>apple-mobile-web-app-capable</code>, a manifest and a home-screen icon. No framework, no build, no service worker (plain http).</dd>
         <dt>Sync</dt><dd>ssh with 5 s connect timeout, a shared control connection, 15 s between checks, 60 s after three failures. A sleeping MacBook turns the header red; the last file is kept on disk so a restart serves at once.</dd>
         <dt>Snapshot</dt><dd>character (name, realm, level, race, class, spec, faction, guild, title, ilvl, mounts), stats, gear with bonus ids, talents with the game's own descriptions and the import string, <strong>every spec's saved loadouts</strong>, every bar and form page with its binding, the guide.</dd>
-        <dt>Journal</dt><dd>level, zone, boss, achievement, death, mount, quest, spec, note, mark, photo, and <strong>chat</strong>: /say, /emote, /yell, and party or raid if asked. Never whispers.</dd>
+        <dt>Journal</dt><dd>level, zone, boss, achievement, death, mount, quest, spec, note, mark, photo, and <strong>chat</strong>: /say, /emote, /yell, and party or raid if asked. Never whispers. Since day two, only scenes: another player's line is kept while you have spoken in the last two minutes, a kept reply holds the scene a minute longer, and a line that says your name always gets in.</dd>
         <dt>Pictures</dt><dd>The hero is the last <code>/companion photo</code>, a screenshot with the UI hidden. Otherwise Transmogify renders her MOG2 code, with her barber choices from a side file until she sits in a chair.</dd>
         <dt>Icons</dt><dd>Wowhead's icon name by spell or item id, the icon CDN, cached on the mini. The game's own icon by file id through Transmogify as the fallback.</dd>
         <dt>Chapter</dt><dd><code>claude -p</code> with the newest day of the journal, chat included: about 150 words in her voice, 11 seconds, cached per day.</dd>
@@ -359,7 +359,7 @@
         <dt>/companion note &lt;text&gt;</dt><dd>a line in the journal; <code>mark</code> does the same with a picture</dd>
         <dt>/companion photo</dt><dd>a screenshot with the UI hidden, the phone's hero picture</dd>
         <dt>/companion mog</dt><dd>the Mogshot code</dd>
-        <dt>/companion rp on|off</dt><dd>record what is said around you; <code>rp party on</code> adds the group</dd>
+        <dt>/companion rp on|off</dt><dd>record your scenes: your own lines, replies in the two minutes after you speak, and anything that names you. <code>rp party on</code> adds the group, <code>rp everyone on</code> keeps all of earshot</dd>
         <dt>/companion shots, journal</dt><dd>pictures at level ups and marks; the journal itself</dd>
       </dl>
       <p>The rules are Rambleon's and RP Spec's: only plain values are stored, never secret values, nothing read in combat except chat (which isn't protected), no combat log, no protected API, no automation. The addon can't send anything anywhere. It writes a file and the mini comes to get it.</p>
@@ -412,14 +412,14 @@
       <ul class="status">
         <li><b>Running on real data.</b> On 3 Nov the real 12.1.5 client wrote <code>Companion.lua</code> for the first time, from Alaranarises, level 80 Marksmanship. The mini picked it up within 15 s: 66 talent nodes with the game's descriptions, three bar layers with every key placed, the Dark Ranger loadout with its import string, and the first chat lines. The first thing the journal caught was another player's <code>/emote</code> in Dornogal, so emotes land as chat.</li>
         <li><b>Verified.</b> 52 addon checks under the stub client, the API on both addresses, a phone note landing in the timeline, a chapter written, every tab at 390 px, a mini with no MacBook reporting "away" instead of crashing, and now the addon in the live game.</li>
+        <li><b>Quieter chat.</b> The first journal lines were a stranger's emote in Dornogal, so the capture now keeps scenes, not earshot: my own lines, replies within two minutes of them, lines that name me. <code>/companion rp everyone on</code> brings the crowd back.</li>
         <li><b>The guide caught something.</b> The Marksmanship guide puts her keys on every step and flagged one: Explosive Shot is on no bar (E holds Salvo). The rotation page had said E was Explosive Shot. That warning is the whole point of a guide that reads your bindings.</li>
         <li class="no"><b>Not verified.</b> Other specs' loadouts: she has one saved loadout, so the list shows one. Whether Beast Mastery and Survival strings come back before each spec has been opened once is still open. The home-screen install on iOS over plain http.</li>
-        <li class="no"><b>Not done.</b> Nothing reaches the game from the phone. Two spec guides. Chat capture records everyone in earshot, which in a capital is noise. The repo lives on the mini, not on GitHub.</li>
+        <li class="no"><b>Not done.</b> Nothing reaches the game from the phone. Two spec guides. The repo lives on the mini, not on GitHub.</li>
       </ul>
 
       <h2>Next</h2>
       <ul class="plain">
-        <li><strong>Quieter chat.</strong> Keep only my own lines, plus replies within a minute of them or lines that name me. Who counts as the scene is the RP decision to make next.</li>
         <li><strong>Explosive Shot on a key.</strong> The one thing the guide says to fix in game.</li>
         <li><strong>The inbox.</strong> Phone notes into the game after a reload, the way Rambleon's chapters go in.</li>
         <li><strong>Forever.</strong> The same addon on <code>Interface: 16001</code> for Rambleon and Hermajesty, where the classic client's talent API is a different shape.</li>
