@@ -1346,8 +1346,8 @@ export function start(canvas) {
     else shuffle(order);
   } catch { shuffle(order); }
   const q = new URLSearchParams(location.search);
-  if (q.has('scene')) {
-    const v = q.get('scene');
+  if (q.has('scene') || canvas.dataset.scene) {
+    const v = q.get('scene') ?? canvas.dataset.scene;
     const byName = ZONES.findIndex(z => z.name === v);
     const n = byName >= 0 ? byName : Math.min(ZONES.length, Math.max(1, Number(v) || 1)) - 1;
     pos = order.indexOf(n);
