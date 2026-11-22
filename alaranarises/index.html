@@ -191,7 +191,8 @@
 
     /* --- KEYBOARD --- */
     .board {
-      --key: clamp(46px, calc((100vw - 64px) / 6.6), 92px);
+      --key: clamp(36px, calc((100vw - 150px) / 10.4), 80px);
+      min-width: 0;
       position: relative;
       background: linear-gradient(180deg, color-mix(in srgb, var(--druid) 10%, var(--panel)) 0%, var(--panel) 60%);
       border: 1px solid color-mix(in srgb, var(--druid) 40%, transparent);
@@ -216,7 +217,7 @@
       color: #0b0d14;
     }
 
-    .keys { display: grid; gap: 8px; justify-content: center; }
+    .keys { display: grid; gap: 8px; justify-content: center; min-width: 0; }
     .row { display: flex; gap: 8px; }
     .row:nth-child(2) { padding-left: calc(var(--key) * 0.35); }
     .row:nth-child(3) { padding-left: calc(var(--key) * 0.55); }
@@ -453,6 +454,10 @@
       .habits { grid-template-columns: 1fr; }
       .board { padding: 42px 8px 18px; }
       .keys, .row { gap: 5px; }
+      .keys { overflow-x: auto; justify-content: start; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+      .row:nth-child(2) { padding-left: calc(var(--key) * 0.25); }
+      .row:nth-child(3) { padding-left: calc(var(--key) * 0.45); }
+      .row:nth-child(4) { padding-left: calc(var(--key) * 0.7); }
       .key .label { display: none; }
       .step + .step::before { display: none; }
     }
@@ -840,7 +845,7 @@
       shift: { label: 'Shift bar · the bar above it', mod: 'Shift-', keys: { 1: 'huntersmark', 2: 'disengage', 3: 'feign', 4: 'sotf', 5: 'freezingtrap', Q: 'misdirection', E: 'intimidation', R: 'bindingshot', F: 'harrierscry', G: 'cheetah', T: 'eagleeye', Z: 'wingclip' } },
       ctrl: { label: 'Ctrl bar · mounts, hearth and pet', mod: 'Ctrl-', keys: { 1: 'randommount', 2: 'highlanddrake', 3: 'goldengryphon', 4: 'prideclaw', 5: 'protodrake', 6: 'hearth', 7: 'fetch', 8: 'flare' } }
     };
-    const ROWS = [['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-'], ['Q', 'W', 'E', 'R', 'T'], ['A', 'S', 'D', 'F', 'G'], ['Z', 'X', 'C', 'V']];
+    const ROWS = [['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], ['Q', 'W', 'E', 'R', 'T'], ['A', 'S', 'D', 'F', 'G'], ['Z', 'X', 'C', 'V']];
     const MOVE = { W: 'Forward', A: 'Strafe', S: 'Back', D: 'Strafe' };
     const TALENTS = [{"name": "Black Arrow", "icon": "inv_ability_darkrangerhunter_blackarrow", "rarity": "legendary", "meta": "Dark Ranger · keystone", "desc": "Kill Shot becomes Black Arrow: Shadow damage, a DoT, and usable above 80% health as well as below 20%. The whole hero tree feeds this button.", "spell": "blackarrow"}, {"name": "Withering Fire", "icon": "spell_shadow_painspike", "rarity": "legendary", "meta": "Dark Ranger · capstone", "desc": "Trueshot grants Deathblow and Withering Fire: every Black Arrow fires 2 extra Black Arrows at nearby enemies. This is why you chain Black Arrows inside Trueshot.", "spell": "trueshot"}, {"name": "Bleak Arrows", "icon": "inv_quiver_1h_mawraid_d_01", "rarity": "epic", "meta": "Dark Ranger", "desc": "Auto shots deal Shadow damage, bypass armour and hit for double. Free damage while you cast."}, {"name": "Soul Drinker", "icon": "ability_warlock_soulsiphon", "rarity": "epic", "meta": "Dark Ranger", "desc": "Aimed Shot is 10% more likely to grant Deathblow and Rapid Fire always does. More free Black Arrows."}, {"name": "Through the Eyes", "icon": "inv_misc_eye_01", "rarity": "rare", "meta": "Dark Ranger · choice node", "desc": "Picked over the alternative. Keeps Black Arrow's damage-over-time rolling on more targets."}, {"name": "Dark Chains", "icon": "inv_belt_44c", "rarity": "rare", "meta": "Dark Ranger · choice node", "desc": "Disengage chains the closest enemy to the ground and slows it 40%. Picked over Shadow Dagger because it saves your life while leveling.", "spell": "disengage"}, {"name": "Trueshot", "icon": "ability_trueshot", "rarity": "epic", "meta": "Marksmanship", "desc": "Your 2 minute burst. Everything in this build is tuned to land inside it.", "spell": "trueshot"}, {"name": "Volley", "icon": "ability_hunter_rapidkilling", "rarity": "rare", "meta": "Marksmanship", "desc": "6 sec rain of arrows that also grants Trick Shots. The AoE anchor.", "spell": "volley"}, {"name": "Explosive Shot", "icon": "ability_hunter_explosiveshot", "rarity": "rare", "meta": "Marksmanship", "desc": "Bomb on the target. On cooldown in every priority list.", "spell": "explosive"}, {"name": "Intimidation", "icon": "ability_devour", "rarity": "uncommon", "meta": "Class", "desc": "A 5 sec single-target stun on a 1 min cooldown.", "spell": "intimidation"}, {"name": "Binding Shot", "icon": "spell_shaman_bindelemental", "rarity": "uncommon", "meta": "Class · from the Method build", "desc": "Tether and stun a whole pack. The import swapped Tar Trap for this; it is the better leveling tool.", "spell": "bindingshot"}, {"name": "Misdirection", "icon": "ability_hunter_misdirection", "rarity": "uncommon", "meta": "Class · from the Method build", "desc": "Threat to the tank for 30 sec. Mandatory manners in dungeons.", "spell": "misdirection"}, {"name": "Survival of the Fittest", "icon": "spell_nature_spiritarmor", "rarity": "uncommon", "meta": "Class", "desc": "30% damage reduction for 6 sec. Press it early.", "spell": "sotf"}, {"name": "2 Dark Ranger nodes", "icon": "inv_misc_questionmark", "rarity": "common", "locked": true, "meta": "Next · levels 81 to 83", "desc": "The hero tree has 13 nodes and you have 10 points. The two empty row-3 nodes fill in as you level; just click them when the tree glows."}, {"name": "Sentinel", "icon": "inv_ability_sentinelhunter_lunarstorm", "rarity": "common", "locked": true, "meta": "Alternative hero tree", "desc": "The other Marksmanship hero tree. Guides rate it a little higher in dungeons and raids right now. Swapping is one click in the talent panel, no cost, so try it later if Dark Ranger feels flat."}];
     const tip = document.getElementById('float-tip');
