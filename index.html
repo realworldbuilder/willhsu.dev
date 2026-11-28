@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>will hsu · open source tools for WoW, streaming and the Mac</title>
-  <meta name="description" content="Recent projects by Will Hsu: World of Warcraft addons and tools, OBS streaming plugins and macOS utilities. Open source, most with AI in the loop.">
+  <title>will hsu · tools, games and guides for WoW, streaming and the Mac</title>
+  <meta name="description" content="Recent projects by Will Hsu: the WoW Forever Guide, World of Warcraft addons, a fighting game and tools, OBS streaming plugins and macOS utilities. Most are open source, most with AI in the loop.">
   <meta property="og:title" content="will hsu">
-  <meta property="og:description" content="Open source tools for World of Warcraft, streaming and the Mac.">
+  <meta property="og:description" content="Tools, games and guides for World of Warcraft, streaming and the Mac.">
   <meta property="og:url" content="https://willhsu.dev/">
   <meta name="theme-color" content="#0b0d14">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2l12 7v14l-12 7L4 23V9z' fill='%23ff8000'/%3E%3Cpath d='M16 7l8 4.5v9L16 25l-8-4.500v-9z' fill='%230b0d14'/%3E%3C/svg%3E">
@@ -381,6 +381,51 @@
     .art .swap { position: absolute; inset: 0; opacity: 0; transition: opacity 0.12s ease; }
     .card:hover .art .swap, .card:focus-within .art .swap { opacity: 1; }
 
+    .btn.ghost { background: rgba(255, 255, 255, 0.14); color: var(--text); }
+
+    .grid { grid-auto-flow: dense; }
+
+    .stats { display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 16px; }
+    .stats div { display: flex; flex-direction: column; }
+    .stats b { font-family: var(--display); font-weight: 700; font-size: 30px; line-height: 1; color: color-mix(in srgb, var(--rarity) 70%, #fff); }
+    .stats span { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 5px; }
+
+    .art-guide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background:
+        radial-gradient(ellipse 60% 60% at 50% 55%, rgba(255, 128, 0, 0.26), transparent 70%),
+        linear-gradient(160deg, #1d140d, #0b0d14);
+    }
+    .legendary .art-guide { min-height: 340px; }
+    .art-guide img {
+      width: 31%;
+      max-width: 220px;
+      height: auto;
+      aspect-ratio: 4 / 5;
+      object-position: 50% 0;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+    }
+    .art-guide img:nth-child(1) { transform: rotate(-6deg) translate(12%, 5%); }
+    .art-guide img:nth-child(2) { position: relative; z-index: 1; transform: scale(1.1); }
+    .art-guide img:nth-child(3) { transform: rotate(6deg) translate(-12%, 5%); }
+
+    .art-center img { object-position: 50% 50%; }
+
+    .art-kit {
+      display: grid;
+      place-content: center;
+      text-align: center;
+      background:
+        repeating-linear-gradient(90deg, rgba(163, 53, 238, 0.07) 0 1px, transparent 1px 18px),
+        linear-gradient(160deg, #1a1030, #0a0810);
+    }
+    .art-kit span { font-family: var(--display); font-weight: 700; font-style: italic; font-size: 30px; letter-spacing: 2px; text-transform: uppercase; color: #cf9bff; line-height: 1; }
+    .art-kit small { font-family: var(--mono); font-size: 11px; color: rgba(207, 155, 255, 0.65); margin-top: 8px; }
+
     /* --- TOOLTIP --- */
     .tip {
       background: rgba(8, 9, 16, 0.96);
@@ -448,6 +493,7 @@
       .legendary .body { padding: 16px 18px 20px; }
       .legendary h3 { font-size: 26px; }
       .legendary .art-journal { min-height: 0; place-items: center; padding: 48px 16px 24px; }
+      .legendary .art-guide { min-height: 0; padding: 52px 16px 32px; }
     }
 
     @media (max-width: 640px) {
@@ -522,12 +568,14 @@
       <div class="sheet">
         <div class="crest" aria-hidden="true">WH</div>
         <div>
-          <p class="kicker">Builder · Open source</p>
+          <p class="kicker">Builder · Mostly open source</p>
           <h1>Will Hsu</h1>
-          <p class="lede">I build open source tools for World of Warcraft, streaming, reality capture and the Mac, most of them with AI in the loop.</p>
+          <p class="lede">I build tools, games and guides for World of Warcraft, plus streaming, reality capture and Mac utilities, most of them with AI in the loop.</p>
           <div class="tags" aria-label="Topics">
             <span class="tag">AI</span>
             <span class="tag">World of Warcraft</span>
+            <span class="tag">Guides</span>
+            <span class="tag">Games</span>
             <span class="tag">Streaming tools</span>
             <span class="tag">Reality capture</span>
             <span class="tag">macOS</span>
@@ -535,6 +583,7 @@
           </div>
           <div class="hero-links">
             <a class="btn" href="https://github.com/realworldbuilder">GitHub</a>
+            <a class="btn ghost" href="https://www.instagram.com/wowforeverguide/">@wowforeverguide</a>
           </div>
         </div>
       </div>
@@ -546,6 +595,7 @@
         <div class="tabs" role="group" aria-label="Filter projects">
           <button class="tab" data-filter="all" aria-pressed="true">All</button>
           <button class="tab" data-filter="wow" aria-pressed="false">WoW</button>
+          <button class="tab" data-filter="guides" aria-pressed="false">Guides</button>
           <button class="tab" data-filter="streaming" aria-pressed="false">Streaming</button>
           <button class="tab" data-filter="macos" aria-pressed="false">macOS</button>
           <button class="tab" data-filter="capture" aria-pressed="false">Reality capture</button>
@@ -554,6 +604,84 @@
       </div>
 
       <div class="grid">
+
+        <article class="card legendary" data-cats="wow ai guides">
+          <span class="rarity">Legendary</span>
+          <div class="art art-guide">
+            <img src="assets/guide/ig246.jpg" alt="Guide page: every Horde zone, 1 to 60, on a map of Azeroth" loading="lazy" width="600" height="750">
+            <img src="assets/guide/ig257.jpg" alt="Guide page: the rare hunter pets everyone is camping" loading="lazy" width="600" height="750">
+            <img src="assets/guide/ig192.jpg" alt="Guide page: every class rotation in three letters" loading="lazy" width="600" height="750">
+          </div>
+          <div class="body">
+            <h3>WoW Forever Guide</h3>
+            <p class="desc">The Instagram guide to World of Warcraft: Forever. Zone maps, class guides, memes and reels, made on a Mac mini with Claude Code and Mogshot and posted by hand. It went from 1,029 followers on 18 October to 37,345 on 27 November.</p>
+            <div class="stats" aria-label="Numbers on 27 November 2026">
+              <div><b>37.3k</b><span>followers</span></div>
+              <div><b>17.8M</b><span>views in 30 days</span></div>
+              <div><b>427k</b><span>shares in 30 days</span></div>
+            </div>
+            <div class="chips"><span class="chip">Claude Code</span><span class="chip">Python</span><span class="chip">Remotion</span><span class="chip">Mogshot</span></div>
+            <div class="links">
+              <a href="https://www.instagram.com/wowforeverguide/">Instagram</a>
+              <a href="https://realworldbuilder.github.io/wowforeverguide/">Link page</a>
+              <a href="https://www.youtube.com/@wowforeveronline">YouTube</a>
+              <a href="https://discord.gg/6YrMpnv56">Discord</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">WoW Forever Guide</div>
+            <div class="tip-type"><span>Guide</span><span>Legendary</span></div>
+            <dl><dt>Followers</dt><dd>37,345</dd><dt>Views</dt><dd>17.8M in 30 days</dd><dt>Posts</dt><dd>230</dd><dt>Updated</dt><dd>27 November 2026</dd></dl>
+            <div class="tip-use">Use: Pick your main right.</div>
+            <div class="tip-flavor">"Every class, race, zone and change in WoW Forever."</div>
+          </div>
+        </article>
+
+        <article class="card epic" data-cats="wow ai guides">
+          <span class="rarity">Epic</span>
+          <div class="art art-center">
+            <img src="assets/foreverguide-panel.jpg" alt="Forever Guide: log in knowing exactly where to go. The in-game panel shows a path from level 35 to 36 with 4 of 14 tasks done" loading="lazy" width="1200" height="630">
+          </div>
+          <div class="body">
+            <h3>Forever Guide</h3>
+            <p class="desc">Log in knowing exactly where to go. A free addon for WoW Forever that watches your quests while you play; an AI you already use writes the path for your next session, and it ticks itself off as you go.</p>
+            <div class="chips"><span class="chip">Lua</span><span class="chip">Python</span><span class="chip">Claude</span><span class="chip">Ollama</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/foreverguide/">Get the addon</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Forever Guide</div>
+            <div class="tip-type"><span>AddOn + companion</span><span>Epic</span></div>
+            <dl><dt>Platform</dt><dd>WoW: Forever</dd><dt>Knows</dt><dd>42 zones, checked against the client</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Type /fg. Go where it says.</div>
+            <div class="tip-flavor">"A fixed route breaks the moment you leave it."</div>
+          </div>
+        </article>
+
+        <article class="card epic" data-cats="wow">
+          <span class="rarity">Epic</span>
+          <div class="art art-center">
+            <img src="assets/makgora-fight.jpg" alt="Mak'gora Kombat: Cairne Bloodhoof swings an axe at an undead rogue in Gurubashi Arena, with health bars, a round timer and action bars" loading="lazy" width="1280" height="720">
+          </div>
+          <div class="body">
+            <h3>Mak'gora Kombat</h3>
+            <p class="desc">A one-on-one fighting game played with your own World of Warcraft characters, in the browser, drawn from the game files already on your computer. Swing timers, a kit per class, real places as stages, and a fatality.</p>
+            <div class="chips"><span class="chip">TypeScript</span><span class="chip">WebGL</span><span class="chip">Chrome</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/makgorakombat/">Play</a>
+              <a href="https://realworldbuilder.github.io/makgorakombat/welcome/">Welcome page</a>
+              <a href="https://github.com/realworldbuilder/makgorakombat">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Mak'gora Kombat</div>
+            <div class="tip-type"><span>Web game</span><span>Epic</span></div>
+            <dl><dt>Platform</dt><dd>Chrome on a Mac</dd><dt>Engine</dt><dd>Mogshot's</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Drop your WoW folder on the page. Choose your champion.</div>
+            <div class="tip-flavor">"Blood. Honor. Fatality."</div>
+          </div>
+        </article>
 
         <article class="card legendary" data-cats="wow ai macos">
           <span class="rarity">Legendary</span>
@@ -571,7 +699,7 @@
           </div>
           <div class="body">
             <h3>Rambleon</h3>
-            <p class="desc">Your Azeroth adventure journal. A passive WoW AddOn and a Mac companion that turn a night of play into a timeline, a story page and an AI-written chapter.</p>
+            <p class="desc">Your Azeroth adventure journal. A passive WoW AddOn and a Mac companion that turn a night of play into a timeline, a story page and an AI-written chapter. Now on live Forever, with a season page and what killed you.</p>
             <div class="chips"><span class="chip">Lua</span><span class="chip">Python</span><span class="chip">Claude Code</span><span class="chip">macOS</span></div>
             <button class="install" data-copy='uv tool install "git+https://github.com/realworldbuilder/rambleon#subdirectory=companion"' title="Copy install command">uv tool install "git+https://github.com/realworldbuilder/rambleon#subdirectory=companion"</button>
             <div class="links">
@@ -583,31 +711,9 @@
           <div class="tip">
             <div class="tip-name">Rambleon</div>
             <div class="tip-type"><span>AddOn + companion</span><span>Legendary</span></div>
-            <dl><dt>Platform</dt><dd>WoW: Forever beta, macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <dl><dt>Platform</dt><dd>WoW: Forever, macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>November 2026</dd></dl>
             <div class="tip-use">Use: Log out, and the night writes itself up.</div>
             <div class="tip-flavor">"A memory layer, not a meter."</div>
-          </div>
-        </article>
-
-        <article class="card rare" data-cats="wow ai macos">
-          <span class="rarity">Rare</span>
-          <div class="art art-companion">
-            <img src="assets/companion/character.webp" alt="The Companion app's Character tab: Scarletfire's in-game photo with her level, spec and stats" loading="lazy" width="780" height="1688">
-          </div>
-          <div class="body">
-            <h3>WoW Companion</h3>
-            <p class="desc">Your WoW character on your phone. An addon collects specs, loadouts, gear, every keybind and a journal; the Mac mini reads the file over ssh; a home-screen app shows it, keys and spec guide included, and writes the night's chapter.</p>
-            <div class="chips"><span class="chip">Lua</span><span class="chip">Node</span><span class="chip">Claude Code</span><span class="chip">iPhone</span></div>
-            <div class="links">
-              <a href="/companion/">Read the page</a>
-            </div>
-          </div>
-          <div class="tip">
-            <div class="tip-name">WoW Companion</div>
-            <div class="tip-type"><span>AddOn + phone app</span><span>Rare</span></div>
-            <dl><dt>Platform</dt><dd>WoW retail, Mac mini, iPhone</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>November 2026</dd></dl>
-            <div class="tip-use">Use: Look at your keys on the train. Read what she said last night.</div>
-            <div class="tip-flavor">"The addon can't send anything anywhere. It writes a file and the mini comes to get it."</div>
           </div>
         </article>
 
@@ -619,8 +725,8 @@
           </div>
           <div class="body">
             <h3>Mogshot</h3>
-            <p class="desc">Transparent PNG cutouts of your WoW characters, rendered in the browser from the game files already on your computer. No account, no server.</p>
-            <div class="chips"><span class="chip">TypeScript</span><span class="chip">Chrome</span></div>
+            <p class="desc">Transparent PNG cutouts of your WoW characters, rendered in the browser from the game files already on your computer. No account, no server. Now draws retail's races and transmog sets, with a command line, glTF export for Blender and a Discord bot.</p>
+            <div class="chips"><span class="chip">TypeScript</span><span class="chip">Chrome</span><span class="chip">CLI</span><span class="chip">Discord</span></div>
             <div class="links">
               <a href="https://realworldbuilder.github.io/mogshot/">Open Mogshot</a>
               <a href="https://github.com/realworldbuilder/mogshot">Repo</a>
@@ -629,7 +735,7 @@
           <div class="tip">
             <div class="tip-name">Mogshot</div>
             <div class="tip-type"><span>Web app</span><span>Epic</span></div>
-            <dl><dt>Platform</dt><dd>Chrome on a Mac</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <dl><dt>Platform</dt><dd>Chrome on a Mac</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>November 2026</dd></dl>
             <div class="tip-use">Use: Drop your WoW folder on the page, get a PNG.</div>
             <div class="tip-flavor">"Your game files never leave your machine."</div>
           </div>
@@ -661,27 +767,48 @@
           </div>
         </article>
 
-        <article class="card rare" data-cats="streaming macos">
+        <article class="card rare" data-cats="wow ai macos">
           <span class="rarity">Rare</span>
-          <div class="art art-stream">
-            <img class="avatar" src="assets/obs-silent.webp" alt="Avatar with mouth closed over a game screenshot; hover to see it speak" loading="lazy" width="640" height="640">
-            <img class="avatar swap" src="assets/obs-speaking.webp" alt="" loading="lazy" width="640" height="640">
+          <div class="art art-companion">
+            <img src="assets/companion/character.webp" alt="The Companion app's Character tab: Scarletfire's in-game photo with her level, spec and stats" loading="lazy" width="780" height="1688">
           </div>
           <div class="body">
-            <h3>OBS Image Reaction</h3>
-            <p class="desc">An OBS source that shows one image while you are silent and another while you speak, with movement effects and blinking.</p>
-            <div class="chips"><span class="chip">C</span><span class="chip">OBS Studio</span><span class="chip">macOS</span></div>
-            <button class="install" data-copy="curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash" title="Copy install command">curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash</button>
+            <h3>WoW Companion</h3>
+            <p class="desc">Your WoW character on your phone. An addon collects specs, loadouts, gear, every keybind and a journal; the Mac mini reads the file over ssh; a home-screen app shows it, keys and spec guide included, and writes the night's chapter.</p>
+            <div class="chips"><span class="chip">Lua</span><span class="chip">Node</span><span class="chip">Claude Code</span><span class="chip">iPhone</span></div>
             <div class="links">
-              <a href="https://realworldbuilder.github.io/obs-image-reaction/">Site</a>
-              <a href="https://github.com/realworldbuilder/obs-image-reaction">Repo</a>
+              <a href="/companion/">Read the page</a>
             </div>
           </div>
           <div class="tip">
-            <div class="tip-name">OBS Image Reaction</div>
-            <div class="tip-type"><span>OBS plugin</span><span>Rare</span></div>
-            <dl><dt>Platform</dt><dd>OBS Studio, macOS</dd><dt>Licence</dt><dd>GPL-2.0</dd><dt>Updated</dt><dd>October 2026</dd></dl>
-            <div class="tip-use">Use: Your avatar talks when you do.</div>
+            <div class="tip-name">WoW Companion</div>
+            <div class="tip-type"><span>AddOn + phone app</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>WoW retail, Mac mini, iPhone</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Look at your keys on the train. Read what she said last night.</div>
+            <div class="tip-flavor">"The addon can't send anything anywhere. It writes a file and the mini comes to get it."</div>
+          </div>
+        </article>
+
+        <article class="card rare" data-cats="wow">
+          <span class="rarity">Rare</span>
+          <div class="art art-center">
+            <img src="assets/guildhall-midnight-riders.jpg" alt="The Midnight Riders guild site: three night elves riding sabers under a full moon" loading="lazy" width="1200" height="630">
+          </div>
+          <div class="body">
+            <h3>Guildhall</h3>
+            <p class="desc">A free website for your WoW guild. Edit one guild.json, push, and GitHub builds and hosts it: guild nights in each visitor's own time, live Discord numbers and a 3D Azeroth backdrop.</p>
+            <div class="chips"><span class="chip">HTML</span><span class="chip">three.js</span><span class="chip">GitHub Pages</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/midnight-riders/">Live example</a>
+              <a href="https://github.com/realworldbuilder/guildhall">Repo</a>
+              <a href="https://github.com/realworldbuilder/midnight-riders-addons">Guild addons</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Guildhall</div>
+            <div class="tip-type"><span>Site template</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>GitHub Pages</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Edit one file, push, send the link to your guild.</div>
           </div>
         </article>
 
@@ -708,6 +835,51 @@
           </div>
         </article>
 
+        <article class="card rare" data-cats="streaming macos">
+          <span class="rarity">Rare</span>
+          <div class="art art-stream">
+            <img class="avatar" src="assets/obs-silent.webp" alt="Avatar with mouth closed over a game screenshot; hover to see it speak" loading="lazy" width="640" height="640">
+            <img class="avatar swap" src="assets/obs-speaking.webp" alt="" loading="lazy" width="640" height="640">
+          </div>
+          <div class="body">
+            <h3>OBS Image Reaction</h3>
+            <p class="desc">An OBS source that shows one image while you are silent and another while you speak, with movement effects and blinking.</p>
+            <div class="chips"><span class="chip">C</span><span class="chip">OBS Studio</span><span class="chip">macOS</span></div>
+            <button class="install" data-copy="curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash" title="Copy install command">curl -fsSL https://raw.githubusercontent.com/realworldbuilder/obs-image-reaction/main/install.sh | bash</button>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/obs-image-reaction/">Site</a>
+              <a href="https://github.com/realworldbuilder/obs-image-reaction">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">OBS Image Reaction</div>
+            <div class="tip-type"><span>OBS plugin</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>OBS Studio, macOS</dd><dt>Licence</dt><dd>GPL-2.0</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: Your avatar talks when you do.</div>
+          </div>
+        </article>
+
+        <article class="card rare" data-cats="streaming">
+          <span class="rarity">Rare</span>
+          <div class="art art-kit" aria-hidden="true"><span>Stream Kit</span><small>Twitch + YouTube · one OBS</small></div>
+          <div class="body">
+            <h3>Stream Kit</h3>
+            <p class="desc">Four fixes for streaming from OBS to Twitch and YouTube at once: stop each platform on its own, one combined chat, a daily sub goal that resets itself, and a text-to-speech checklist.</p>
+            <div class="chips"><span class="chip">OBS Studio</span><span class="chip">Twitch EventSub</span><span class="chip">Shell</span></div>
+            <button class="install" data-copy="curl -fsSL https://raw.githubusercontent.com/realworldbuilder/stream-kit/main/install/mac.sh | bash" title="Copy install command">curl -fsSL https://raw.githubusercontent.com/realworldbuilder/stream-kit/main/install/mac.sh | bash</button>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/stream-kit/">Start here</a>
+              <a href="https://github.com/realworldbuilder/stream-kit">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Stream Kit</div>
+            <div class="tip-type"><span>Setup kit</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>OBS Studio, Windows and macOS</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Do them in order. Each one takes about five minutes.</div>
+          </div>
+        </article>
+
         <article class="card rare" data-cats="macos streaming">
           <span class="rarity">Rare</span>
           <div class="art"><img src="assets/sis-demo.svg" alt="A capture frame switching between social media sizes" loading="lazy" width="960" height="600"></div>
@@ -726,6 +898,65 @@
             <div class="tip-type"><span>Menu bar app</span><span>Rare</span></div>
             <dl><dt>Platform</dt><dd>macOS</dd><dt>Licence</dt><dd>MIT</dd><dt>Updated</dt><dd>October 2026</dd></dl>
             <div class="tip-use">Use: Press the hotkey, click, paste at the right size.</div>
+          </div>
+        </article>
+
+        <article class="card rare" data-cats="ai">
+          <span class="rarity">Rare</span>
+          <div class="art art-mini" aria-hidden="true"><span>Schedule Composer</span><small>P6 · XER · CPM · 17 tools</small></div>
+          <div class="body">
+            <h3>Schedule Composer</h3>
+            <p class="desc">Chat with Claude about a Primavera P6 schedule and watch it change. Open an XER, ask for edits in plain English, and the table and Gantt move with each tool call. Runs in your browser with your own API key.</p>
+            <div class="chips"><span class="chip">TypeScript</span><span class="chip">Claude API</span><span class="chip">Primavera P6</span></div>
+            <div class="links">
+              <a href="https://realworldbuilder.github.io/schedule-composer/">Try it</a>
+              <a href="https://github.com/realworldbuilder/schedule-composer">Repo</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Schedule Composer</div>
+            <div class="tip-type"><span>Web app</span><span>Rare</span></div>
+            <dl><dt>Platform</dt><dd>Any browser</dd><dt>Engine</dt><dd>Lossless XER, CPM scheduler</dd><dt>Updated</dt><dd>October 2026</dd></dl>
+            <div class="tip-use">Use: "Shift MEP rough-in two weeks."</div>
+          </div>
+        </article>
+
+        <article class="card uncommon" data-cats="wow guides">
+          <span class="rarity">Uncommon</span>
+          <div class="art art-pages" aria-hidden="true"><span>BM at 35</span><small>hunter · WoW Forever</small></div>
+          <div class="body">
+            <h3>Beast Mastery at 35</h3>
+            <p class="desc">How to play a level 35 Beast Mastery hunter in WoW Forever, alone and in a group: talents, bars and keys with macros, the button order for each pull, and which pet to bring.</p>
+            <div class="chips"><span class="chip">Guide</span><span class="chip">Hunter</span></div>
+            <div class="links">
+              <a href="hunter/">Read the guide</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Beast Mastery at 35</div>
+            <div class="tip-type"><span>Class guide</span><span>Uncommon</span></div>
+            <dl><dt>Checked</dt><dd>Wowhead and hotfixes to 21 November</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Ten minute setup, then every fight button is under one hand.</div>
+            <div class="tip-flavor">"The pet does the work."</div>
+          </div>
+        </article>
+
+        <article class="card uncommon" data-cats="wow guides">
+          <span class="rarity">Uncommon</span>
+          <div class="art art-pages" aria-hidden="true"><span>Dungeons</span><small>pre-reqs first · Deadmines</small></div>
+          <div class="body">
+            <h3>Dungeon Guides</h3>
+            <p class="desc">Short guides for the dungeons &lt;Midnight Riders&gt; runs: pre-reqs first, so nobody zones in without the quests, then the bosses and the loot. The Deadmines is up.</p>
+            <div class="chips"><span class="chip">Guide</span><span class="chip">Dungeons</span></div>
+            <div class="links">
+              <a href="dungeons/">Read the guides</a>
+            </div>
+          </div>
+          <div class="tip">
+            <div class="tip-name">Dungeon Guides</div>
+            <div class="tip-type"><span>Guides</span><span>Uncommon</span></div>
+            <dl><dt>Up</dt><dd>The Deadmines, levels 17 to 26</dd><dt>Next</dt><dd>Ragefire Chasm, Wailing Caverns</dd><dt>Updated</dt><dd>November 2026</dd></dl>
+            <div class="tip-use">Use: Pick up the quests first. Right?</div>
           </div>
         </article>
 
@@ -748,7 +979,7 @@
           </div>
         </article>
 
-        <article class="card uncommon" data-cats="wow ai">
+        <article class="card uncommon" data-cats="wow ai guides">
           <span class="rarity">Uncommon</span>
           <div class="art art-pages" aria-hidden="true"><span>One page a day</span><small>2004 guide · WoW Forever</small></div>
           <div class="body">
@@ -784,25 +1015,6 @@
             <div class="tip-type"><span>Posts</span><span>Uncommon</span></div>
             <dl><dt>Count</dt><dd>18 posts</dd><dt>Updated</dt><dd>October 2026</dd></dl>
             <div class="tip-use">Use: Copy the text, grab the image, post it.</div>
-          </div>
-        </article>
-
-        <article class="card uncommon" data-cats="wow">
-          <span class="rarity">Uncommon</span>
-          <div class="art art-pages" aria-hidden="true"><span>Guide</span><small>Drafts in review</small></div>
-          <div class="body">
-            <h3>WoW Forever Guide</h3>
-            <p class="desc">A guide to World of Warcraft: Forever, written in the open. Draft posts and a review page for now.</p>
-            <div class="chips"><span class="chip">HTML</span><span class="chip">Writing</span></div>
-            <div class="links">
-              <a href="https://realworldbuilder.github.io/wowforeverguide/">Drafts</a>
-              <a href="https://github.com/realworldbuilder/wowforeverguide">Repo</a>
-            </div>
-          </div>
-          <div class="tip">
-            <div class="tip-name">WoW Forever Guide</div>
-            <div class="tip-type"><span>Guide</span><span>Uncommon</span></div>
-            <dl><dt>Status</dt><dd>Drafts in review</dd><dt>Updated</dt><dd>October 2026</dd></dl>
           </div>
         </article>
 
